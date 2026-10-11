@@ -40,7 +40,7 @@ BTT SFS V2.1
 OrangeStorm Giga print head
 ```
 
-The S1+ **actively pushes filament** toward the printer. This matters when tuning Klipper's `detection_length` because the mechanical behavior is different from a conventional passive spool → SFS → extruder path.
+The S1+ actively pushes filament toward the printer. This affects the mechanical behavior seen by the SFS and is relevant when interpreting historical tests. The current GapGuard installation does not use Klipper's `filament_motion_sensor` or its `detection_length` setting.
 
 ## Supplied SFS mount
 
@@ -116,7 +116,7 @@ blue LED flashing        → normal filament movement
 blue LED steady on/off   → possible when filament is stationary
 ```
 
-Do not use the blue LED as an instantaneous Klipper state indicator. The Klipper `filament_motion_sensor` works from encoder events and commanded extrusion distance.
+The blue LED shows activity at the sensor; it is not an instantaneous indication of the electrical level received by Klipper. GapGuard reads PD3 directly and establishes motion from genuine HIGH↔LOW transitions. The native Klipper `filament_motion_sensor` is not used in the current installation. GapGuard owns PD3 and PD4 exclusively; do not enable native fila/sfs_motion objects in parallel.
 
 If you extend or remake the harness, preserve the functional pin mapping. Do not assume that extension-wire colors match the original BTT harness.
 
@@ -211,7 +211,7 @@ The difference is:
 PD3
 ```
 
-That result was then validated in Klipper by moving filament through the SFS and observing `sfs_motion` change state.
+That result was then validated in Klipper by moving filament through the SFS and observing `sfs_motion` change state. This was a hardware-validation step performed before GapGuard took ownership of PD3. It is not part of the current installation procedure.
 
 ## Current GapGuard integration
 

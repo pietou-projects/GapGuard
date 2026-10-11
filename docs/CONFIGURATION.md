@@ -1,27 +1,40 @@
-# Configuration extraite, sans calibration privée
+# Configuration
 
-Source : configuration validée SHA-256 `a018667f0ae1a7e20a19accbbd65bce103d8f83b4c323679e5f275aae5768bbc`. Le fichier complet n'est pas publié. Les corps de sections fournis sont extraits de cette source ; seuls l'en-tête et les séparateurs de l'exemple sont documentaires.
+There are two complementary references:
 
-| Bloc | Statut | Adaptation |
-|---|---|---|
-| `[gapguard]` | Obligatoire | Pins, nom extrudeur et seuils de la référence Giga ; aucun doublon |
-| Six `[gcode_macro GAPGUARD_*]` | Interface publique Fluidd | Délégation uniquement ; pas de logique de sécurité dans les macros |
-| `[idle_timeout]` | Nécessaire au maintien des beds lors des pauses GapGuard | Fusionner dans l'existant, ne pas juxtaposer deux sections ; branche manuelle conservée dans la référence |
-| PAUSE/RESUME/CANCEL_PRINT | Préexistants, spécifiques Elegoo | Non remplacés par l'exemple ; variables et états natifs exigés par AutoRecovery |
-| `fan1` et quatre chauffages | Préexistants, spécifiques Giga | `fan1` est output_pin, scale 255 ; état runtime normalisé 0..1 |
+1. [gapguard-example.cfg](../config/gapguard-example.cfg) contains the sections to add or merge: `[gapguard]`, six public macros and `[idle_timeout]`.
+2. [OrangeStorm Giga dependency reference](ORANGESTORM-GIGA-REFERENCE.md) describes the existing native objects and saved states that must already behave as expected. Its excerpts are for comparison, not a complete configuration to install.
 
-## Seuils
+The overlay was compared with the live configuration observed on 11 October 2026, SHA-256 `5bb49d848ffeada5f21a611b8f16d163a1737dae6f641fd71531af85dcce358d`. The earlier validated file, `a018667f0ae1a7e20a19accbbd65bce103d8f83b4c323679e5f275aae5768bbc`, differs in its private calibration block and comment normalization, with no functional difference before SAVE_CONFIG. Neither complete file is distributed. English comments and descriptions change wording only; executable overlay settings and macro bodies match the live functional blocks.
 
-L'exemple validé indique `suspect_distance=9`, `verify_trigger=20`, `verify_distance=20`, `verify_transitions=2`, `check_interval=0.250`, `init_guard=0.250`, `motion_trace=1`, `default_mode=FULL`. Les distances sont en mm d'extrusion native, pas en secondes ni en distance XY.
+## Detection settings
 
-**Différence à connaître :** les défauts Python historiques de `Settings` sont 9/50/12/6 ; le profil validé 9/20/20/2 provient des valeurs explicites de l'exemple. Ne pas omettre ces paramètres en supposant que le code a les mêmes défauts. La fin de fenêtre est trigger + distance, soit 40 mm pour l'exemple.
+| Setting | Reference value | Meaning |
+|---|---:|---|
+| motion_pin | PD3 | Motion input, non-inverted |
+| presence_pin | PD4 | Presence input; HIGH means present |
+| extruder | extruder | Existing toolhead extruder object |
+| default_mode | FULL | Both protections on at startup |
+| suspect_distance | 9.0 | Extrusion without an edge before suspicion |
+| verify_trigger | 20.0 | Verification starts this far from the E reference |
+| verify_distance | 20.0 | Verification length; reference end is 40 mm |
+| verify_transitions | 2 | Genuine transitions required during verification |
+| check_interval | 0.250 | Monitoring timer period in seconds |
+| init_guard | 0.250 | Minimum extra acquisition guard in seconds |
+| motion_trace | 1 | Detailed PD3 logging enabled |
 
-## Paramètres AutoRecovery
+Distances use native extruder position history, not elapsed time, XY travel or a measured delivered filament length. The Python fallback values are 9/50/12/6: keep the explicit overlay values to reproduce the tested 9/20/20/2 profile. An edge at the verification entry boundary has priority; a qualifying final edge at the inclusive end boundary can still prevent a pause not yet dispatched. See [architecture](ARCHITECTURE.md).
 
-Le code accepte enabled 0/1 et un minimum de transitions entier positif (2 dans l'exemple). Il vérifie les valeurs fixes de la candidate : délai 30 s, distance 300 mm, blocs 20 mm, avance F200. Ces paramètres ne sont pas librement réglables dans cette RC malgré leur présence en configuration. F200 est en mm/min, soit 3,333… mm/s. Il n'y a pas de maximum par session ni de validation window6.
+## AutoRecovery settings
 
-## Thermique
+The overlay sets enabled=1, delay=30 seconds, distance=300 mm, chunk=20 mm, minimum transitions=2 and feedrate=200 mm/min. The module permits enabled 0/1 and a positive integer transition minimum. It validates the other four numeric values against the fixed implementation values; they are not freely adjustable merely because they appear in printer.cfg.
 
-Le statut `pause_origin == "gapguard"` signifie une pause réellement récupérable prise en charge par GapGuard. Dans cette branche, idle_timeout émet seulement `SET_HEATER_TEMPERATURE HEATER=extruder TARGET=0`, sans TURN_OFF_HEATERS : les quatre cibles existantes sont conservées. Hors cette branche, le comportement Elegoo de référence reste en place. Ce mécanisme ne force aucune température de plateau et ne modifie pas CANCEL.
+At least two transitions are counted cumulatively across the complete purge. This criterion is separate from the normal-print verification interval. The purge is not shortened when the count is reached. See [AutoRecovery](AUTORECOVERY.md).
 
-Les paramètres machine tels que rotation_distance, samples, fade_end, mesh, PID, limites et courants ne sont pas des réglages GapGuard et ne figurent pas dans l'exemple public.
+## Pause and idle behavior
+
+The `pause_origin == "gapguard"` idle branch sends only a nozzle-target-zero command. It neither changes nor restores bed targets. The existing four targets therefore remain in force, including when the native 1800-second pause timeout expires. This applies to PD3 faults, PD4 faults and voluntary GAPGUARD_PAUSE. Manual Elegoo pauses and CANCEL retain their existing paths.
+
+The module saves fan1's normalized 0..1 value, turns it off for its own confirmed pause and restores the saved value multiplied by the output pin's scale after actual printing resumes. The reference uses scale 255. Keep the existing M106/M107 integration.
+
+The overlay contains no bed mesh, SAVE_CONFIG data, PID settings, motor currents or unrelated calibration. It does not replace the user's PAUSE, RESUME, CANCEL_PRINT, homing or hardware definitions.

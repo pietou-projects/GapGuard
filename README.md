@@ -1,62 +1,46 @@
-# GapGuard 4.2.0-rc1
+# GapGuard for the Elegoo OrangeStorm Giga
 
-**PRE-RELEASE / RELEASE CANDIDATE — pas une version stable.**
+GapGuard monitors a BTT Smart Filament Sensor **V2.1** on the OrangeStorm Giga. It checks whether filament is present and whether it is moving during a real file print. When a fault is confirmed, it uses the existing Elegoo pause macro.
 
-GapGuard surveille la présence et le mouvement du filament dans Klipper. Il a été développé sur une Elegoo OrangeStorm Giga après des silences intermittents du signal de mouvement d'un BTT Smart Filament Sensor. Un défaut confirmé appelle la PAUSE Elegoo existante. Une récupération automatique séparée peut tenter de rétablir le mouvement après un défaut PD3.
+**4.2.0-rc1 is a release candidate, not a stable release.** It was developed against a specific Elegoo Klipper installation. Check the [installation guide](docs/INSTALLATION.md) and [native macro requirements](docs/ORANGESTORM-GIGA-REFERENCE.md) before installing it. Do not update Klipper or replace your complete configuration to make it fit this module.
 
-**La cause de tous les silences PD3 historiques n'est pas définitivement comprise.** Cette RC corrige notamment l'exclusion interne de vrais fronts reçus. Cela ne démontre pas que cette erreur expliquait chaque longue absence de signal. GapGuard détecte et traite des situations ; il ne répare pas un capteur, un câble ou un étage électrique défectueux.
+## What you need
 
-## Périmètre testé
+- An OrangeStorm Giga with the matching native Elegoo macro behavior.
+- A BTT SFS V2.1, the [printed mount](hardware/README.md), and the wiring described in the [hardware guide](docs/hardware/BTT-SFS-V2.1-ORANGESTORM-GIGA.md).
+- DET0 connected to filament presence (PD4), and DET1 to filament motion (PD3). Check the actual signal, ground and supply pins before connecting them.
 
-La référence est la configuration Klipper Elegoo de l'OrangeStorm Giga conservée dans les archives d'essai, avec quatre plateaux et `fan1` en `output_pin`. Le mainteneur confirme que le capteur utilisé depuis le début de tous les essais est un BTT SFS V2.1. Les mentions V2.0 décrivant cette installation dans les anciennes notes sont des erreurs de libellé. Une photo de marquage n’est pas nécessaire pour trancher cette identité. Aucune compatibilité générale V2.0/V2.1 n'est revendiquée.
+Start with [INSTALLATION](docs/INSTALLATION.md). It covers the mount, wiring, configuration, physical power cycle and first checks. Your mesh and other calibration data remain your own.
 
-Ce dépôt n'est pas une configuration universelle de machine. L'AutoRecovery dépend des variables et états sauvegardés des macros Elegoo auditées. Les autres imprimantes nécessitent une adaptation distincte.
+## Everyday use
 
-## Fonctionnement
-
-| Élément | Rôle |
+| Command | Purpose |
 |---|---|
-| PD4 / DET0 dans la référence | Présence : 1 présent, 0 absent |
-| PD3 / DET1 dans la référence | Mouvement : HIGH→LOW et LOW→HIGH sont chacun un vrai front |
-| FULL | Surveillance PD3 et PD4 |
-| PARTIAL | Surveillance PD4 seulement |
-| BYPASS | Protections filament désactivées |
+| `GAPGUARD_STATUS` | Show the current mode, sensors and protection state |
+| `GAPGUARD_STATUS_DEBUG` | Show more detailed diagnostics |
+| `GAPGUARD_PAUSE` | Use the Elegoo pause, then set the nozzle target to zero while preserving bed targets |
+| `GAPGUARD_ENABLE_FULL` | Monitor presence and motion |
+| `GAPGUARD_ENABLE_PARTIAL` | Monitor presence only |
+| `GAPGUARD_DISABLE_ALL` | Select BYPASS, with both filament protections disabled |
 
-L'acquisition initiale `UNKNOWN → niveau connu` n'est jamais un front. Les distances utilisent la position d'extrusion native au temps du signal. L'exemple machine conserve `9 / 20 / 20 / 2` : SUSPECT à 9 mm, VERIFY à 20 mm, fin à 40 mm, deux transitions nécessaires dans la fenêtre. Voir [architecture](docs/ARCHITECTURE.md).
+Use the existing Elegoo **RESUME** to resume manually and **CANCEL_PRINT** to cancel. A manual Elegoo PAUSE keeps its existing behavior. GapGuard-managed pauses also save and switch off fan1, restoring its saved value after real printing resumes. Validated runtime messages remain in French; the documentation is in English.
 
-Une pause GapGuard, volontaire ou déclenchée par PD3/PD4, coupe la consigne buse et `fan1` après confirmation de la pause native. Les quatre cibles de plateau sont conservées, y compris lors de l'expiration de l'idle timeout grâce au bloc de configuration fourni. Une PAUSE Elegoo manuelle conserve son comportement natif. Le CANCEL reste natif.
+The supplied FULL profile uses motion thresholds **9 / 20 / 20 / 2**: suspicion at 9 mm without a transition, verification starting at 20 mm, a 20 mm verification interval, and two required transitions. These are extrusion distances, not time delays. See [configuration](docs/CONFIGURATION.md) for the exact boundary rules and parameter meanings.
 
-Après `PD3_NO_MOTION` avec PD4 présent, [AutoRecovery](docs/AUTORECOVERY.md) attend la fin physique de la pause puis 30 secondes, réchauffe la buse à la cible mémorisée et purge 300 mm en 15 blocs de 20 mm à F200. Au moins deux vrais fronts cumulés sur toute la purge sont requis. L'essuyage est une séquence continue de six mouvements. Un seul M24 est envoyé puis la reprise réelle est observée passivement.
+## Automatic recovery
 
-## Commandes réellement disponibles
+When GapGuard confirms that PD3 has stopped reporting motion while PD4 still reports filament present, it runs the existing Elegoo PAUSE once. The nozzle target becomes zero and the four bed zones keep their targets.
 
-| Commande publique | Effet |
-|---|---|
-| `GAPGUARD_PAUSE` | Pause Elegoo prise en charge par GapGuard |
-| `GAPGUARD_STATUS` | État et protections lisibles |
-| `GAPGUARD_STATUS_DEBUG` | Diagnostic détaillé ; `RAW=1` ajoute le JSON |
-| `GAPGUARD_ENABLE_FULL` | Mode FULL |
-| `GAPGUARD_ENABLE_PARTIAL` | Mode PARTIAL |
-| `GAPGUARD_DISABLE_ALL` | Mode BYPASS |
+After the pause movement has finished, it waits 30 seconds. If the printer is still paused and filament is still present, AutoRecovery reheats the nozzle to its saved target. It then commands **300 mm of extruder travel in 15 blocks of 20 mm at F200**. This does not by itself prove that 300 mm of filament passed through the nozzle; PD3 transitions provide separate evidence of filament motion. It observes PD3 throughout these blocks and requires at least **two genuine transitions in total**. The full purge still runs if those transitions arrive early.
 
-Il n'existe pas de `GAPGUARD_RESUME_FULL`, `GAPGUARD_RESUME_PARTIAL`, `GAPGUARD_RESUME_BYPASS` ni `GAPGUARD_CANCEL` dans ce build. Les reprises manuelles et annulations utilisent `RESUME` et `CANCEL_PRINT` Elegoo. Les noms `GAPGUARD_INTERNAL_*` sont les délégués Python des macros, pas l'interface utilisateur.
+If validation succeeds, it performs the existing wipe, restores the saved print state and sends **one M24**. Recovery is complete only after the file really returns to active printing. If recovery cannot complete, it does not resume the print automatically; the printer remains paused unless you or another command has taken control. The [detailed recovery guide](docs/AUTORECOVERY.md) explains the checks and limitations. PD4 faults and a voluntary GapGuard pause do not start AutoRecovery.
 
-## Installation et matériel
+## Optional S1+ monitoring
 
-- [Installation](docs/INSTALLATION.md) : prérequis et limites de l'exemple.
-- [Configuration](docs/CONFIGURATION.md) et [extraits validés](config/gapguard-example.cfg).
-- [Guide matériel et câblage](docs/hardware/BTT-SFS-V2.1-ORANGESTORM-GIGA.md).
-- [Support imprimé](hardware/README.md) : STL/3MF exacts, six photos originales du pack final et licence CC0 1.0 pour les modèles.
-- [Dépannage](docs/TROUBLESHOOTING.md), [historique](docs/HISTORY.md), [changements](CHANGELOG.md).
+The separate FlowQ watcher provides status and notifications. It is **information-only** with GapGuard: no pause, resume, cancel or mode change. GapGuard does not need FlowQ to protect the print. See [S1+ integration](docs/S1PLUS-INTEGRATION.md).
 
-## Infinity Flow S1+
+## More information
 
-Le [watcher existant](https://github.com/pietou-projects/infinity-flow-s1plus-klipper-watcher) est un composant séparé. L'architecture actuelle avec GapGuard utilise FlowQ **uniquement comme télémétrie**. FlowQ ne déclenche ni pause, ni reprise, ni annulation, ni validation de fronts ou changement de mode. Le comportement autonome historique v1.0.0 déclenchait une pause : ne pas confondre les versions. Voir [intégration](docs/S1PLUS-INTEGRATION.md).
+[Troubleshooting](docs/TROUBLESHOOTING.md) · [Tests](docs/TESTING.md) · [Architecture](docs/ARCHITECTURE.md) · [Release notes](release/RELEASE_NOTES.md) · [History](docs/HISTORY.md)
 
-## Vérification et licence
-
-La préparation interne exacte a repassé 231 tests hors machine, sans échec ni erreur. Le paquet public conserve 223 tests exécutables ; huit contrôles d'identité de configurations complètes privées restent dans l'archive interne. Les deux périmètres sont explicités dans [TESTING](docs/TESTING.md). Ce résultat simulé n'est pas une garantie physique et aucune validation machine nouvelle n'est revendiquée par cette publication.
-
-Le module distribué est inchangé : SHA-256 `cf239a52f65f345092946f2289a473c590244ced22c5f31c27e88e26b20473f1`.
-
-GapGuard est sous **GPL-3.0-or-later** : voir [LICENSE](LICENSE) et [licences et crédits](docs/LICENSES-AND-CREDITS.md). Le watcher conserve MIT. Les modèles STL/3MF sont sous **CC0 1.0**, voir [hardware/LICENSE](hardware/LICENSE). Ces trois composants ne sont pas présentés sous une licence unique.
+Code is [GPL-3.0-or-later](LICENSE). Mount models are [CC0 1.0](hardware/LICENSE), with voluntary credit to T.L. The separate watcher is MIT. See [licenses and credits](docs/LICENSES-AND-CREDITS.md).

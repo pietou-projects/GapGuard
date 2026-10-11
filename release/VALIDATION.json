@@ -1,33 +1,28 @@
 {
-  "date": "2026-10-11",
-  "gapguard_tests": {
-    "total": 223,
-    "passed": 223
-  },
-  "watcher_tests": {
-    "total": 10,
-    "passed": 10
-  },
   "module_sha256": "cf239a52f65f345092946f2289a473c590244ced22c5f31c27e88e26b20473f1",
-  "hardware_unchanged_assets": 8,
-  "public_macros": [
-    "GAPGUARD_PAUSE",
-    "GAPGUARD_STATUS",
-    "GAPGUARD_ENABLE_FULL",
-    "GAPGUARD_ENABLE_PARTIAL",
-    "GAPGUARD_DISABLE_ALL",
-    "GAPGUARD_STATUS_DEBUG"
-  ],
-  "relative_markdown_links_checked": 45,
+  "code_byte_identical_to_live": true,
+  "config_sections_matching": 8,
+  "native_exact_excerpts": 15,
+  "hardware_exact_assets": 8,
+  "markdown_links_checked": 61,
   "broken_links": 0,
   "unresolved_secret_findings": 0,
   "compilation": "PASS",
-  "runtime_tests": "NOT RUN",
+  "python37_syntax": "PASS",
   "github_writes": false,
-  "giga_access": false,
+  "printer_writes": false,
   "profile": "9/20/20/2",
-  "autorecovery": "300 mm / 15x20 / F200 / 2 transitions cumulatives",
-  "wipe": "continuous F15000",
-  "resume": "single M24, passive confirmation",
-  "flowq": "information only"
+  "autorecovery": "300 mm / 15x20 / F200 / minimum 2 cumulative transitions",
+  "date": "2026-10-11",
+  "scope": "Offline GapGuard documentation/configuration reconciliation against read-only live evidence; no publication",
+  "public_tests": {
+    "run": 223,
+    "passed": 223
+  },
+  "watcher_tests": "NOT RUN; separate live-derived proposal blocked before source sanitization",
+  "runtime_tests_in_this_review": "NOT RUN",
+  "live_audit_module_confirmation": {
+    "sha256": "cf239a52f65f345092946f2289a473c590244ced22c5f31c27e88e26b20473f1",
+    "evidence": "The validated live audit confirmed this SHA-256 as the module loaded on the reference machine. This is prior live-audit evidence, not a new physical test in this documentation review."
+  }
 }

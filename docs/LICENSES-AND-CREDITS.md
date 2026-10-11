@@ -1,13 +1,13 @@
-# Licences et crédits
+# Licenses and credits
 
-| Composant | Licence | Texte |
+| Component | License | Text |
 |---|---|---|
-| GapGuard | GPL-3.0-or-later ; SPDX du module exact conservé | [GPL v3](../LICENSE) |
-| Watcher S1+ / FlowQ, dépôt séparé | MIT, copyright Team Factory | [dépôt existant](https://github.com/pietou-projects/infinity-flow-s1plus-klipper-watcher) |
-| Deux modèles STL/3MF du support SFS V2.1 | CC0 1.0, décision explicite du mainteneur | [CC0](../hardware/LICENSE) |
+| GapGuard | GPL-3.0-or-later; the exact module's SPDX declaration is retained | [GPL v3](../LICENSE) |
+| S1+ / FlowQ watcher, separate repository | MIT, copyright Team Factory | [Existing repository](https://github.com/pietou-projects/infinity-flow-s1plus-klipper-watcher) |
+| Two SFS V2.1 mount models, STL/3MF | CC0 1.0, by the maintainer's explicit decision | [CC0](../hardware/LICENSE) |
 
-Il n'existe pas de licence unique couvrant indistinctement ces trois composants. Les sources/fixtures natives Klipper conservent leurs en-têtes GPL. Le texte GPL v3 est fourni ; la déclaration SPDX du module porte l'option « or later ».
+No single license applies indiscriminately to these three components. Native Klipper sources/fixtures retain their GPL headers. The GPL v3 text is supplied; the module's SPDX declaration includes the “or later” option.
 
-Le support est un remix de `bowdenhalter-3.stl` par T.L. : [source Printables](https://printables.com/model/1089979-elegoo-orangestorm-giga-bowden), [profil](https://printables.com/@TL_158870). La licence CC0/Public Domain de l'original a été vérifiée sur la page et la fiche PDF. Le crédit est volontairement conservé. La licence CC0 des modèles ne doit pas être étendue par supposition aux photos ; celles-ci sont les vues de l'installation fournies par le mainteneur pour cette documentation.
+The mount is a remix of `bowdenhalter-3.stl` by T.L.: [Printables source](https://printables.com/model/1089979-elegoo-orangestorm-giga-bowden), [profile](https://printables.com/@TL_158870). The original's CC0/Public Domain license was verified on the page and PDF model sheet. Attribution is retained voluntarily. Do not assume that the models' CC0 license also covers the photographs; those are installation views supplied by the maintainer for this documentation.
 
-L'assistance de ChatGPT a contribué au développement/documentation ; les essais physiques rapportés sont ceux du mainteneur. Les simulations ne remplacent pas une validation machine. Klipper, BIGTREETECH et les auteurs communautaires sont crédités pour leurs sources ; le projet reste indépendant des fabricants.
+ChatGPT assistance contributed to development and documentation; reported physical tests were performed by the maintainer. Simulations do not replace printer validation. Klipper, BIGTREETECH and community authors are credited for their sources; this project is independent of the manufacturers.

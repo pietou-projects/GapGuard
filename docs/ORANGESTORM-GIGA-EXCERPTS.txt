@@ -1,0 +1,304 @@
+EXACT NATIVE REFERENCE EXCERPTS — FOR COMPARISON ONLY, NOT AN INCLUDE FILE.
+Original macro text is retained byte-for-byte; comments/messages may be French.
+No mesh, SAVE_CONFIG, PID or unrelated calibration is included.
+
+===== printer.cfg:329 [virtual_sdcard] SHA256 262ccb9066f58c670ac969ce9e883f9baeee2959ef2cd89b7712853d36e356fb =====
+[virtual_sdcard]
+path: ~/gcode_files
+
+
+===== printer.cfg:376 [pause_resume] SHA256 afa0e2df189afb956a34dbb8052595cead289b4948cbeb5b7cd5f783a10e86a6 =====
+[pause_resume]
+recover_velocity: 50.
+
+
+===== printer.cfg:502 [gcode_macro PAUSE] SHA256 966746f114531fa68e0646fdee4343f4e802423b0a7375f655499e04a544e264 =====
+[gcode_macro PAUSE]
+rename_existing: BASE_PAUSE
+variable_flag_print_status: 1
+variable_flag_home_x: 0
+variable_flag_home_y: 0
+gcode:
+    {%if flag_home_x > 0.5 and flag_home_y > 0.5%}
+      {% if flag_print_status > 0.5 %}
+        M400  
+      {% set z = params.Z|default(200)|int %}                                                   
+      {% set E = (params.E|default(2))|float %}
+      {% set x_park = params.X|default(printer.toolhead.axis_minimum.x+30)|int %} 
+      {% set y_park = params.Y|default(printer.toolhead.axis_minimum.y+30)|int %} 
+        M400
+      {% set position = printer.gcode_move.gcode_position %}
+        SET_GCODE_VARIABLE MACRO=RESUME VARIABLE=saved_x VALUE="{position.x}"
+        SET_GCODE_VARIABLE MACRO=RESUME VARIABLE=saved_y VALUE="{position.y}"
+        SET_GCODE_VARIABLE MACRO=RESUME VARIABLE=saved_z VALUE="{position.z}"
+        SET_GCODE_VARIABLE MACRO=RESUME VARIABLE=saved_e VALUE="{position.e}"
+      {% if printer[printer.toolhead.extruder].temperature > 150 %}
+        SET_GCODE_VARIABLE MACRO=RESUME VARIABLE=etemp VALUE={printer['extruder'].target}
+      {% endif %}
+        SET_GCODE_VARIABLE MACRO=RESUME VARIABLE=bed_temp VALUE={printer['heater_bed'].target}
+        SET_GCODE_VARIABLE MACRO=RESUME VARIABLE=bed_temp1 VALUE={printer['heater_generic heater_bed1'].target}
+        SET_GCODE_VARIABLE MACRO=RESUME VARIABLE=bed_temp2 VALUE={printer['heater_generic heater_bed2'].target}
+        SET_GCODE_VARIABLE MACRO=RESUME VARIABLE=bed_temp3 VALUE={printer['heater_generic heater_bed3'].target}
+        SAVE_GCODE_STATE NAME=timelapse_state_a
+        M83
+        G91
+        G1 E-2 X3 Z1 F2100
+        G1 Z4 F600
+        SAVE_GCODE_STATE NAME=timelapse_state_b
+        G90
+      {% if (printer.gcode_move.position.z+10) < z %} 
+        G1 Z{z+10} X{x_park} Y{y_park} E-20 F6000 
+      {% else %}
+        G1 X{x_park} Y{y_park} E-20 F6000
+      {% endif %}
+        M400
+        SET_GCODE_VARIABLE MACRO=PAUSE VARIABLE=flag_print_status VALUE="{0}"
+        M400
+        SET_GCODE_VARIABLE MACRO=RESUME VARIABLE=flag_print_status VALUE="{1}"
+        M25
+        SET_IDLE_TIMEOUT TIMEOUT=1800
+        M400
+      {% endif %}
+    {% endif %}
+
+
+===== printer.cfg:379 [gcode_macro RESUME] SHA256 253dd5b339627ca6a697041c18b6a3d183d617e4d0d99012753c7b280d111ee1 =====
+[gcode_macro RESUME]
+rename_existing: BASE_RESUME
+variable_flag_print_status: 1
+variable_zhop: 0
+variable_etemp: 0
+variable_bed_temp: 0
+variable_bed_temp1: 0
+variable_bed_temp2: 0
+variable_bed_temp3: 0
+variable_saved_x: 0.0
+variable_saved_y: 0.0
+variable_saved_z: 0.0
+variable_saved_e: 0.0
+gcode:
+    {% if flag_print_status > 0.5 %}
+    M25
+    {% set e = params.E|default(2)|int %}   
+    SET_IDLE_TIMEOUT TIMEOUT={printer.configfile.settings.idle_timeout.timeout}
+    SET_HEATER_TEMPERATURE HEATER=extruder TARGET={etemp}
+    SET_HEATER_TEMPERATURE HEATER=heater_bed TARGET={bed_temp}
+    SET_HEATER_TEMPERATURE HEATER=heater_bed1 TARGET={bed_temp1}
+    SET_HEATER_TEMPERATURE HEATER=heater_bed2 TARGET={bed_temp2}
+    SET_HEATER_TEMPERATURE HEATER=heater_bed3 TARGET={bed_temp3}
+    {% if printer[printer.toolhead.extruder].temperature < etemp-4 %}
+      TEMPERATURE_WAIT SENSOR=extruder MINIMUM={etemp-4} MAXIMUM={etemp+50}
+    {% endif %}
+    M400
+    G91
+    M83
+    G1 E100 F200	
+    G4 P2000	
+    G1 X-20 F15000
+    G1 X20
+    G1 X-20
+    G1 X20
+    G1 X-20
+    G1 X20
+    G90
+    G92 E{saved_e}
+    M400
+    SET_GCODE_VARIABLE MACRO=RESUME VARIABLE=flag_print_status VALUE="{0}"
+    M400
+    SET_GCODE_VARIABLE MACRO=PAUSE VARIABLE=flag_print_status VALUE="{1}"
+    M400
+    RESTORE_GCODE_STATE NAME=timelapse_state_b MOVE=1 MOVE_SPEED=250
+    M400
+    RESTORE_GCODE_STATE NAME=timelapse_state_a MOVE=1 MOVE_SPEED=50	
+    M400
+    M24
+    {% else %}
+    M400
+    {% endif %}
+
+
+===== printer.cfg:456 [gcode_macro CANCEL_PRINT] SHA256 f3b725e5f0d2f8e631095a412fb488f45d18edf38ac10b98c5e2c558c67d449f =====
+[gcode_macro CANCEL_PRINT]
+rename_existing: BASE_CANCEL_PRINT
+variable_flag_home_x: 0
+variable_flag_home_y: 0
+gcode:
+      SAVE_VARIABLE VARIABLE=was_interrupted VALUE=False
+      RUN_SHELL_COMMAND CMD=clear_plr
+      clear_last_file    
+      M400
+      SET_GCODE_VARIABLE MACRO=RESUME VARIABLE=flag_print_status VALUE="{0}"
+      M400
+      SET_GCODE_VARIABLE MACRO=PAUSE VARIABLE=flag_print_status VALUE="{1}"
+      M400
+      {% set RUN_VELOCITY = printer.configfile.settings['printer'].max_velocity|float %}
+      {% set RUN_ACCEL    = printer.configfile.settings['printer'].max_accel|float %}
+      {% set RUN_DECEL    = printer.configfile.settings['printer'].max_accel_to_decel|float %}
+      SET_VELOCITY_LIMIT VELOCITY={RUN_VELOCITY} ACCEL={RUN_ACCEL} ACCEL_TO_DECEL={RUN_DECEL}
+      {% set z = params.Z|default(200)|int %}  
+      {% set x_park = params.X|default(printer.toolhead.axis_minimum.x+30)|int %} 
+      {% set y_park = params.Y|default(printer.toolhead.axis_minimum.y+30)|int %} 
+      SET_IDLE_TIMEOUT TIMEOUT={printer.configfile.settings.idle_timeout.timeout} 
+      SDCARD_RESET_FILE
+      M220 S100
+      M221 S100
+      {%if flag_home_x > 0.5 and flag_home_y > 0.5%}
+        M400                          ; wait for buffer to clear
+        M83                           ; zero the extruder
+        G1 E-2.0 F1200               ; retract filament
+        {%if (printer.gcode_move.position.z+10) < z %}
+        G90 
+        G1 X{x_park} Y{y_park} Z{z+10} F6000 
+        {% else %}
+        G91                           ; relative positioning
+        G1 Z5 F600
+        G90 
+        G1 X{x_park} Y{y_park} F6000 
+        {% endif %}
+      {% else %}
+      G91
+      G1 Z5 F600
+      {% endif %}        
+      TURN_OFF_HEATERS
+      M107                           ; turn off fan
+      G90
+      M82
+      M84
+
+===== printer.cfg:332 [gcode_macro PRINT_START] SHA256 caa69c98136bc1d9ad7907886f243d968f68a2a72615ebfbd6f984d2ba4c2659 =====
+[gcode_macro PRINT_START]         
+gcode:
+    SET_GCODE_VARIABLE MACRO=RESUME VARIABLE=flag_print_status VALUE="{0}"
+    M400
+    SET_GCODE_VARIABLE MACRO=PAUSE VARIABLE=flag_print_status VALUE="{1}"
+    M400
+    SAVE_VARIABLE VARIABLE=was_interrupted VALUE=True
+	  G92 E0
+    BED_MESH_CLEAR                                           
+	  G90
+    BED_MESH_PROFILE LOAD=default   
+    CLEAR_PAUSE
+    # C1  
+    M117 Printing
+                     
+
+===== printer.cfg:347 [gcode_macro PRINT_END] SHA256 f2ec5c7b8ecd200f749a50233f5694b7f7685159e9fb660948362e504dea0e28 =====
+[gcode_macro PRINT_END]
+gcode:
+    SAVE_VARIABLE VARIABLE=was_interrupted VALUE=False
+    RUN_SHELL_COMMAND CMD=clear_plr
+    clear_last_file
+    {% set RUN_VELOCITY = printer.configfile.settings['printer'].max_velocity|float %}
+    {% set RUN_ACCEL    = printer.configfile.settings['printer'].max_accel|float %}
+    {% set RUN_DECEL    = printer.configfile.settings['printer'].max_accel_to_decel|float %}
+    M400
+    SET_GCODE_VARIABLE MACRO=RESUME VARIABLE=flag_print_status VALUE="{0}"
+    M400
+    SET_GCODE_VARIABLE MACRO=PAUSE VARIABLE=flag_print_status VALUE="{1}"
+    M400
+    SET_VELOCITY_LIMIT VELOCITY={RUN_VELOCITY} ACCEL={RUN_ACCEL} ACCEL_TO_DECEL={RUN_DECEL}
+    M220 S100
+    M221 S100
+    {% set z = params.Z|default(200)|int %}
+    {% if (printer.gcode_move.position.z+10) < z %}   #If the current gcode-Z position is less than the maximum limit position
+      G90                            ; absolute positioning
+      G1 Z{z+10} F6000                ; park nozzle at rear
+    {% endif %}
+    TURN_OFF_HEATERS
+    M107
+    M84
+
+
+
+
+
+
+===== printer.cfg:671 [gcode_macro M106] SHA256 e9965554c1b91467a0c674d3197d2eb5486c8602a616757b73cd9860088dd7df =====
+[gcode_macro M106]
+#rename_existing:M106.1
+gcode:
+    {% if params.P is defined %}
+      {% if params.S is defined %}
+        SET_PIN PIN=fan{params.P|int} VALUE={params.S|int}
+      {% else %}
+        SET_PIN PIN=fan{params.P|int} VALUE=255
+      {% endif %}
+    {% else %}
+      {% if params.S is defined %}
+        SET_PIN PIN=fan1 VALUE={params.S|int}
+      {% else %}
+        SET_PIN PIN=fan1 VALUE=255 
+      {% endif %}
+    {% endif %}
+
+
+
+===== printer.cfg:689 [gcode_macro M107] SHA256 280daf769c96bc30055ffb134ad7fcbf6d5e08413a99ccb55f66b4ff89d9214d =====
+[gcode_macro M107]
+#rename_existing:M107.1
+gcode:
+    {% if params.P is defined %}
+      {% if params.S is defined %}
+        SET_PIN PIN=fan{params.P|int} VALUE={params.S|int}
+      {% else %}
+        SET_PIN PIN=fan{params.P|int} VALUE=0
+      {% endif %}
+    {% else %}
+      {% if params.S is defined %}
+        SET_PIN PIN=fan1 VALUE={params.S|int}
+      {% else %}
+        SET_PIN PIN=fan1 VALUE=0
+      {% endif %}
+    {% endif %}
+
+
+===== printer.cfg:656 [gcode_macro M84] SHA256 e7768d54ce05c215110deb8f88fd8a66dc63d3b5f569f66398d886ddefb9f039 =====
+[gcode_macro M84]
+rename_existing:M84.1
+gcode:
+      SET_STEPPER_ENABLE STEPPER=stepper_x   enable=0
+      SET_STEPPER_ENABLE STEPPER=stepper_y   enable=0
+      SET_STEPPER_ENABLE STEPPER=stepper_z   enable=0
+      SET_STEPPER_ENABLE STEPPER=stepper_z1  enable=0
+      SET_STEPPER_ENABLE STEPPER=extruder    enable=0
+      SET_KINEMATIC_POSITION
+      SET_GCODE_VARIABLE MACRO=CANCEL_PRINT VARIABLE=flag_home_x VALUE="{0}"
+      SET_GCODE_VARIABLE MACRO=CANCEL_PRINT VARIABLE=flag_home_y VALUE="{0}"
+      SET_GCODE_VARIABLE MACRO=PAUSE VARIABLE=flag_home_x VALUE="{0}"
+      SET_GCODE_VARIABLE MACRO=PAUSE VARIABLE=flag_home_y VALUE="{0}"
+
+
+
+===== znp_thr1.cfg:17 [output_pin fan1] SHA256 58e51f2614f2d20dd67f59a959e37b1d204462f3258c4ae84a0951a4aaaa1863 =====
+[output_pin fan1]
+pin:mcu1:gpio1
+pwm: True
+cycle_time: 0.0100
+hardware_pwm: false
+value: 0
+scale: 255
+shutdown_value: 0.0
+
+
+===== plr.cfg:11 [respond] SHA256 0ac41a0583e3bc458c0ca603d9714117739569103a8130f57764c9118947f082 =====
+[respond]
+default_type: echo
+
+
+===== plr.cfg:18 [gcode_shell_command clear_plr] SHA256 53f1c23d7aff57da17e90d2ac1a0770dc4e2ca8768b443319b888b1ca55a84fe =====
+[gcode_shell_command clear_plr]
+command: sh /home/mks/clear_plr.sh
+timeout: 5.
+
+===== plr.cfg:36 [gcode_macro clear_last_file] SHA256 ae24f0db120ab2054337343d8f8958a50e4d608b92157c1abc75d821a04f70cb =====
+[gcode_macro clear_last_file]
+gcode:
+  {% set filename='' %}
+  {% set filepath='' %}
+  SAVE_VARIABLE VARIABLE=last_file VALUE='"{ filename }"'
+  SAVE_VARIABLE VARIABLE=filepath VALUE='"{ filepath }"'
+  
+
+===== plr.cfg:62 [save_variables] SHA256 13f31f3833bc180cf5451ccccf72724143aa8fd9f12f751854b08a45f0295588 =====
+[save_variables]
+filename =/home/mks/klipper_config/saved_variables.cfg

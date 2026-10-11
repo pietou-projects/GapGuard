@@ -1,27 +1,27 @@
-# Dépannage et limites
+# Troubleshooting and limitations
 
-## Silences PD3
+## PD3 signal gaps
 
-La cause de tous les silences/pertes de signal PD3 historiques n'est pas définitivement identifiée. Des absences anormales ont été observées. La RC corrige un chemin interne qui pouvait exclure des fronts réellement reçus ; cela ne démontre ni une cause unique ni la résolution de chaque incident matériel.
+The cause of all historical PD3 signal gaps or losses has not been conclusively identified. Abnormal periods without a signal have been observed. This RC fixes an internal path that could exclude genuinely received transitions; it does not establish a single cause or demonstrate that every hardware incident is resolved.
 
-Commencer par STATUS puis DEBUG et les traces `[GAPGUARD_TRACE]` de toute la fenêtre de test. Distinguer : absence de callback, niveau dupliqué, vraie transition, surveillance suspendue, événement obsolète et défaut confirmé. Une LED bleue visible ne prouve pas à elle seule le niveau au MCU. Ne pas qualifier d'emblée le capteur, le câble ou Klipper de cause.
+Start with `GAPGUARD_STATUS`, then `GAPGUARD_STATUS_DEBUG` and the `[GAPGUARD_TRACE]` records covering the entire test window. Distinguish missing callbacks, repeated levels, genuine transitions, suspended monitoring, stale events and confirmed faults. A visible blue LED alone does not prove the level at the MCU. Do not immediately attribute the cause to the sensor, cable or Klipper.
 
-## UNKNOWN au démarrage
+## UNKNOWN at startup
 
-L'entrée n'est pas encore acquise. Ne pas la renommer LOW. Attendre la borne calculée selon l'OID, puis examiner Ready/shutdown et l'acquisition. Le vieux délai fixe de 0,5 seconde n'est pas une preuve suffisante.
+The input has not yet been acquired. Do not treat it as LOW. Wait for the OID-dependent bound, then examine Ready/shutdown and acquisition. The old fixed 0.5-second delay is insufficient evidence.
 
-## Macros absentes / erreur de chargement
+## Missing macros or load errors
 
-Les six macros publiques doivent être présentes une fois chacune et déléguer au backend Python. Les commandes de reprise GapGuard historiques ne sont pas disponibles dans ce build. Les macros Elegoo et leurs états sauvegardés sont des prérequis. Aucun attribut `stats` ne doit être ajouté au module : une ancienne candidate avait heurté la découverte automatique des callbacks Klipper.
+Each of the six public macros must appear exactly once and delegate to the Python backend. Historical GapGuard resume commands are not available in this build. The Elegoo macros and their saved states are prerequisites. Never add a `stats` attribute to the module: an earlier candidate collided with Klipper's automatic callback discovery.
 
-## Plateaux coupés pendant une pause
+## Heated beds turn off during a pause
 
-Le maintien ne repose pas seulement sur gapguard.py. Vérifier la branche idle_timeout fondée sur pause_origin. La macro Elegoo peut fixer le délai à 1800 s ; sans cette branche, TURN_OFF_HEATERS coupait aussi les beds. Ne pas masquer le problème en modifiant les cibles ou en réinstallant une ancienne configuration complète.
+Preserving bed targets depends on more than gapguard.py. Check the idle_timeout branch based on pause_origin. The Elegoo macro can set the timeout to 1800 s; without that branch, TURN_OFF_HEATERS also turned off the beds. Do not hide the problem by changing targets or reinstalling an old complete configuration.
 
-## Échec AutoRecovery
+## AutoRecovery failure
 
-Lire la phase et la raison exactes. Aucun succès ne doit être déduit de l'envoi seul de M24. Une purge de 300 mm insuffisamment qualifiée ne doit pas reprendre. Un déplacement manuel ou une intervention externe peut invalider l'opération. Les gardes physiques ne sont pas à supprimer pour obtenir un PASS.
+Read the exact phase and reason. Sending M24 alone does not establish success. A 300 mm purge that fails the transition criterion must not resume printing. Manual movement or external intervention can invalidate the operation. Do not remove physical guards merely to obtain a PASS.
 
-## FlowQ et deux voyants rouges S1+
+## FlowQ and two red S1+ LEDs
 
-Une erreur générale S1+ peut laisser un état FlowQ ancien apparemment normal. Le watcher ne peut pas détecter une panne que les données reçues ne représentent pas. REST/WS sont des interfaces non documentées et la fraîcheur n'est pas une garantie. Le watcher actuel est informatif, pas une sécurité de remplacement pour PD3/PD4.
+A general S1+ error can leave an old FlowQ state that appears normal. The watcher cannot detect a fault not represented in the received data. REST/WS are undocumented interfaces, and freshness is not guaranteed. The information-only watcher is telemetry, not a replacement for PD3/PD4 filament protection.

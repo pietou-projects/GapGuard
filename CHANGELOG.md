@@ -2,24 +2,28 @@
 
 ## 4.2.0-rc1 — Release Candidate
 
-Préparation finale archivée le 9 octobre 2026 ; aucune promotion stable.
+The final preparation was archived on 9 October 2026. This release has not been promoted to stable.
 
 ### Fixed
 
-- Vrais fronts PD3 reçus mais exclus de Motion par la logique interne pendant un cycle réellement printing.
-- Origine de pause GapGuard et maintien des quatre cibles bed, y compris après l'expiration d'idle_timeout, sans modifier la pause manuelle Elegoo.
-- Faux échec AutoRecovery après M24 lorsque le mutex est occupé : confirmation passive sur l'état réel.
-- Essuyage : six mouvements transmis dans une séquence continue, sans pas de worker entre chaque mouvement.
+- Genuine received PD3 transitions could be excluded from Motion by internal logic during an actual printing cycle.
+- GapGuard pause origin and preservation of all four heated-bed targets, including after idle_timeout expires, without changing manual Elegoo pauses.
+- False AutoRecovery failure after M24 when the mutex is busy: resume confirmation now observes the actual state passively.
+- Wiping: six moves are submitted as one continuous sequence, without a worker step between individual moves.
 
 ### Changed
 
-- Critère AutoRecovery fondé sur le cumul de transitions sur l'ensemble des 300 mm ; abandon de la fenêtre glissante window6.
-- Minimum configurable de transitions, deux dans la configuration de référence.
-- Identification et sorties humaines 4.2.0-rc1.
+- AutoRecovery validation uses transitions accumulated over the entire 300 mm purge; the sliding window6 criterion has been removed.
+- The minimum transition count is configurable, with two used in the reference configuration.
+- Version identification and readable output identify 4.2.0-rc1.
 
 ### Known limitations
 
-- La cause racine de toutes les pertes PD3 n'est pas définitivement expliquée. Le correctif des fronts n'est pas une preuve de causalité unique.
-- RC non promue stable ; compatibilité principalement étudiée sur la référence Elegoo.
-- Tests automatisés simulés, distincts des tests physiques.
-- Guide, six photos finales et modèles STL/3MF retrouvés dans la Library. Le mainteneur confirme un SFS V2.1 depuis le début des essais ; les anciens libellés V2.0 de cette installation sont corrigés.
+- The root cause of every historical PD3 signal loss has not been conclusively established. The transition fix does not prove a single cause.
+- This is a release candidate, not a stable release; compatibility has primarily been investigated on the Elegoo reference setup.
+- Automated tests use simulations and are distinct from physical tests.
+- The guide, six final photographs and STL/3MF models were recovered from the Library. The maintainer confirms that the installation has used an SFS V2.1 since testing began; earlier V2.0 labels for this installation have been corrected.
+
+### Documentation reconciliation
+
+English user documentation and a two-level configuration reference are prepared from the validated live implementation. No production code, runtime string, test, hardware binary or native macro behavior changes. These documentation files do not claim that any tag or release asset has been replaced.

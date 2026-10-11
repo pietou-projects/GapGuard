@@ -115,5 +115,11 @@
     "url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt",
     "retrieved": "2026-10-11",
     "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499"
+  },
+  "live_reconciliation": {
+    "date": "2026-10-11",
+    "module_sha256": "cf239a52f65f345092946f2289a473c590244ced22c5f31c27e88e26b20473f1",
+    "private_config_sha256": "5bb49d848ffeada5f21a611b8f16d163a1737dae6f641fd71531af85dcce358d",
+    "scope": "English documentation and configuration provenance only; no production code changes; complete private configuration excluded"
   }
 }

@@ -1,15 +1,15 @@
 # AutoRecovery 4.2.0-rc1
 
-Cette récupération est spécifique à l'intégration Elegoo auditée, pas une reprise universelle Klipper.
+This recovery procedure is specific to the audited Elegoo integration. It is not a universal Klipper resume implementation.
 
-1. Après PD3_NO_MOTION avec PD4 présent, la PAUSE publique Elegoo existante est exécutée une seule fois. Le hook de fin arme AutoRecovery.
-2. Attendre la fin physique de la pause puis 30 secondes. Si la pause n'est plus réelle ou PD4 absent, aucune purge automatique ne commence.
-3. Réchauffer uniquement la buse à `RESUME.etemp`, la cible déjà sauvegardée. La disponibilité thermique native et la cohérence de cible sont contrôlées.
-4. Sauvegarder temporairement l'état G-code, passer en extrusion relative et neutraliser les multiplicateurs M220/M221 pour la purge.
-5. Soumettre 15 blocs `G1 E20 F200`, avec vérification de leur fin physique et comptage passif des vrais fronts reçus pendant chaque bloc. Total physique attendu : 300 mm. L'écart E toléré pour la vérification d'un bloc est 0,005 mm, justifié dans le code par la quantification de la référence extrudeur.
-6. À la fin des 15 blocs, sommer leurs fronts : minimum 2 pour le profil publié. Un bloc à zéro, ou les six derniers blocs à zéro, n'est pas en soi un échec si le cumul complet atteint le seuil. Une obtention précoce de deux fronts ne raccourcit pas la purge.
-7. Attendre le délai SETTLE existant de deux secondes puis envoyer l'essuyage ci-dessous en un script continu, avec une seule vérification de fin globale.
-8. Restaurer E, les flags PAUSE/RESUME, les états sauvegardés timelapse B puis A (MOVE_SPEED=250 puis 50), et émettre un seul M24. Observer passivement `printing` + Virtual SD actif. Le mutex occupé juste après M24 n'est pas un échec automatique ; la confirmation conserve sa deadline de dix secondes.
+1. After PD3_NO_MOTION with PD4 present, the existing public Elegoo PAUSE runs exactly once. Its completion hook arms AutoRecovery.
+2. Wait for physical completion of the pause, then wait 30 seconds. If the printer is no longer paused or PD4 is absent, automatic purging does not start.
+3. Reheat only the hotend to `RESUME.etemp`, the target already saved. The target must be finite, positive and within the heater's configured limits. Readiness requires a finite measured temperature between target − 4 °C and target + 50 °C, inclusive, together with Klipper's `can_extrude` flag. Heating has a 600-second deadline. The heater target must still match the saved target; thermal readiness is checked again during the purge, settling, wiping and finalization stages.
+4. Temporarily save the G-code state, select relative extrusion, and neutralize the M220/M221 multipliers for the purge.
+5. Submit 15 blocks of `G1 E20 F200`. Before submitting the next block, wait for Klipper's motion-completion indication and check that its executed extruder-position history advanced by 20 mm. The allowed difference is 0.005 mm to accommodate microstep quantization. Count genuine PD3 transitions passively during each block. A successful sequence therefore accounts for 300 mm of extruder travel; it does not prove that 300 mm of filament actually passed through the nozzle. PD3 provides separate evidence of filament motion, not a calibrated measurement of delivered length.
+6. At the end of the 15 blocks, sum their transitions: at least two are required by the published profile. A block with zero transitions is not itself a failure if the complete total meets the threshold. Reaching two transitions early does not shorten the purge.
+7. Wait for the existing two-second SETTLE delay, then submit the following wipe as one continuous script, with a single overall completion check.
+8. Restore E, the PAUSE/RESUME flags, and the saved timelapse states B then A (MOVE_SPEED=250 then 50), and send a single M24. Passively observe `printing` plus active Virtual SD. A busy mutex immediately after M24 is not an automatic failure; confirmation retains its ten-second deadline.
 
 ```gcode
 G1 X-20 F15000
@@ -20,8 +20,12 @@ G1 X-20
 G1 X20
 ```
 
-G91 a été envoyé avant cette séquence. F15000 est hérité par les cinq dernières commandes. Les inversions et accélérations physiques restent gérées par Klipper ; « continu » signifie absence d'attente AutoRecovery insérée entre les six soumissions, pas vitesse constante aux changements de direction.
+G91 has already been sent before this sequence. The last five commands inherit F15000. Klipper still controls physical reversals and acceleration; “continuous” means that AutoRecovery inserts no wait between the six submissions, not that speed stays constant through direction changes.
 
-PD4 absent pendant la récupération provoque son échec. D'autres gardes concrets existent dans le code : changement de pause/mode/état sauvegardé, mouvement manuel, erreur native, chauffage ou fin de mouvement non confirmés. Un échec ne déclenche pas de M24 de remplacement. Le nettoyage remet la cible buse à zéro quand la pause appartient encore à cette opération ; une annulation ou reprise externe conserve la main.
+PD4 becoming absent aborts the attempt, including during the initial wait; restoring presence does not revive that failed attempt. After the wait, the operation also checks that the active fault remains PD3_NO_MOTION and the mode remains FULL. It checks saved macro variables, saved G-code states, parser/position state, native pause ownership and macro flags before continuing. Shutdown, native errors or unconfirmed heating/motion completion can also terminate the attempt. These are existing implementation checks, not new conditions introduced by this documentation correction.
 
-AutoRecovery n'appelle pas RESUME ou BASE_RESUME. La purge manuelle Elegoo `G1 E100 F200` n'est donc pas ajoutée : total automatique 300 mm, pas 400 mm. Les reprises manuelles conservent la macro native. Il n'existe pas de plafond de tentatives par session.
+Before M24, a busy G-code mutex is treated as an external command taking control and aborts recovery. After M24, the worker instead observes resume confirmation without acquiring that mutex. These two cases must not be confused.
+
+Failure does not issue a substitute M24. Cleanup sets the hotend target to zero only while the operation remains valid, the file is paused and the failure has not been classified as external intervention. An external cancellation, resume or other takeover retains control of thermal and parser state. Recovery cannot retract moves that have already been submitted to Klipper.
+
+AutoRecovery does not call RESUME or BASE_RESUME. The manual Elegoo purge, `G1 E100 F200`, is therefore not added: automatic purging totals 300 mm, not 400 mm. Manual resumes retain the native macro. There is no per-session attempt limit.
