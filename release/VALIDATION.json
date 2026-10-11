@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-11",
+  "gapguard_tests": {
+    "total": 223,
+    "passed": 223
+  },
+  "watcher_tests": {
+    "total": 10,
+    "passed": 10
+  },
+  "module_sha256": "cf239a52f65f345092946f2289a473c590244ced22c5f31c27e88e26b20473f1",
+  "hardware_unchanged_assets": 8,
+  "public_macros": [
+    "GAPGUARD_PAUSE",
+    "GAPGUARD_STATUS",
+    "GAPGUARD_ENABLE_FULL",
+    "GAPGUARD_ENABLE_PARTIAL",
+    "GAPGUARD_DISABLE_ALL",
+    "GAPGUARD_STATUS_DEBUG"
+  ],
+  "relative_markdown_links_checked": 45,
+  "broken_links": 0,
+  "unresolved_secret_findings": 0,
+  "compilation": "PASS",
+  "runtime_tests": "NOT RUN",
+  "github_writes": false,
+  "giga_access": false,
+  "profile": "9/20/20/2",
+  "autorecovery": "300 mm / 15x20 / F200 / 2 transitions cumulatives",
+  "wipe": "continuous F15000",
+  "resume": "single M24, passive confirmation",
+  "flowq": "information only"
+}

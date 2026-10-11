@@ -1,0 +1,119 @@
+{
+  "date": "2026-10-11",
+  "hardware_identity": {
+    "sensor": "BTT Smart Filament Sensor V2.1",
+    "source": "explicit maintainer correction, 2026-10-11",
+    "scope": "All physical tests, photos, wiring, mount and GPIO measurements from the beginning",
+    "equivalence_claim": false
+  },
+  "assets": [
+    {
+      "old_archive": "github-btt-sfs-v2-orangestorm-giga-final.zip",
+      "old_name": "docs/images/btt-sfs-v2/det0-det1-cable-routing.jpg",
+      "new_public_name": "docs/images/btt-sfs-v2.1/det0-det1-cable-routing.jpg",
+      "sha256": "8563c1723ba737606fda3cdc11fba860fdfd3fe1728ad30c0277eaf6d7ccdb5f",
+      "origin": "ChatGPT Library: exact final hardware bundle",
+      "retrieved": "2026-10-11",
+      "source_date": "September 2026; historical conversation 2026-09-13",
+      "status": "FOUND_EXACT"
+    },
+    {
+      "old_archive": "github-btt-sfs-v2-orangestorm-giga-final.zip",
+      "old_name": "docs/images/btt-sfs-v2/det0-det1-motherboard.jpg",
+      "new_public_name": "docs/images/btt-sfs-v2.1/det0-det1-motherboard.jpg",
+      "sha256": "623fedd291c3a8e4d15ebd031d57f24a3d277cc3099225ce26fe761ac6c7f05f",
+      "origin": "ChatGPT Library: exact final hardware bundle",
+      "retrieved": "2026-10-11",
+      "source_date": "September 2026; historical conversation 2026-09-13",
+      "status": "FOUND_EXACT"
+    },
+    {
+      "old_archive": "github-btt-sfs-v2-orangestorm-giga-final.zip",
+      "old_name": "docs/images/btt-sfs-v2/mcu-stm32f407vet6.jpg",
+      "new_public_name": "docs/images/btt-sfs-v2.1/mcu-stm32f407vet6.jpg",
+      "sha256": "dc167bcbbdbe4dcc9030efb4459b77a4ef3dad0a3d90c9f8a51bee5d1c525a4c",
+      "origin": "ChatGPT Library: exact final hardware bundle",
+      "retrieved": "2026-10-11",
+      "source_date": "September 2026; historical conversation 2026-09-13",
+      "status": "FOUND_EXACT"
+    },
+    {
+      "old_archive": "github-btt-sfs-v2-orangestorm-giga-final.zip",
+      "old_name": "docs/images/btt-sfs-v2/rear-det0-det1-panel.jpg",
+      "new_public_name": "docs/images/btt-sfs-v2.1/rear-det0-det1-panel.jpg",
+      "sha256": "644b3425bf3d4c5472504e1a5e2359e54d589b795b301d4b4dc9dd2bca17a865",
+      "origin": "ChatGPT Library: exact final hardware bundle",
+      "retrieved": "2026-10-11",
+      "source_date": "September 2026; historical conversation 2026-09-13",
+      "status": "FOUND_EXACT"
+    },
+    {
+      "old_archive": "github-btt-sfs-v2-orangestorm-giga-final.zip",
+      "old_name": "docs/images/btt-sfs-v2/sfs-mount-detail.jpg",
+      "new_public_name": "docs/images/btt-sfs-v2.1/sfs-mount-detail.jpg",
+      "sha256": "0ba3381a0833f7d74f42c7e5bb0be09a2062c9361c1b3e3c6570c34c3f3f8557",
+      "origin": "ChatGPT Library: exact final hardware bundle",
+      "retrieved": "2026-10-11",
+      "source_date": "September 2026; historical conversation 2026-09-13",
+      "status": "FOUND_EXACT"
+    },
+    {
+      "old_archive": "github-btt-sfs-v2-orangestorm-giga-final.zip",
+      "old_name": "docs/images/btt-sfs-v2/sfs-mount-overview.jpg",
+      "new_public_name": "docs/images/btt-sfs-v2.1/sfs-mount-overview.jpg",
+      "sha256": "8316cd4fc7a9cc7a3cabfc7ece5992e14af27ef3a8bf9de9555100f812cfbea7",
+      "origin": "ChatGPT Library: exact final hardware bundle",
+      "retrieved": "2026-10-11",
+      "source_date": "September 2026; historical conversation 2026-09-13",
+      "status": "FOUND_EXACT"
+    },
+    {
+      "old_archive": "github-btt-sfs-v2-orangestorm-giga-final.zip",
+      "old_name": "hardware/orangestorm-giga-btt-sfs-v2-mount-remix.stl",
+      "new_public_name": "hardware/orangestorm-giga-btt-sfs-v2.1-mount-remix.stl",
+      "sha256": "ebf1e3ba43491fd10e7eacc7678031e887b7b8ddda14ec163cb4da636d3d2c9d",
+      "origin": "ChatGPT Library: bundle and individual Library download have identical bytes",
+      "retrieved": "2026-10-11",
+      "source_date": "September 2026",
+      "status": "FOUND_EXACT"
+    },
+    {
+      "old_archive": "github-btt-sfs-v2-orangestorm-giga-final.zip",
+      "old_name": "hardware/orangestorm-giga-btt-sfs-v2-mount-remix.3mf",
+      "new_public_name": "hardware/orangestorm-giga-btt-sfs-v2.1-mount-remix.3mf",
+      "sha256": "d87925cad4c01a9c9eda5ca608a9ae3970ac65e1d850d19db4f749f4a02da4f5",
+      "origin": "ChatGPT Library: bundle and individual Library download have identical bytes",
+      "retrieved": "2026-10-11",
+      "source_date": "September 2026",
+      "status": "FOUND_EXACT"
+    }
+  ],
+  "original_guide": {
+    "archive_name": "github-btt-sfs-v2-orangestorm-giga-final.zip",
+    "old_name": "docs/BTT-SFS-V2-ORANGESTORM-GIGA.md",
+    "original_sha256": "3d91d632b555e05ee24730e8c56e88ed1fd6a32758b13decd8a093c8ec624b6a",
+    "new_public_name": "docs/hardware/BTT-SFS-V2.1-ORANGESTORM-GIGA.md",
+    "transform": "Correct tested revision, relocate links, add historical BOM; replace obsolete software procedures with current installation links",
+    "origin": "ChatGPT Library, original exact 17201 bytes / 452 lines",
+    "retrieved": "2026-10-11"
+  },
+  "original_model": {
+    "author": "T.L.",
+    "file": "bowdenhalter-3.stl",
+    "url": "https://printables.com/model/1089979-elegoo-orangestorm-giga-bowden",
+    "sha256": "8918d63f68ff130f68fd40be6375f1316ce374c8a4362e410330f27593f2caf7",
+    "license": "CC0-1.0",
+    "verified": "2026-10-11"
+  },
+  "gapguard": {
+    "source": "validated 4.2.0-rc1 preparation, 2026-10-09",
+    "path": "src/gapguard.py",
+    "sha256": "cf239a52f65f345092946f2289a473c590244ced22c5f31c27e88e26b20473f1",
+    "transformation": "none"
+  },
+  "licence_source": {
+    "url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt",
+    "retrieved": "2026-10-11",
+    "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499"
+  }
+}
