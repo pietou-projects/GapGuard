@@ -66,10 +66,6 @@ This remix was reworked specifically around the **BTT SFS V2.1** and the mountin
 
 ![BTT SFS V2.1 and custom remix mount installed on the OrangeStorm Giga](../images/btt-sfs-v2.1/sfs-mount-overview.jpg)
 
-### Mount detail
-
-![Close-up of the BTT SFS V2.1 seated in the printed mount](../images/btt-sfs-v2.1/sfs-mount-detail.jpg)
-
 The mount is provided as-is. Print orientation, material and slicer settings should be chosen for your own installation environment. See [`hardware/README.md`](../../hardware/README.md) for model credits and file details.
 
 ## Rear DET0 / DET1 connection
@@ -242,7 +238,6 @@ Included with this guide:
 
 ```text
 docs/images/btt-sfs-v2.1/sfs-mount-overview.jpg
-docs/images/btt-sfs-v2.1/sfs-mount-detail.jpg
 docs/images/btt-sfs-v2.1/rear-det0-det1-panel.jpg
 docs/images/btt-sfs-v2.1/det0-det1-motherboard.jpg
 docs/images/btt-sfs-v2.1/det0-det1-cable-routing.jpg

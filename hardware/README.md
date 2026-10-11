@@ -22,4 +22,3 @@ The owner's 13 September record specifies 3 × M3 × 16 mm + 3 M3 washers, 2 × 
 See the [complete hardware guide](../docs/hardware/BTT-SFS-V2.1-ORANGESTORM-GIGA.md).
 
 ![Mounted sensor](../docs/images/btt-sfs-v2.1/sfs-mount-overview.jpg)
-![Mount detail](../docs/images/btt-sfs-v2.1/sfs-mount-detail.jpg)

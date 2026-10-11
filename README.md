@@ -4,6 +4,39 @@ GapGuard monitors a BTT Smart Filament Sensor **V2.1** on the OrangeStorm Giga. 
 
 **4.2.0-rc1 is a release candidate, not a stable release.** It was developed against a specific Elegoo Klipper installation. Check the [installation guide](docs/INSTALLATION.md) and [native macro requirements](docs/ORANGESTORM-GIGA-REFERENCE.md) before installing it. Do not update Klipper or replace your complete configuration to make it fit this module.
 
+## Why GapGuard exists
+
+GapGuard grew out of filament-motion problems observed with an Infinity Flow S1+ feeding a BTT Smart Filament Sensor V2.1 upstream of an OrangeStorm Giga.
+
+During an automatic A → B spool change, the filaments are not spliced together. The S1+ actively pushes filament B against the remaining end of filament A. Their B|A junction travels through the PTFE path and the SFS toward the printer.
+
+```text
+Spool B → Infinity Flow S1+ → B pushes the remaining A → BTT SFS V2.1 → Giga
+                              B ─── B|A ─── A
+```
+
+This diagram illustrates the push relationship, not the physical scale or exact routing. B and A are not fused together.
+
+Normal S1+ spool handoffs were observed to produce unusually long PD3 gaps, and this could trigger false motion alarms. PD4 could still report filament present throughout the gap. In one reproduced handoff, an earlier watchdog entered suspicion, received no PD3 transition within its then-too-short verification window and raised an alarm. PD3 started switching again shortly afterward as filament B resumed moving through the sensor. A temporary motion-signal gap therefore did not necessarily mean feeding had failed. These observations do **not** establish the cause of all historical PD3 silences.
+
+The challenge was to tolerate legitimate handoff interruptions while still detecting a real jam, loss of motion or failed handoff promptly. Simply making a timeout, threshold or detection distance much larger could reduce false alarms at the cost of detecting genuine failures much later.
+
+GapGuard uses two different pieces of local evidence: **PD4 / DET0** indicates physical filament presence; **PD3 / DET1** supplies genuine HIGH↔LOW motion transitions. Presence alone cannot establish motion, and a brief absence of motion transitions should not cause an immediate pause.
+
+```text
+Normal motion → real PD3 transitions → printing continues
+Temporary gap → SUSPECT / verification
+              → PD3 meets the verification rules in time → printing continues
+Failed verification → native Elegoo PAUSE
+                    → if eligible, controlled AutoRecovery feed test
+                    → PD3 motion evidence and recovery checks pass
+                    → resume and confirm actual printing
+```
+
+A returning transition must satisfy the existing verification rules; this does not promise that every temporary gap will be tolerated. Eligible recovery resumes only after validation. The current thresholds and recovery procedure are described below.
+
+FlowQ is deliberately outside this safety decision. GapGuard relies on local PD3/PD4 signals, not cloud timing, a FlowQ state change or a reported A/B state. The optional watcher adds information, monitoring and notifications; GapGuard must protect the print without it.
+
 ## What you need
 
 - An OrangeStorm Giga with the matching native Elegoo macro behavior.
@@ -38,6 +71,16 @@ If validation succeeds, it performs the existing wipe, restores the saved print 
 ## Optional S1+ monitoring
 
 The separate FlowQ watcher provides status and notifications. It is **information-only** with GapGuard: no pause, resume, cancel or mode change. GapGuard does not need FlowQ to protect the print. See [S1+ integration](docs/S1PLUS-INTEGRATION.md).
+
+## Development and AI assistance
+
+GapGuard was developed by Pierre Juillard through extensive testing on a real Elegoo OrangeStorm Giga.
+
+The project was developed with substantial assistance from ChatGPT by OpenAI, including log analysis, diagnostic reasoning, Python/Klipper code development, test design, documentation, code review and release preparation.
+
+The hardware observations, printer modifications, physical tests and final runtime validation were performed by the maintainer on the reference OrangeStorm Giga.
+
+AI assistance was used as a development tool, not as a substitute for physical validation on the printer.
 
 ## More information
 

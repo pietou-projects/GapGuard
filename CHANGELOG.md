@@ -22,7 +22,7 @@ The final preparation was archived on 9 October 2026. This release has not been 
 - The root cause of every historical PD3 signal loss has not been conclusively established. The transition fix does not prove a single cause.
 - This is a release candidate, not a stable release; compatibility has primarily been investigated on the Elegoo reference setup.
 - Automated tests use simulations and are distinct from physical tests.
-- The guide, six final photographs and STL/3MF models were recovered from the Library. The maintainer confirms that the installation has used an SFS V2.1 since testing began; earlier V2.0 labels for this installation have been corrected.
+- The guide, five retained photographs and STL/3MF models were recovered from the Library. The maintainer confirms that the installation has used an SFS V2.1 since testing began; earlier V2.0 labels for this installation have been corrected.
 
 ### Documentation reconciliation
 

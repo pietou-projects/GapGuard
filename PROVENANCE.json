@@ -49,16 +49,6 @@
     },
     {
       "old_archive": "github-btt-sfs-v2-orangestorm-giga-final.zip",
-      "old_name": "docs/images/btt-sfs-v2/sfs-mount-detail.jpg",
-      "new_public_name": "docs/images/btt-sfs-v2.1/sfs-mount-detail.jpg",
-      "sha256": "0ba3381a0833f7d74f42c7e5bb0be09a2062c9361c1b3e3c6570c34c3f3f8557",
-      "origin": "ChatGPT Library: exact final hardware bundle",
-      "retrieved": "2026-10-11",
-      "source_date": "September 2026; historical conversation 2026-09-13",
-      "status": "FOUND_EXACT"
-    },
-    {
-      "old_archive": "github-btt-sfs-v2-orangestorm-giga-final.zip",
       "old_name": "docs/images/btt-sfs-v2/sfs-mount-overview.jpg",
       "new_public_name": "docs/images/btt-sfs-v2.1/sfs-mount-overview.jpg",
       "sha256": "8316cd4fc7a9cc7a3cabfc7ece5992e14af27ef3a8bf9de9555100f812cfbea7",

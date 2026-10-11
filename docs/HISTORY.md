@@ -11,7 +11,7 @@ This is a documentary history; it does not fabricate earlier Git commits.
 - Candidate.14 added a separate AutoRecovery component: 300 mm in 20 mm blocks after pausing. The window6 variant evaluated the last six blocks; 4.2.0-rc1 replaces that rule with the total across the complete purge.
 - The final preparation from 9 October fixes genuine-transition processing, pause origin/idle_timeout, M24 confirmation and continuous wiping. The final module is identified by its exact hash, not only by the RC1 name shared with an earlier preparation.
 
-Physical test chronology and raw PD3 electrical identification are not reconstructed from memory. The complete guide, six final photographs, models and documented GPIO readings were recovered from the Library and archives.
+Physical test chronology and raw PD3 electrical identification are not reconstructed from memory. The complete guide, five retained photographs, models and documented GPIO readings were recovered from the Library and archives.
 
 Some older notes and early drafts incorrectly identified the sensor as V2.0. The hardware used from the beginning was V2.1, explicitly confirmed by the maintainer on 11 October 2026. External V2.0 references retain their version designation; no universal V2.0/V2.1 equivalence is inferred.
 
