@@ -6,7 +6,7 @@
 
 This guide documents a tested installation of a **BIGTREETECH Smart Filament Sensor V2.1** on an **Elegoo OrangeStorm Giga** using the original **ZNP GIGA V3.0** motherboard.
 
-It is the hardware companion to GapGuard 4.2.0-rc1. The separate S1+ watcher provides information only.
+It is the hardware companion to GapGuard 4.2.0. The separate S1+ watcher provides information only.
 
 > [!IMPORTANT]
 > This pin mapping was validated on one OrangeStorm Giga equipped with a **ZNP GIGA V3.0** board and an **STM32F407VET6** MCU. Verify your board revision before reproducing the wiring on another hardware revision.

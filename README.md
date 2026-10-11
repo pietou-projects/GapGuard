@@ -1,8 +1,10 @@
-# GapGuard for the Elegoo OrangeStorm Giga
+# GapGuard 4.2.0 for the Elegoo OrangeStorm Giga
 
 GapGuard monitors a BTT Smart Filament Sensor **V2.1** on the OrangeStorm Giga. It checks whether filament is present and whether it is moving during a real file print. When a fault is confirmed, it uses the existing Elegoo pause macro.
 
-**4.2.0-rc1 is a release candidate, not a stable release.** It was developed against a specific Elegoo Klipper installation. Check the [installation guide](docs/INSTALLATION.md) and [native macro requirements](docs/ORANGESTORM-GIGA-REFERENCE.md) before installing it. Do not update Klipper or replace your complete configuration to make it fit this module.
+**4.2.0 is the first stable public release.** It was developed against a specific Elegoo Klipper installation. Check the [installation guide](docs/INSTALLATION.md) and [native macro requirements](docs/ORANGESTORM-GIGA-REFERENCE.md) before installing it. Do not update Klipper or replace your complete configuration to make it fit this module.
+
+GapGuard 4.2.0 uses the exact production module validated during 4.2.0-rc1. For reproducibility, the Python module was not modified solely to change its internal version string, so the reference printer still reports 'GapGuard 4.2.0-rc1 ready'. This cosmetic difference is intentional; no new software behavior was introduced for the stable release.
 
 ## Why GapGuard exists
 
@@ -67,6 +69,12 @@ When GapGuard confirms that PD3 has stopped reporting motion while PD4 still rep
 After the pause movement has finished, it waits 30 seconds. If the printer is still paused and filament is still present, AutoRecovery reheats the nozzle to its saved target. It then commands **300 mm of extruder travel in 15 blocks of 20 mm at F200**. This does not by itself prove that 300 mm of filament passed through the nozzle; PD3 transitions provide separate evidence of filament motion. It observes PD3 throughout these blocks and requires at least **two genuine transitions in total**. The full purge still runs if those transitions arrive early.
 
 If validation succeeds, it performs the existing wipe, restores the saved print state and sends **one M24**. Recovery is complete only after the file really returns to active printing. If recovery cannot complete, it does not resume the print automatically; the printer remains paused unless you or another command has taken control. The [detailed recovery guide](docs/AUTORECOVERY.md) explains the checks and limitations. PD4 faults and a voluntary GapGuard pause do not start AutoRecovery.
+
+## Known limitations
+
+The underlying cause of every historical PD3 signal gap has not been identified. GapGuard is designed to detect and safely handle confirmed loss of filament-motion evidence, but it does not claim to resolve the electrical or physical origin of every PD3 gap.
+
+Stable status reflects validation on the reference installation, with defined PD3/PD4 behavior, modes, GapGuard pauses and AutoRecovery, documented installation requirements, passing public tests and known limitations. It does not establish compatibility or physical reliability on every printer. No new physical tests were performed for this documentation and packaging promotion.
 
 ## Optional S1+ monitoring
 

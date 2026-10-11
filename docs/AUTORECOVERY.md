@@ -1,4 +1,4 @@
-# AutoRecovery 4.2.0-rc1
+# AutoRecovery 4.2.0
 
 This recovery procedure is specific to the audited Elegoo integration. It is not a universal Klipper resume implementation.
 

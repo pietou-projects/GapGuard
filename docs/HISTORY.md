@@ -22,3 +22,11 @@ The initial public commit `cebb24461ab55b483ccc89782ec507693bc8ba1b` included Fr
 The 11 October live audit confirmed the exact production module and six current public commands. The former specification names GAPGUARD_RESUME_FULL, GAPGUARD_RESUME_PARTIAL, GAPGUARD_RESUME_BYPASS and GAPGUARD_CANCEL are historical; they must not be added to reproduce this release. Manual resume and cancellation remain Elegoo commands.
 
 The live configuration includes a newer private mesh without changing the functional GapGuard configuration. The live v1.2.2 watcher supersedes the older archived information-only implementation as the source for a future watcher release. The previously prepared watcher v2.0.0 package is obsolete; its proposed release number does not select the next public version.
+
+## Stable promotion — 11 October 2026
+
+The English RC1 documentation update was published at commit `6577cc63049afb8312d2c137acee1b3cde8a2219`. Its tag `v4.2.0-rc1` remains on that commit as a historical Pre-release. The earlier review statements above record the status at the time they were written.
+
+The maintainer approved promotion to the first stable public release, v4.2.0, after documentation and packaging validation. There is no functional code change: the production module, configuration and native macro dependencies are byte-identical to RC1. The internal runtime string remains 4.2.0-rc1 deliberately for reproducibility.
+
+The stable package carries forward the removal of the duplicate mount-detail view, the Why GapGuard exists context and the Development and AI assistance credit. It contains five hardware photographs and the original STL/3MF models. Existing reference-printer validation supports this promotion; no new physical test was performed. The cause of every historical PD3 signal gap remains unresolved. Neither the reference Giga nor the separate watcher is changed by this publication.

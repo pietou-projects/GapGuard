@@ -14,15 +14,17 @@
   "profile": "9/20/20/2",
   "autorecovery": "300 mm / 15x20 / F200 / minimum 2 cumulative transitions",
   "date": "2026-10-11",
-  "scope": "Offline GapGuard documentation/configuration reconciliation against read-only live evidence; no publication",
+  "scope": "Stable package checks before publication; byte-identical RC1 production code and configuration; prior live-audit evidence retained.",
   "public_tests": {
     "run": 223,
     "passed": 223
   },
-  "watcher_tests": "NOT RUN; separate live-derived proposal blocked before source sanitization",
-  "runtime_tests_in_this_review": "NOT RUN",
+  "watcher_tests": "NOT RUN; watcher outside this promotion",
+  "runtime_tests_in_this_review": "NOT RUN; no new physical test in this stable promotion",
   "live_audit_module_confirmation": {
     "sha256": "cf239a52f65f345092946f2289a473c590244ced22c5f31c27e88e26b20473f1",
     "evidence": "The validated live audit confirmed this SHA-256 as the module loaded on the reference machine. This is prior live-audit evidence, not a new physical test in this documentation review."
-  }
+  },
+  "release_version": "4.2.0",
+  "runtime_version": "4.2.0-rc1"
 }

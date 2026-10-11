@@ -2,6 +2,8 @@
 
 This guide reproduces the audited Giga integration. It is not a full replacement printer configuration. Work with the printer idle and keep a backup of your current module and configuration together. Preserve your mesh, SAVE_CONFIG, PID tuning and all unrelated settings.
 
+GapGuard 4.2.0 uses the exact production module validated during 4.2.0-rc1. For reproducibility, the Python module was not modified solely to change its internal version string, so the reference printer still reports 'GapGuard 4.2.0-rc1 ready'. This cosmetic difference is intentional; no new software behavior was introduced for the stable release.
+
 ## 1. Check compatibility
 
 The reference setup uses a ZNP GIGA V3.0 board, STM32F407VET6 and a BTT Smart Filament Sensor V2.1. The audited Klipper reports `v0.11.0-303-g67499853-dirty`; that identifies the observed installation, not a recommendation to install or update to another build. Compatibility depends on the [native dependency contract](ORANGESTORM-GIGA-REFERENCE.md), not just a version label.

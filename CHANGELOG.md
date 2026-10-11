@@ -1,5 +1,16 @@
 # Changelog
 
+## 4.2.0 — First stable public release — 11 October 2026
+
+- Promoted RC1 to stable after documentation and package validation, using the maintainer's existing runtime validation on the reference printer.
+- No functional change to gapguard.py, configuration, thresholds, native macros or AutoRecovery. The module is byte-identical to RC1 and intentionally retains its internal 4.2.0-rc1 version string.
+- Carries forward the removal of the duplicate mount-detail view, the Why GapGuard exists context and the Development and AI assistance credit.
+- Packages the final stable documentation with five photographs, one STL and one 3MF. The seven hardware assets retain their original bytes.
+- Preserves the unresolved historical PD3 root-cause limitation. Automated tests do not replace physical validation; no new physical test was run for this promotion.
+- The historical v4.2.0-rc1 tag and Pre-release remain unchanged.
+
+The entries below describe their historical release state.
+
 ## 4.2.0-rc1 — Release Candidate
 
 The final preparation was archived on 9 October 2026. This release has not been promoted to stable.
