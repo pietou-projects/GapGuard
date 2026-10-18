@@ -76,6 +76,10 @@ The underlying cause of every historical PD3 signal gap has not been identified.
 
 Stable status reflects validation on the reference installation, with defined PD3/PD4 behavior, modes, GapGuard pauses and AutoRecovery, documented installation requirements, passing public tests and known limitations. It does not establish compatibility or physical reliability on every printer. No new physical tests were performed for this documentation and packaging promotion.
 
+## Future hardware investigation
+
+The cause of every historical PD3 signal gap remains unresolved. The next planned hardware test would move the SFS much closer to the extruder, support the short PTFE section with a rigid PETG guide, and add an upper-frame guide for the long tube from the S1+. Low-friction transparent or translucent tubing would also be compared to make the A/B junction easier to observe. This is an unvalidated, optional investigation; GapGuard 4.2.0 and its tested reference installation remain unchanged. See the [hardware investigation plan](docs/HARDWARE-INVESTIGATION.md).
+
 ## Optional S1+ monitoring
 
 The separate FlowQ watcher provides status and notifications. It is **information-only** with GapGuard: no pause, resume, cancel or mode change. GapGuard does not need FlowQ to protect the print. See [S1+ integration](docs/S1PLUS-INTEGRATION.md).
