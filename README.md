@@ -4,7 +4,11 @@ GapGuard monitors a BTT Smart Filament Sensor **V2.1** on the OrangeStorm Giga. 
 
 **4.2.0 is the first stable public release.** It was developed against a specific Elegoo Klipper installation. Check the [installation guide](docs/INSTALLATION.md) and [native macro requirements](docs/ORANGESTORM-GIGA-REFERENCE.md) before installing it. Do not update Klipper or replace your complete configuration to make it fit this module.
 
-GapGuard 4.2.0 uses the exact production module validated during 4.2.0-rc1. For reproducibility, the Python module was not modified solely to change its internal version string, so the reference printer still reports 'GapGuard 4.2.0-rc1 ready'. This cosmetic difference is intentional; no new software behavior was introduced for the stable release.
+GapGuard 4.2.0 uses the exact production module validated during 4.2.0-rc1. For reproducibility, the Python module was not modified solely to change its internal version string, so a printer running that stable module reports 'GapGuard 4.2.0-rc1 ready'. This cosmetic difference is intentional; no new software behavior was introduced for the stable release.
+
+## PD3 recovery update — 27 October 2026
+
+Repeated motion faults after AutoRecovery are being investigated. The `4.2.1-rc1` candidate has passed 258 automated tests and now starts correctly on the reference Giga. **Its behavior during a real print still needs to be verified.** The [PD3 recovery status](docs/PD3-REARM-STATUS.md) explains the problem, the proposed correction and what has actually been checked. This is a progress update; the public production module and existing releases remain 4.2.0.
 
 ## Why GapGuard exists
 
