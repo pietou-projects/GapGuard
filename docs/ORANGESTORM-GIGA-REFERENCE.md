@@ -1,6 +1,6 @@
 # OrangeStorm Giga native dependency contract
 
-This document describes what the unmodified 4.2.0-rc1 module actually expects from the audited Elegoo configuration. It is a comparison checklist, not an instruction to replace printer.cfg. The [exact native excerpts](ORANGESTORM-GIGA-EXCERPTS.txt) retain the original macro bytes, including their French runtime messages and comments. Their wrapper text is English. Excerpts omit private calibration and are not an include file.
+This document describes the native dependencies used by 4.2.0 and retained by the 4.2.1-rc1 module from the audited Elegoo configuration. It is a comparison checklist, not an instruction to replace printer.cfg. The [exact native excerpts](ORANGESTORM-GIGA-EXCERPTS.txt) retain the original macro bytes, including their French runtime messages and comments. Their wrapper text is English. Excerpts omit private calibration and are not an include file.
 
 **REQUIRED EXACTLY** means the code directly names an object, variable, state or value. **REQUIRED SEMANTICALLY** means the behavior is required but does not prove that every whitespace character or unrelated command is necessary. **REFERENCE ONLY** records the tested implementation without claiming that it is a hardcoded module requirement. A row can separate an exact interface from its semantic implementation.
 

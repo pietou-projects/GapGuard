@@ -24,10 +24,11 @@ class R2Tests(unittest.TestCase):
         x=Rig();x.fan['phase']='saved';x.fan_value=.7;x.success()
         self.assertEqual(x.state(),'RESUMED');self.assertEqual(x.fan_value,.7)
 
-    def test_epoch_path_change_while_waiting_allows_full_recovery(self):
+    def test_epoch_path_change_invalidates_waiting_recovery(self):
         x=Rig();x.pause();x.until('WAIT');x.m.epoch+=42
         x.m.path='/another.gcode';x.native=gg.Native('paused',False,x.m.path)
-        x.until('RESUMED');self.assertEqual(x.calls.count('M24'),1)
+        x.until('FAILED');self.assertEqual(x.calls.count('M24'),0)
+        self.assertEqual(x.calls,[])
 
     def test_delay_remains_30_seconds(self):
         x=Rig();x.pause();x.until('WAIT');deadline=x.r.record['deadline']
@@ -42,7 +43,7 @@ class R2Tests(unittest.TestCase):
         x=Rig();x.pause();x.until('WAIT');x.gpio(pd4=0)
         x.tick(30);x.tick();self.assertEqual(x.calls,[])
 
-    def test_no_fan_epoch_path_authorization_in_autorecovery(self):
+    def test_no_fan_or_session_quota_with_explicit_generation_contract(self):
         p=Path(__file__).resolve().parent.parent/'src/gapguard.py'
         source=p.read_text(encoding='utf-8');tree=ast.parse(source)
         c=next(n for n in tree.body if isinstance(n,ast.ClassDef) and n.name=='AutoRecovery')
@@ -51,7 +52,9 @@ class R2Tests(unittest.TestCase):
             for n in ast.walk(m):
                 if isinstance(n,ast.Compare):
                     s=ast.get_source_segment(source,n)
-                    self.assertFalse(any(t in s for t in ('epoch','path','fan','used_key')),s)
+                    self.assertFalse(any(t in s for t in ('fan','used_key')),s)
         text=ast.get_source_segment(source,c)
         self.assertNotIn('used_key',text);self.assertNotIn('auto_recovery_max_per_session',text)
+        self.assertIn("(self.o.machine.epoch, self.o.machine.motion_generation)",text)
+        self.assertIn("n.printing(r['key'][1])",text)
 

@@ -96,10 +96,11 @@
     "verified": "2026-10-11"
   },
   "gapguard": {
-    "source": "validated 4.2.0-rc1 preparation, 2026-10-09",
+    "source": "Approved 4.2.1-rc1 candidate prepared 24 October 2026; exact bytes installed and loaded on the reference printer 27 October 2026",
     "path": "src/gapguard.py",
-    "sha256": "cf239a52f65f345092946f2289a473c590244ced22c5f31c27e88e26b20473f1",
-    "transformation": "none"
+    "sha256": "bf74084df26570d529a15efdbe3dfb6d93653f2f2dc53a6cb2d6e7a2eb27403a",
+    "transformation": "none during publication",
+    "previous_production_sha256": "cf239a52f65f345092946f2289a473c590244ced22c5f31c27e88e26b20473f1"
   },
   "licence_source": {
     "url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt",
@@ -122,5 +123,19 @@
     "configuration_transformation": "none",
     "hardware_transformation": "none",
     "basis": "Maintainer-approved existing reference-printer validation; documentation and packaging promotion only; no new physical test."
+  },
+  "candidate_421": {
+    "version": "4.2.1-rc1",
+    "date": "2026-10-27",
+    "module_sha256": "bf74084df26570d529a15efdbe3dfb6d93653f2f2dc53a6cb2d6e7a2eb27403a",
+    "preparation_archive_sha256": "3b1cd70f6cc41866f005574a0e4a57e522ad70301e3ec94f9f767ee15795c611",
+    "installation": "verified",
+    "loading": "verified after physical power cycle",
+    "physical_print_validation": "pending",
+    "source_transformation": "none",
+    "configuration_change": "public version comment only; executable settings and macro bodies unchanged",
+    "hardware_change": "none; seven exact assets preserved",
+    "publication_changes": "English documentation, public test packaging and a new Pre-release; existing tags and assets preserved",
+    "historical_sections": "Earlier live reconciliation and stable promotion entries describe their recorded dates, not the current candidate."
   }
 }

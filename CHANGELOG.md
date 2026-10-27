@@ -1,5 +1,19 @@
 # Changelog
 
+## 4.2.1-rc1 — PD3 rearming candidate — 27 October 2026
+
+This Pre-release is available for testing. Automated tests and loading on the reference Giga have passed; validation during real printing is still pending. The stable 4.2.0 release and all previous tags/assets are preserved.
+
+- Use one shared PD3 rearming operation for a manual return to FULL and AutoRecovery.
+- Give queued motion events an explicit generation so stale events cannot become new evidence.
+- Require the main detector to accept recovery transitions and pass a consistency check before resuming.
+- Prepare a fresh motion generation before M24 and retain it when the file actually resumes.
+- Add generation-specific diagnostic log messages and 35 tests, including 100 complete simulated recovery cycles.
+- Preserve the configured 9/20/20/2 profile, 300 mm in 15 × 20 mm at F200, minimum two cumulative transitions, 30-second wait, continuous F15000 wipe and one M24.
+- Preserve native manual controls, fan1, four-bed target handling, PD4 and the information-only watcher boundary. No new configuration parameter is required.
+
+See [issue #1](https://github.com/pietou-projects/GapGuard/issues/1), [test status](docs/PD3-REARM-STATUS.md) and [upgrading](docs/UPGRADING-4.2.1.md).
+
 ## 4.2.0 — First stable public release — 11 October 2026
 
 - Promoted RC1 to stable after documentation and package validation, using the maintainer's existing runtime validation on the reference printer.

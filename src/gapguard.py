@@ -1,4 +1,4 @@
-# GapGuard v4.2.0-rc1 — SFS plus isolated post-pause recovery.
+# GapGuard v4.2.1-rc1 — shared PD3 rearm and generation-scoped recovery.
 # SPDX-License-Identifier: GPL-3.0-or-later
 """SFS surveillance only. Confirmed fault -> public manufacturer PAUSE.
 
@@ -11,7 +11,7 @@ import json
 import logging
 import math
 
-VERSION = '4.2.0-rc1'
+VERSION = '4.2.1-rc1'
 MODES = ('FULL', 'PARTIAL', 'BYPASS')
 
 def positive(value, name, allow_zero=False):
@@ -83,7 +83,13 @@ class Motion:
         self.verify_end = self.verify_start + self.s.verify_distance
         self.count = 0
 
-    def edge(self, position):
+    def edge(self, position, recovery=False):
+        # Recovery uses full-purge evidence, not the normal distance window.
+        # The same Motion object accepts the edge; there is no second detector.
+        if recovery and self.state in ('ARMING', 'NORMAL'):
+            self.position = self.reference = self.last_edge_position = position
+            self.state = 'NORMAL'
+            return
         self.last_edge_position = position
         if self.state in ('DISABLED', 'HARD'):
             return
@@ -130,6 +136,12 @@ class Machine:
         self.motion = Motion(settings)
         self.mode = settings.default_mode
         self.epoch = self.serial = 0
+        self.motion_generation = 0
+        self.generation_time = float('-inf')
+        self.motion_phase = 'IDLE'
+        self.motion_edges = 0
+        self.resume_generation = None
+        self.first_resume_edge = False
         self.min_eventtime = float('-inf')
         self.min_motion_time = float('-inf')
         self.ready = False
@@ -156,6 +168,12 @@ class Machine:
     def reset(self, now, pending_new=False, shutdown=False):
         self.epoch += 1
         self.serial += 1
+        self.motion_generation += 1
+        self.generation_time = now
+        self.motion_phase = 'IDLE'
+        self.motion_edges = 0
+        self.resume_generation = None
+        self.first_resume_edge = False
         self.min_eventtime = self.min_motion_time = now
         self._clear()
         self.pending_new = pending_new
@@ -167,19 +185,64 @@ class Machine:
         self.ready = True
         self.acquire_deadline = now + 1.5 + .01 * buttons_oid + self.s.init_guard
 
-    def gpio(self, now, mask, position):
-        if not self.ready or now < self.min_eventtime:
-            return
+    def rearm_pd3(self, position, now, source, phase='PRINT'):
+        """Single reset for manual FULL, recovery and prepared resume.
+
+        Electrical levels/initialized are preserved, never counted as edges.
+        Queue entries keep their old generation and become unusable.
+        """
+        old = self.motion_generation
+        self.motion_generation += 1
+        self.generation_time = now
+        self.motion_phase = phase
+        self.motion_edges = 0
+        self.resume_generation = None
+        self.first_resume_edge = False
+        self.pause_requested = self.pause_dispatched = False
+        self.reason = None
+        self.motion.arm(position)
+        logging.info('[GAPGUARD_TRACE] PD3_REARM_BEGIN source=%s old_generation=%s '
+                     'new_generation=%s E=%s PD3=%s PD4=%s state=ARMING epoch=%s ts=%s',
+                     source, old, self.motion_generation, position, self.motion.pd3,
+                     self.motion.pd4, self.epoch, now)
+        return self.motion_generation
+
+    def generation_valid(self, epoch, generation, when):
+        return (self.ready and epoch == self.epoch
+                and generation == self.motion_generation
+                and when >= max(self.min_eventtime, self.generation_time))
+
+    def gpio(self, now, mask, position, generation=None, epoch=None, recovery=False):
+        generation = self.motion_generation if generation is None else generation
+        epoch = self.epoch if epoch is None else epoch
+        if not self.generation_valid(epoch, generation, now):
+            return False
         edge = self.motion.acquire(mask)
         self.initialized = True
+        accepted = False
+        if recovery and self.motion_phase == 'RECOVERY' and not self.running:
+            if edge and position is not None and self.mode == 'FULL' and self.motion.state in ('ARMING', 'NORMAL'):
+                self.motion.edge(position, recovery=True)
+                self.motion_edges += 1
+                accepted = True
+            return accepted
         if not self.running:
-            return
+            return False
         # Current-session electrical evidence is independent of action tokens
         # and of the lifecycle observation time (min_motion_time).
         if edge and self.mode == 'FULL' and position is not None:
             self.motion.edge(position)
+            self.motion_edges += 1
+            accepted = True
+            if self.first_resume_edge:
+                self.first_resume_edge = False
+                logging.info('[GAPGUARD_TRACE] PD3_FIRST_POST_RESUME_EDGE generation=%s '
+                             'edge=%s E=%s state=%s ts=%s', self.motion_generation,
+                             'LOW->HIGH' if self.motion.pd3 else 'HIGH->LOW',
+                             position, self.motion.state, now)
         if self.mode != 'BYPASS' and self.motion.pd4 == 0:
             self.request_pause('PD4_ABSENT')
+        return accepted
 
     def observe(self, now, native, position, evaluate=True):
         if not self.ready:
@@ -203,6 +266,8 @@ class Machine:
                 self.serial += 1
                 self.min_motion_time = now
                 self.motion.reset()
+                self.resume_generation = None
+                self.motion_phase = 'IDLE'
                 self.pause_requested = self.pause_dispatched = False
                 self.reason = None
             self.running = False
@@ -215,7 +280,16 @@ class Machine:
             self.reason = self.active_fault = self.pause_error = None
             self.pause_origin = None
             if self.mode == 'FULL':
-                self.motion.arm(position)
+                prepared = self.resume_generation
+                if prepared == (self.epoch, self.path, self.motion_generation):
+                    self.motion_phase = 'PRINT'
+                    self.first_resume_edge = True
+                    self.resume_generation = None
+                    logging.info('[GAPGUARD_TRACE] PD3_RESUME_ACTIVE generation=%s '
+                                 'file=%s virtual_sd_active=%s ts=%s',
+                                 self.motion_generation, self.path, native.active, now)
+                else:
+                    self.rearm_pd3(position, now, 'LIFECYCLE')
         if not evaluate or not self.initialized or self.pause_dispatched:
             return
         if self.mode != 'BYPASS' and self.motion.pd4 == 0:
@@ -267,9 +341,11 @@ class Machine:
         self.reason = None
         self.min_motion_time = now
         if self.running and not self.pause_dispatched and mode == 'FULL':
-            self.motion.arm(position)
+            self.rearm_pd3(position, now, 'MANUAL_FULL')
         else:
             self.motion.reset()
+            self.motion_phase = 'IDLE'
+            self.resume_generation = None
 
     def status(self, native):
         m = self.motion
@@ -277,6 +353,8 @@ class Machine:
         paused = bool(self.session and native.path == self.path
                       and native.state == 'paused' and not native.active)
         return dict(version=VERSION, mode=self.mode, cycle=native.state,
+                    motion_generation=self.motion_generation, motion_phase=self.motion_phase,
+                    motion_edges=self.motion_edges, resume_generation=self.resume_generation,
                     session_active=self.session, epoch=self.epoch,
                     file_path=self.path, printing=printing,
                     pd3=m.pd3, pd4=m.pd4, initialized=self.initialized,
@@ -531,6 +609,7 @@ class AutoRecovery:
         self.generation += 1
         r = self.record
         if r is not None:
+            self.retire_pd3(r)
             if r.get('temp_saved'):
                 self.orphan_temp = r.get('temp_ref')
                 r['temp_saved'] = False
@@ -549,22 +628,66 @@ class AutoRecovery:
         if self.record and self.record['state'] not in ('FAILED', 'RESUMED'):
             self.fail('native G-code error', external=not self.own_command)
 
-    def gpio(self, when, mask):
-        old = self.pd3
-        self.pd3, self.pd4 = mask & 1, (mask >> 1) & 1
+    def edge_window(self, when):
+        r = self.record
+        m = self.o.machine
+        eligible = bool(r and self.live(r) and r['state'] == 'BLOCK'
+                    and r.get('motion_key') == (m.epoch, m.motion_generation)
+                    and when >= r['block_start'] and r['finish'] is not None
+                    and self.o.mcu.estimated_print_time(when) <= r['finish'])
+        if not eligible:
+            return False
+        # A submitted move may still be buffered. An edge before physical E
+        # advancement is not evidence from this purge block.
+        distance = self.o.position(when) - r['block_e']
+        return (math.isfinite(distance) and 0. < distance
+                <= 20. + self.EXECUTED_E_TOLERANCE)
+
+    def gpio(self, when, accepted=False):
+        # Descriptive levels only. The authoritative edge decision and count
+        # have already been produced by Machine.gpio in the current generation.
+        m = self.o.machine
+        self.pd3, self.pd4 = m.motion.pd3, m.motion.pd4
         r = self.record
         if not r or not self.live(r) or r['state'] in ('FAILED', 'RESUMED'):
             return
         if self.pd4 != 1:
             self.fail('PD4_ABSENT', external=r['state'] in ('ARMED', 'WAIT'))
             return
-        # Only the original, real group callback reaches this method.
-        # UNKNOWN -> known and PD4-only snapshots are never transitions.
-        if (r['state'] == 'BLOCK' and old is not None and old != self.pd3
-                and when >= r['block_start']
-                and (r['finish'] is None or
-                     self.o.mcu.estimated_print_time(when) <= r['finish'])):
-            r['count'] += 1
+        if accepted and self.edge_window(when):
+            r['count'] = m.motion_edges - r['block_edges_start']
+            logging.info('[GAPGUARD_TRACE] PD3_RECOVERY_EDGE generation=%s edge=%s '
+                         'E=%s cumulative_transitions=%s ts=%s', m.motion_generation,
+                         'LOW->HIGH' if m.motion.pd3 else 'HIGH->LOW',
+                         m.motion.last_edge_position, m.motion_edges, when)
+
+    def detector_coherent(self, r):
+        m = self.o.machine
+        motion = m.motion
+        return (r.get('motion_key') == (m.epoch, m.motion_generation)
+                and m.motion_phase == 'RECOVERY' and not m.running
+                and m.mode == 'FULL' and m.initialized and motion.pd4 == 1
+                and motion.state == 'NORMAL' and motion.count == 0
+                and motion.verify_start is None and motion.verify_end is None
+                and motion.reference == motion.last_edge_position
+                and motion.reference is not None and math.isfinite(motion.reference)
+                and motion.position is not None and math.isfinite(motion.position)
+                and not m.pause_requested and not m.pause_dispatched and m.reason is None
+                and m.motion_edges >= self.values['auto_recovery_min_transitions'])
+
+    def retire_pd3(self, r):
+        # Revocation is not a rearm. Do not leave a prepared resume stamp behind
+        # for a later manual RESUME, and never reset a different generation.
+        m = self.o.machine
+        if (r.get('motion_key') == (m.epoch, m.motion_generation)
+                and m.motion_phase in ('RECOVERY', 'RESUME')):
+            m.motion_generation += 1
+            m.generation_time = self.o.now()
+            m.motion_phase = 'IDLE'
+            m.motion_edges = 0
+            m.resume_generation = None
+            m.first_resume_edge = False
+            m.motion.reset()
 
     def fail(self, reason, external=False):
         r = self.record
@@ -578,6 +701,7 @@ class AutoRecovery:
             except Exception:
                 pass  # Do not invent executed distance if position is unavailable.
         r.update(state='FAILED', error=reason, abort_external=external)
+        self.retire_pd3(r)
         self.emit('FAIL', stage=stage, index=r['index'], purged_total=r['purged'],
                   transitions=r['count'], PD3=self.pd3, PD4=self.pd4, reason=reason)
         self.o._ui_emit('GapGuard : récupération automatique arrêtée ; %s. '
@@ -600,8 +724,15 @@ class AutoRecovery:
             return False
         if r['state'] == 'RESUMING':
             return True
+        if r['key'] != self.key():
+            self.fail('file session changed', external=True)
+            return False
         if not self.paused(r):
             self.fail('native pause lost or manual resume/cancel', external=True)
+            return False
+        if ('motion_key' in r and r['motion_key'] !=
+                (self.o.machine.epoch, self.o.machine.motion_generation)):
+            self.fail('PD3 generation changed', external=r['key'][0] != self.o.machine.epoch)
             return False
         if self.pd4 != 1 or self.o.machine.motion.pd4 != 1:
             self.fail('PD4_ABSENT', external=r['state'] in ('ARMED', 'WAIT'))
@@ -757,6 +888,14 @@ class AutoRecovery:
     def confirm(self, r):
         if not self.finished(r):
             return
+        # Native PAUSE has physically completed. Reset the main detector using
+        # exactly the primitive used by manual PARTIAL -> FULL, without G-code.
+        self.o._drain_edges()
+        m = self.o.machine
+        generation = m.rearm_pd3(self.o.position(self.o.now()), self.o.now(),
+                                'AUTO_RECOVERY', phase='RECOVERY')
+        r['motion_key'] = (m.epoch, generation)
+        r['purge_generation'] = generation
         # Existing temporary-state cleanup; native PAUSE state is not rewritten.
         if (self.orphan_temp is not None and
                 self.gmove.saved_states.get(self.TEMP_STATE) is self.orphan_temp):
@@ -799,6 +938,7 @@ class AutoRecovery:
             if not self.finished(r):
                 raise ValueError('unexpected pending movement before block')
             r.update(state='BLOCK', index=r['index'] + 1, count=0,
+                     block_edges_start=self.o.machine.motion_edges,
                      block_start=self.o.now(), finish=None,
                      block_accounted=False,
                      block_e=self.o.position(self.o.now()))
@@ -814,8 +954,10 @@ class AutoRecovery:
             # Physically executed; retain every block for the final sensor criterion.
             r['purged'] += 20.
             r['block_accounted'] = True
+            self.o._drain_edges()
+            r['count'] = self.o.machine.motion_edges - r['block_edges_start']
             r['block_counts'].append(r['count'])
-            total_count = sum(r['block_counts'])
+            total_count = self.o.machine.motion_edges
             self.emit('CHUNK_OK', index='%d/%d' % (r['index'], self.total_blocks), distance=20,
                       transitions=r['count'], total_transitions=total_count,
                       purged_total=r['purged'], PD4='PRESENT')
@@ -825,6 +967,12 @@ class AutoRecovery:
                           required=self.values['auto_recovery_min_transitions'])
                 if total_count < self.values['auto_recovery_min_transitions']:
                     raise ValueError('insufficient real PD3 transitions over complete purge')
+                if not self.detector_coherent(r):
+                    raise ValueError('main PD3 detector inconsistent after purge')
+                logging.info('[GAPGUARD_TRACE] PD3_RECOVERY_VALIDATED generation=%s '
+                             'purged=300 transitions=%s motion_state=%s ts=%s',
+                             self.o.machine.motion_generation, total_count,
+                             self.o.machine.motion.state, self.o.now())
                 r.update(state='SETTLE', deadline=self.o.now() + 2.)
                 self.emit('PURGE_OK', purged_total=r['purged'], chunks=self.total_blocks)
             else:
@@ -851,9 +999,13 @@ class AutoRecovery:
 
     def confirm_resume(self, r):
         n = self.o.native()
-        if self.live(r) and n.state == 'printing' and n.active:
+        m = self.o.machine
+        if (self.live(r) and n.printing(r['key'][1])
+                and m.epoch == r['key'][0]
+                and m.motion_generation == r.get('resume_generation')):
+            self.o._observe(self.o.now(), n, self.o.position(self.o.now()), evaluate=False)
             r['state'] = 'RESUMED'
-            # Existing candidate.10 lifecycle/fan observer owns rearming.
+            # Lifecycle consumes the prepared generation without rearming it.
             self.emit('RESUMED')
         elif n.state in ('cancelled', 'complete', 'error'):
             self.fail('print ended after M24', external=True)
@@ -880,6 +1032,18 @@ class AutoRecovery:
                 raise ValueError('invalid final commit')
             if not self.guard(r):
                 return
+            self.o._drain_edges()
+            if not self.detector_coherent(r):
+                raise ValueError('main PD3 detector inconsistent before M24')
+            m = self.o.machine
+            generation = m.rearm_pd3(self.o.position(self.o.now()), self.o.now(),
+                                    'AUTO_RECOVERY_RESUME', phase='RESUME')
+            m.resume_generation = (m.epoch, m.path, generation)
+            r['resume_generation'] = generation
+            r['motion_key'] = (m.epoch, generation)
+            logging.info('[GAPGUARD_TRACE] PD3_RESUME_GENERATION purge_generation=%s '
+                         'resume_generation=%s E=%s state=ARMING ts=%s',
+                         r['purge_generation'], generation, m.motion.reference, self.o.now())
             self.drop_temp(r)
             r.update(state='RESUMING', m24=True, deadline=self.o.now() + 10.)
             self.emit('M24')
@@ -1017,8 +1181,8 @@ class GapGuard:
         # Refresh the real file state before consuming current-session events.
         # Observing a resume must not discard an already received real edge.
         if not self.machine.initialized:
-            for epoch, when, mask, pos in self._edges:
-                if epoch == self.machine.epoch and when >= self.machine.min_eventtime:
+            for epoch, generation, when, mask, pos in self._edges:
+                if self.machine.generation_valid(epoch, generation, when):
                     # A real report wins over the silent-low deadline fallback.
                     self.machine.motion.acquire(mask)
                     self.machine.initialized = True
@@ -1026,9 +1190,9 @@ class GapGuard:
         now = self.now()
         self._observe(now, self.native(), self.position(now), evaluate=False)
         while self._edges:
-            epoch, when, mask, pos = self._edges.popleft()
-            if epoch == self.machine.epoch:
-                self._gpio_observed(when, mask, pos)
+            epoch, generation, when, mask, pos = self._edges.popleft()
+            if self.machine.generation_valid(epoch, generation, when):
+                self._gpio_observed(when, mask, pos, generation=generation, epoch=epoch)
             # An old epoch must not change the new session's electrical
             # baseline or its motion reference.
 
@@ -1268,6 +1432,7 @@ class GapGuard:
         # Diagnostics must never raise into the detector or the pause path.
         try:
             fields['epoch'] = self.machine.epoch
+            fields['generation'] = self.machine.motion_generation
             logging.info('[GAPGUARD_TRACE] %s %s', event,
                          ' '.join('%s=%s' % (k, repr(v) if isinstance(v, float) else
                                             '-' if v is None else v)
@@ -1310,7 +1475,8 @@ class GapGuard:
         if before is not None:
             self._trace_steps(before, when, position)
 
-    def _gpio_observed(self, when, mask, position, acquire_only=False):
+    def _gpio_observed(self, when, mask, position, acquire_only=False,
+                       generation=None, epoch=None):
         before = self._trace_snapshot() if self.motion_trace else None
         qualified = (not acquire_only and self.machine.ready and self.machine.running
                      and self.machine.mode == 'FULL'
@@ -1319,7 +1485,13 @@ class GapGuard:
             self.machine.motion.acquire(mask)
             self.machine.initialized = True
         else:
-            self.machine.gpio(when, mask, position)
+            recovery = self.auto_recovery.edge_window(when)
+            accepted = self.machine.gpio(when, mask, position, generation=generation,
+                                         epoch=epoch, recovery=recovery)
+            try:
+                self.auto_recovery.gpio(when, accepted)
+            except Exception:
+                logging.exception('GapGuard AutoRecovery GPIO observer ignored')
         if before is None:
             return
         m = self.machine.motion
@@ -1329,10 +1501,10 @@ class GapGuard:
             return
         kind = 'HIGH->LOW' if before['pd3'] else 'LOW->HIGH'
         previous = self._trace_previous_edge
-        same_epoch = previous is not None and previous[0] == self.machine.epoch
-        de = position - previous[2] if same_epoch and position is not None and previous[2] is not None else None
-        dt = when - previous[1] if same_epoch else None
-        self._trace_previous_edge = (self.machine.epoch, when, position)
+        same_epoch = previous is not None and previous[:2] == (self.machine.epoch, self.machine.motion_generation)
+        de = position - previous[3] if same_epoch and position is not None and previous[3] is not None else None
+        dt = when - previous[2] if same_epoch else None
+        self._trace_previous_edge = (self.machine.epoch, self.machine.motion_generation, when, position)
         self._trace('PD3', ts=when, edge=kind, E=position, dE=de, dt=dt,
                     state=before['state'],
                     PD4='UNKNOWN' if m.pd4 is None else 'PRESENT' if m.pd4 else 'ABSENT')
@@ -1409,14 +1581,16 @@ class GapGuard:
             # incorrectly be replaced by the silent-low fallback after ready.
             self._boot_snapshot = mask
             return
-        if eventtime < self.machine.min_eventtime:
+        if eventtime < max(self.machine.min_eventtime, self.machine.generation_time):
             return
-        try:
-            self.auto_recovery.gpio(eventtime, mask)
-        except Exception:
-            logging.exception('GapGuard AutoRecovery GPIO observer ignored')
+        # The first callback observing a real manual resume opens its generation
+        # before enqueueing. Older queued events retain their old generation.
+        native = self.native()
+        if not self.machine.running and native.printing():
+            self._observe(eventtime, native, self.position(eventtime), evaluate=False)
         # Acquisition and intent only; no G-code or physical wait in this path.
-        self._edges.append((self.machine.epoch, eventtime, mask, self.position(eventtime)))
+        self._edges.append((self.machine.epoch, self.machine.motion_generation,
+                            eventtime, mask, self.position(eventtime)))
         self._drain_edges()
         self._wake()
 

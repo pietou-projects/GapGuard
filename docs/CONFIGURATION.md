@@ -7,6 +7,8 @@ There are two complementary references:
 
 The overlay was compared with the live configuration observed on 11 October 2026, SHA-256 `5bb49d848ffeada5f21a611b8f16d163a1737dae6f641fd71531af85dcce358d`. The earlier validated file, `a018667f0ae1a7e20a19accbbd65bce103d8f83b4c323679e5f275aae5768bbc`, differs in its private calibration block and comment normalization, with no functional difference before SAVE_CONFIG. Neither complete file is distributed. English comments and descriptions change wording only; executable overlay settings and macro bodies match the live functional blocks.
 
+The 4.2.1-rc1 update adds no configuration option and changes no functional value in this overlay. Its header identifies the candidate; all executable settings and macro bodies are unchanged. An existing matching 4.2.0 installation only needs the module update. See [Upgrading and rollback](UPGRADING-4.2.1.md).
+
 ## Detection settings
 
 | Setting | Reference value | Meaning |

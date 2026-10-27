@@ -105,10 +105,12 @@ class WindowTests(unittest.TestCase):
     def test_purge_emission_settle_wipe_finalize_byte_identical(self):
         root=Path(__file__).resolve().parent
         before=(root/'reference/window6.gapguard.py').read_bytes()
-        after=(root.parent/'src/gapguard.py').read_bytes()
+        after=(root/'reference/gapguard_420.py').read_bytes()
         for start,end in [(b"        elif state == 'PURGE':",b"        elif state == 'BLOCK':"),
                           (b"        elif state == 'SETTLE':",b"        elif state == 'WIPE':"),
                           (b"        elif state == 'FINAL':",b"        elif state == 'RESUMING':")]:
             self.assertEqual(before[before.index(start):before.index(end)],after[after.index(start):after.index(end)])
         self.assertNotIn(b'WINDOW_BLOCKS',after)
         self.assertNotIn(b'PD3_WINDOW',after)
+        from scope421 import assert_scope
+        assert_scope(self)

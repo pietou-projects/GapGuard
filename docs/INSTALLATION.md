@@ -2,13 +2,13 @@
 
 This guide reproduces the audited Giga integration. It is not a full replacement printer configuration. Work with the printer idle and keep a backup of your current module and configuration together. Preserve your mesh, SAVE_CONFIG, PID tuning and all unrelated settings.
 
-GapGuard 4.2.0 uses the exact production module validated during 4.2.0-rc1. For reproducibility, the Python module was not modified solely to change its internal version string, so the reference printer still reports 'GapGuard 4.2.0-rc1 ready'. This cosmetic difference is intentional; no new software behavior was introduced for the stable release.
+**This guide accompanies the 4.2.1-rc1 Pre-release. Automated tests and loading on the reference printer have passed; validation during real printing is still pending.** If you already use the matching 4.2.0 integration, follow [Upgrading and rollback](UPGRADING-4.2.1.md) instead of repeating the installation or rewriting your configuration.
 
 ## 1. Check compatibility
 
 The reference setup uses a ZNP GIGA V3.0 board, STM32F407VET6 and a BTT Smart Filament Sensor V2.1. The audited Klipper reports `v0.11.0-303-g67499853-dirty`; that identifies the observed installation, not a recommendation to install or update to another build. Compatibility depends on the [native dependency contract](ORANGESTORM-GIGA-REFERENCE.md), not just a version label.
 
-The production module is [src/gapguard.py](../src/gapguard.py), version 4.2.0-rc1, SHA-256 `cf239a52f65f345092946f2289a473c590244ced22c5f31c27e88e26b20473f1`. Files under tests are not installation modules. No firmware flash, Klipper update or Moonraker update is part of this procedure.
+The production module is [src/gapguard.py](../src/gapguard.py), version 4.2.1-rc1, SHA-256 `bf74084df26570d529a15efdbe3dfb6d93653f2f2dc53a6cb2d6e7a2eb27403a`. Files under tests are not installation modules. No firmware flash, Klipper update or Moonraker update is part of this procedure.
 
 ## 2. Print the sensor mount
 
@@ -39,7 +39,7 @@ sha256sum /home/mks/klipper/klippy/extras/gapguard.py
 Expected SHA-256:
 
 ```text
-cf239a52f65f345092946f2289a473c590244ced22c5f31c27e88e26b20473f1
+bf74084df26570d529a15efdbe3dfb6d93653f2f2dc53a6cb2d6e7a2eb27403a
 ```
 
 ## 7. Check the native Elegoo macros
@@ -72,7 +72,7 @@ Switch it on normally. No flashing or software update is required.
 
 ## 14. Check loading
 
-Wait for Klipper Ready and inspect klippy.log for `GapGuard 4.2.0-rc1 ready`. Check for configuration errors or exceptions. Confirm that the six public macros are present in Fluidd. Do not proceed with a print if loading failed.
+Wait for Klipper Ready and inspect klippy.log for `GapGuard 4.2.1-rc1 ready`. Check for configuration errors or exceptions. Confirm that the six public macros are present in Fluidd. Do not proceed with a print if loading failed.
 
 After the physical power cycle, use the printer's SSH terminal to inspect the loading message:
 
@@ -80,7 +80,7 @@ After the physical power cycle, use the printer's SSH terminal to inspect the lo
 grep -a "GapGuard .* ready" /home/mks/klipper_logs/klippy.log | tail
 ```
 
-The output should contain `GapGuard 4.2.0-rc1 ready` for the new startup. Older matching lines alone do not confirm this startup.
+The output should contain `GapGuard 4.2.1-rc1 ready` for the new startup. Older matching lines alone do not confirm this startup.
 
 ## 15. Read the initial status
 
@@ -106,6 +106,6 @@ Only after the startup and sensor checks pass, start your usual known-good test 
 
 Manual PAUSE remains Elegoo behavior. `GAPGUARD_PAUSE` and confirmed sensor faults use that pause, then set the nozzle target to zero while maintaining bed targets. GapGuard also saves and switches off fan1 and restores it after real printing resumes. Successful AutoRecovery resumes the file itself through one M24; do not also run RESUME after it succeeds. Manual Elegoo RESUME is used only when the operator intentionally takes over a paused print or automatic recovery has not resumed it. The reference Elegoo RESUME includes its native `G1 E100 F200` purge. CANCEL_PRINT remains the native cancel command.
 
-Only confirmed PD3_NO_MOTION with PD4 present arms AutoRecovery. After physical pause completion and 30 seconds, it can reheat and run the full 300 mm purge. It requires at least two real PD3 transitions in total before wiping and sending one M24. It confirms actual printing afterward. Read [AUTORECOVERY](AUTORECOVERY.md) before deliberately testing this behavior; do not expect a manual GapGuard pause or PD4 fault to start it.
+Only confirmed PD3_NO_MOTION with PD4 present arms AutoRecovery. After physical pause completion and 30 seconds, it can reheat and run the full 300 mm purge. It requires at least two real PD3 transitions accepted by the main detector in the current recovery generation. It then checks detector consistency before wiping, prepares a fresh resume generation and sends one M24. It confirms actual printing afterward. Read [AUTORECOVERY](AUTORECOVERY.md) before deliberately testing this behavior; do not expect a manual GapGuard pause or PD4 fault to start it.
 
 If any check fails, retain the logs and use [troubleshooting](TROUBLESHOOTING.md). Restore your own saved module/configuration pair if rollback is needed; never replace your mesh with another machine's data.

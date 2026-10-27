@@ -53,7 +53,7 @@ def adapter(m, n, now=20., pos=10.):
     a._saved_fan1=a._fan_restore_pending=None; a._dead=False
     a._boot_snapshot=None; a.now=lambda:now; a.position=lambda t:pos
     a.native=lambda:n; a._wake=lambda:None
-    a.auto_recovery=NS(gpio=lambda *args:None)
+    a.auto_recovery=NS(gpio=lambda *args:None,edge_window=lambda when:False)
     return a
 
 class PD3RequestedTests(unittest.TestCase):
@@ -113,7 +113,7 @@ class PD3RequestedTests(unittest.TestCase):
 
     def test_old_epoch_changes_neither_levels_nor_reference(self):
         m,n=machine();a=adapter(m,n)
-        a._edges.append((m.epoch-1,19.,3,8.));a._drain_edges()
+        a._edges.append((m.epoch-1,m.motion_generation,19.,3,8.));a._drain_edges()
         self.assertEqual(m.motion.pd3,0);self.assertEqual(m.motion.reference,0.)
         self.assertFalse(a._edges)
 
@@ -121,13 +121,14 @@ class PD3RequestedTests(unittest.TestCase):
         m,n=machine();m.min_eventtime=10.
         m.gpio(9.,3,8.);self.assertEqual(m.motion.pd3,0);self.assertEqual(m.motion.reference,0.)
 
-    def test_already_queued_edge_survives_observed_resume(self):
+    def test_old_generation_queue_cannot_seed_observed_resume(self):
         m,n=machine();m.observe(12.,gg.Native('paused',False,n.path),5.)
         a=adapter(m,n,now=20.,pos=11.)
-        a._edges.append((m.epoch,19.9,3,10.));a._drain_edges()
+        a._edges.append((m.epoch,m.motion_generation,19.9,3,10.));a._drain_edges()
         self.assertEqual(m.min_motion_time,20.)
-        self.assertEqual((m.motion.state,m.motion.reference),('NORMAL',10.))
-        self.assertEqual(m.motion.last_edge_position,10.)
+        self.assertEqual((m.motion.state,m.motion.reference),('ARMING',11.))
+        self.assertIsNone(m.motion.last_edge_position)
+        self.assertEqual(m.motion.pd3,0)
 
     def test_gpio_callback_first_after_resume(self):
         m,n=machine();m.observe(12.,gg.Native('paused',False,n.path),5.)
@@ -293,16 +294,18 @@ class PreservationTests(unittest.TestCase):
             return {c.name+'.'+f.name:b''.join(lines[f.lineno-1:f.end_lineno])
                     for c in tree.body if isinstance(c,ast.ClassDef)
                     for f in c.body if isinstance(f,ast.FunctionDef)}
-        a=blocks(ROOT/'fixtures/live/gapguard.py');b=blocks(ROOT.parent/'src/gapguard.py')
+        a=blocks(ROOT/'fixtures/live/gapguard.py');b=blocks(ROOT/'reference/gapguard_420.py')
         changed={k for k in a if a[k]!=b[k]}
         self.assertEqual(changed,{'Machine._clear','Machine.gpio','Machine.observe','Machine.status',
             'AutoRecovery.__init__','AutoRecovery.tick','AutoRecovery.advance','GapGuard._ready','GapGuard._drain_edges',
             'GapGuard._gpio_observed','GapGuard._execute_pause','GapGuard._cool_sfs_pause'})
         self.assertEqual(set(b)-set(a),{'AutoRecovery.confirm_resume'})
+        from scope421 import assert_scope
+        assert_scope(self)
 
     def test_new_version_and_normal_defaults_unchanged(self):
         src=(ROOT/'fixtures/live/gapguard.py').read_text(encoding='utf-8')
-        self.assertEqual(gg.VERSION,'4.2.0-rc1')
+        self.assertEqual(gg.VERSION,'4.2.1-rc1')
         self.assertIn("VERSION = '4.1.0-candidate.14-window6-r2'",src)
         self.assertEqual(gg.Settings.DEFAULTS,dict(suspect_distance=9.,verify_trigger=50.,verify_distance=12.,verify_transitions=6,check_interval=.25,init_guard=.25))
 

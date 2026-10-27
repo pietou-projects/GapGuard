@@ -46,7 +46,7 @@ class Gcmd:
     error=ValueError
 
 class Rig:
-    def __init__(self, enabled=1):
+    def __init__(self, enabled=1, initial_fault=True):
         self.t=100.;self.calls=[];self.callbacks=[];self.shut=False
         self.submissions=[];self.last_move_submission=None;self.move_records=[]
         self.fail_command=None;self.on_command=None;self.commands_with_mutex=[]
@@ -73,7 +73,9 @@ class Rig:
         self.pr=NS(is_paused=False,sd_paused=False,pause_command_sent=False)
         self.m=gg.Machine(gg.Settings(dict(verify_trigger=20.,verify_distance=20.,verify_transitions=2)))
         self.m.start_ready(0.,1);self.m.gpio(1.,3,0.);self.m.observe(self.t,self.native,0.)
-        self.m.request_pause('VERIFY_FAIL');self.fault=self.m.claim_pause(self.native)
+        self.fault=None
+        if initial_fault:
+            self.m.request_pause('VERIFY_FAIL');self.fault=self.m.claim_pause(self.native)
         self.fan=dict(epoch=self.m.epoch,path=self.m.path,value=.5,scale=255.,phase='off')
         self.toolhead=NS(get_position=lambda:list(self.commanded),
                          get_last_move_time=lambda:self.finish,check_busy=self.busy)
@@ -97,6 +99,14 @@ class Rig:
         self.o.script=self.script
         values=dict(gg.AutoRecovery.DEFAULTS,auto_recovery_enabled=enabled)
         self.r=gg.AutoRecovery(self.o,values);self.r.bind()
+        # Use the production main GPIO queue instead of a parallel recovery
+        # counter plus direct Motion.acquire() injection.
+        import collections
+        a=object.__new__(gg.GapGuard);a.__dict__.update(vars(self.o))
+        a.auto_recovery=self.r;a.motion_trace=False;a.s=self.m.s
+        a._edges=collections.deque();a._trace_previous_edge=None
+        a._observe_fan=lambda n:None;a._wake=lambda:None
+        self.o=a;self.r.o=a
         self.events=[];self.r.emit=lambda event,**fields:self.events.append((event,dict(fields)))
     def busy(self,t):return self.finish,t,self.end_confirm
     def position(self,t):
@@ -141,13 +151,14 @@ class Rig:
         return self.r.pause_completed(self.fault,token,self.m.path)
     def pause(self):return self.arm()
     def tick(self,dt=.25):
-        self.t+=dt;self.r.tick(self.t)
+        self.t+=dt;self.o._drain_edges();self.r.tick(self.t)
         todo,self.callbacks=self.callbacks,[]
         for cb in todo:cb(self.t)
     def gpio(self,pd3=None,pd4=1,when=None):
         if pd3 is None:pd3=self.r.pd3
-        self.r.gpio(self.t if when is None else when,pd3+2*pd4)
-        self.m.motion.acquire(pd3+2*pd4)
+        if when is None and self.state()=='BLOCK' and self.t<=self.move_start:
+            self.t=self.move_start+.01  # physical motion, not just queued G1
+        self.o._gpio(self.t if when is None else when,pd3+2*pd4)
     def state(self):return self.r.record['state'] if self.r.record else 'IDLE'
     def until(self,state,maxsteps=4000,edges=2):
         seen=set()
@@ -227,7 +238,7 @@ class RecoveryTests(unittest.TestCase):
     def test_22_f200(self):
         x=Rig();x.block();self.assertAlmostEqual(x.finish-x.move_start,6.)
     def test_23_only_real_edges_unknown_excluded(self):
-        x=Rig();r=x.block();x.r.pd3=None;x.gpio(1);self.assertEqual(r['count'],0);x.gpio(0);self.assertEqual(r['count'],1)
+        x=Rig();r=x.block();x.m.motion.pd3=None;x.gpio(1);self.assertEqual(r['count'],0);x.gpio(0);self.assertEqual(r['count'],1)
     def test_24_pd4_only_not_counted(self):
         x=Rig();r=x.block();x.gpio();self.assertEqual(r['count'],0)
     def test_25_zero_edges_fail(self):self.assert_block_fails(0)
@@ -312,7 +323,7 @@ class RecoveryTests(unittest.TestCase):
     def test_58_sfs_lifecycle_unchanged(self):
         for n in ('_observe','_monitor','cmd_mode','cmd_pause','native'):self.assert_method_unchanged(n)
         a=ast.parse((P/'reference/candidate10.gapguard.py').read_text(encoding='utf-8'));b=ast.parse((P.parent/'src/gapguard.py').read_text(encoding='utf-8'))
-        for name in ('Motion','Settings','Native'):
+        for name in ('Settings','Native'):
             get=lambda t:ast.dump(next(n for n in t.body if isinstance(n,ast.ClassDef) and n.name==name))
             self.assertEqual(get(a),get(b))
     def test_59_compile(self):compile((P.parent/'src/gapguard.py').read_bytes(),'gapguard.py','exec')
@@ -359,7 +370,8 @@ class RecoveryTests(unittest.TestCase):
         from test_requested_changes import section
         self.assertEqual(functional(cfg.replace(section(cfg,'idle_timeout'),b'')),functional(base.replace(section(base,'idle_timeout'),b'')))
         self.assertNotIn(b'auto_recovery_max_per_session',cfg)
-        self.assertIn(gg.VERSION.encode(),cfg)
+        # The module-only fix deliberately reuses the unchanged RC1 config.
+        self.assertIn(b'4.2.0-rc1',cfg)
     def test_77_no_stats_collision(self):self.assertFalse(hasattr(gg.GapGuard,'stats'));self.assertFalse(hasattr(Rig().r,'stats'))
     def test_78_no_new_pin_api(self):
         source=ast.get_source_segment((P.parent/'src/gapguard.py').read_text(encoding='utf-8'),next(n for n in ast.parse((P.parent/'src/gapguard.py').read_text(encoding='utf-8')).body if isinstance(n,ast.ClassDef) and n.name=='AutoRecovery'))
@@ -412,6 +424,7 @@ class RecoveryTests(unittest.TestCase):
         a=object.__new__(gg.GapGuard);a.__dict__.update(vars(x.o));a._fan_restore_pending=None
         a.motion_trace=False;a.s=x.m.s;a._edges=collections.deque()
         a._fan_owned=gg.GapGuard._fan_owned.__get__(a)
+        a._observe_fan=gg.GapGuard._observe_fan.__get__(a)
         a._drain_edges=lambda:None
         a.script=lambda s:x.calls.append(s)
         a._observe(x.t,x.native,x.position(x.t));self.assertEqual(x.callbacks,[])
@@ -419,8 +432,11 @@ class RecoveryTests(unittest.TestCase):
         a._observe(x.t,x.native,x.position(x.t));self.assertEqual(len(x.callbacks),1)
         for cb in list(x.callbacks):cb(x.t)
         self.assertIn('SET_PIN PIN=fan1 VALUE=127.5',x.calls);self.assertIsNone(a._saved_fan1)
-    def test_89_epoch_is_diagnostic_only(self):
-        x=Rig();r=x.block();x.m.epoch+=1;x.gpio(1-x.r.pd3);self.assertEqual(r['count'],1)
+    def test_89_old_epoch_cannot_supply_recovery_evidence(self):
+        x=Rig();r=x.block();epoch=x.m.epoch;x.m.epoch+=1
+        x.o._edges.append((epoch,x.m.motion_generation,x.t,2,x.position(x.t)))
+        x.o._drain_edges();self.assertEqual(r['count'],0)
+        x.tick();self.assertEqual(x.state(),'FAILED');self.assertNotIn('M24',x.calls)
     def test_90_new_session_eligible_after_terminal(self):
         x=Rig();x.pause();x.until('WAIT');x.cancel();x.tick()
         x.native=gg.Native('printing',True,'/new.gcode');x.m.observe(x.t,x.native,0.)

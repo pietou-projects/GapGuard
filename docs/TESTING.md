@@ -1,26 +1,28 @@
-# Tests and scope
+# Tests and validation scope
 
-On 11 October 2026, the exact final preparation was retested offline: **231 PASS, 0 FAIL, 0 ERROR, 0 SKIP**, using Python 3.14.7. Compilation and Python 3.7 syntax analysis passed. This is not an execution under Python 3.7 on the printer.
+The 4.2.1-rc1 public package contains **258 tests**: the 223 retained public tests plus 35 new tests for shared PD3 rearming, event generations and the recovery-to-printing transition. The [test changes](TEST-CHANGES-4.2.1.md) explain the adapted assertions individually.
 
-## Public suite
+## Run the offline suite
 
-Use Python 3.10 or later for this public test environment (run here under 3.14.7). Do not install the test dependencies on the Giga.
+Use Python 3.10 or later for this test environment. Do not install test dependencies on the printer.
 
 ```sh
 python -m venv .venv
-# Activate this environment using the command for your operating system.
+# Activate the environment using the command for your operating system.
 python -m pip install -r tests/requirements.txt
 python -B tests/run_tests.py
 ```
 
-The public suite contains **223 tests**, all passing. Behavioral assertions are retained from the existing tests: acquisition, Motion, lifecycle, modes, pause, fan, thermal behavior, AutoRecovery, M24, cumulative transitions and wiping. Fixture paths were relocated; simulation configurations are excerpts without mesh or calibration data.
+The published [test results](../tests/results/4.2.1-rc1/test-results.txt), [100-cycle evidence](../tests/results/4.2.1-rc1/100_cycles.json) and [rearming equivalence comparison](../tests/results/4.2.1-rc1/equivalence.json) are automated evidence. The public package is also tested after ZIP extraction; its publication receipt records that separate check.
 
-Eight tests that preserve complete private configurations and their hashes are not distributed. Their exact list is in `tests/EXCLUDED_MACHINE_PRESERVATION_TESTS.json`. They remain present and pass in the internal 231-test suite. No behavioral safety assertion was removed to obtain this result.
+The 100-cycle test uses one simulated print session. Each cycle reaches a PD3 fault through normal detection, pauses, processes purge edges through the main detector, commands all 15 blocks, validates recovery, sends one M24, confirms actual simulated printing and accepts a new edge into NORMAL. It checks that references, counts, pause requests and old-generation events do not leak into the next cycle.
 
-Historical Python sources in `tests/reference/` and `tests/fixtures/` are used only for non-regression comparisons and negative tests. Do not install them. Only `src/gapguard.py` is the production module. The fixture's G-code parser comes from the audited Klipper sources; movement, GPIOs, clocks, mutexes and heating are simulated. Deliberately injected errors can produce ERROR log entries while unittest still passes.
+Movement, GPIOs, clocks, mutexes and heating are simulated. Expected error-injection cases may write ERROR messages while the test passes. Historical source/configuration fixtures are only test inputs and must never be installed. Only `src/gapguard.py` is the production module.
 
-Historical 9/50/12/6 values in some tests verify parameterization; the explicit public profile remains 9/20/20/2. Historical test names do not change the current AutoRecovery criterion: cumulative transitions over 300 mm.
+The historical private-configuration exclusions are listed in `tests/EXCLUDED_MACHINE_PRESERVATION_TESTS.json`. No complete private printer.cfg, mesh, credentials or printer log is distributed. Historical 9/50/12/6 tests check parameterization; the explicit public profile remains 9/20/20/2.
 
-Earlier physical tests apply to their respective candidates. Even a complete offline suite does not guarantee detection or prove that every PD3 signal gap is resolved. No physical tests are performed during this GitHub publication or its documentation correction.
+## What has been checked on the printer
 
-The live-source documentation review reruns the 223 public tests offline. The review archive is also tested after extraction. The production module, test code and hardware binaries remain unchanged. No watcher test result from an older preparation validates the live v1.2.2 watcher.
+On 27 October 2026, the exact candidate was installed and then loaded after a physical power cycle. Klipper reached Ready, logged `GapGuard 4.2.1-rc1 ready`, and reported completed PD3/PD4 acquisition with no active print or fault. Syntax also passed under the printer's Python 3.7.3. These are loading checks, not print-time validation of the correction.
+
+See [current status](PD3-REARM-STATUS.md) and [the physical validation plan](VALIDATION-RUNTIME.md). No claim is made that repeated faults have already been eliminated or that every initial PD3 gap has a known cause.

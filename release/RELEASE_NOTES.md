@@ -1,29 +1,40 @@
-# GapGuard 4.2.0
+# GapGuard 4.2.1-rc1
 
-This is the **first stable public release** of GapGuard. The maintainer has accepted the existing runtime validation on the reference installation. No new physical test was performed for this documentation and packaging promotion.
+**Pre-release for testing the PD3 monitoring handoff after AutoRecovery.** Automated tests and startup checks have passed. Validation during real printing is still pending.
 
-GapGuard 4.2.0 uses the exact production module validated during 4.2.0-rc1. For reproducibility, the Python module was not modified solely to change its internal version string, so the reference printer still reports 'GapGuard 4.2.0-rc1 ready'. This cosmetic difference is intentional; no new software behavior was introduced for the stable release.
+## Why this candidate exists
 
-GapGuard was developed after normal Infinity Flow S1+ A→B spool changes were observed to produce unusually long motion-signal gaps that could trigger false motion alarms even though filament feeding resumed normally. It is designed to tolerate transient handoff behavior without simply delaying detection of genuine feed failures; these observations do not explain every historical PD3 silence.
+The reference Giga sometimes reported repeated PD3 motion faults after an S1+ spool change and AutoRecovery. Returning manually from PARTIAL to FULL had restored monitoring. The code review found that recovery counted purge transitions separately from the main detector, so successful purge evidence was not tied to a consistently rearmed detector when printing resumed.
 
-The production module is exactly `cf239a52f65f345092946f2289a473c590244ced22c5f31c27e88e26b20473f1`. It monitors a BTT SFS V2.1 using PD4 presence and PD3 motion on the tested Elegoo OrangeStorm Giga with a ZNP GIGA V3.0 board and STM32F407VET6 MCU. The supplied profile is 9/20/20/2.
+This candidate uses one shared rearming operation and explicit motion generations. The main detector must accept the purge evidence, and a fresh generation is prepared before the single M24 and retained when the file resumes. This addresses the software inconsistency; it does not establish the physical cause of every original PD3 signal gap.
 
-GapGuard-managed pauses use the native Elegoo PAUSE, set the nozzle target to zero and preserve all four bed targets. Their fan1 state is saved, switched off and restored after real printing resumes. Manual Elegoo PAUSE, RESUME and CANCEL_PRINT retain their behavior.
+## Validation so far
 
-AutoRecovery after PD3_NO_MOTION with PD4 present waits for the pause to finish and then waits 30 seconds. It reheats the nozzle and commands 300 mm of extruder travel in 15 × 20 mm blocks at F200, requiring at least two genuine transitions across the full purge. Commanded extruder travel does not by itself prove that 300 mm of filament passed through the nozzle; PD3 transitions provide separate evidence of actual filament motion. It submits the continuous F15000 wipe, restores the saved state and sends one M24, then confirms actual active printing. See [AutoRecovery](../docs/AUTORECOVERY.md) for all checks and limitations.
+- 258 automated tests passed, including 100 simulated recovery cycles in one session.
+- The exact module was installed on the reference OrangeStorm Giga and loaded after a physical power cycle on 27 October 2026.
+- Klipper reached Ready and logged `GapGuard 4.2.1-rc1 ready`; sensor acquisition completed with no active fault.
+- Recovery behavior and the absence of repeated faults during real printing remain to be verified. [Issue #1](https://github.com/pietou-projects/GapGuard/issues/1) stays open.
 
-The public interface has six commands: GAPGUARD_PAUSE, GAPGUARD_STATUS, GAPGUARD_STATUS_DEBUG, GAPGUARD_ENABLE_FULL, GAPGUARD_ENABLE_PARTIAL and GAPGUARD_DISABLE_ALL. Validated runtime messages remain French. The watcher is a separate optional project and is not included in this GapGuard release. The tested integrated installation currently uses an information-only watcher. The watcher repository's historical public v1.0.0 release used automatic pause behavior; a sanitized, live-derived public update is being prepared separately.
+## What stays the same
 
-The package includes the production module, mergeable configuration, native dependency reference, English documentation, automated tests, five exact hardware photographs and the exact STL/3MF mount models. It excludes complete private configurations, mesh/SAVE_CONFIG, PID data, credentials and machine logs. Code is GPL-3.0-or-later; models are CC0 1.0 with voluntary credit to T.L.
+The configured 9/20/20/2 thresholds, 30-second delay, 300 mm of commanded extruder travel in 15 × 20 mm blocks at F200, minimum two cumulative PD3 transitions, continuous F15000 wipe and one M24 are unchanged. Commanded travel is not proof of filament length delivered through the nozzle; accepted PD3 transitions provide separate motion evidence.
 
-The 223 public tests exercise simulated behavior. Passing them does not establish physical reliability on every printer or resolve the cause of every historical PD3 signal gap. Hardware identification is V2.1 for this installation; external V2.0 documentation does not imply universal equivalence.
+The six public GapGuard commands and native Elegoo PAUSE / RESUME / CANCEL_PRINT are preserved. A GapGuard pause sets the nozzle target to zero and keeps the four bed targets. Fan1 and PD4 behavior are retained. The FlowQ watcher remains a separate information-only project and is not included or changed by this release.
 
-## Known limitation
+## Installation and rollback
 
-The underlying cause of every historical PD3 signal gap has not been identified. GapGuard is designed to detect and safely handle confirmed loss of filament-motion evidence, but it does not claim to resolve the electrical or physical origin of every PD3 gap.
+For the matching 4.2.0 installation, this is a **module-only upgrade**. Keep your printer.cfg, mesh/SAVE_CONFIG, native macros, stock Klipper, Moonraker, watcher and firmware unchanged. Back up the current module, verify the new file, and use a physical OFF / approximately 30-second wait / ON cycle. Follow [Upgrading and rollback](../docs/UPGRADING-4.2.1.md). New users should read [INSTALLATION](../docs/INSTALLATION.md) and the native dependency requirements first.
 
-## Development and release continuity
+The production module's SHA-256 is:
 
-GapGuard was developed by Pierre Juillard with substantial assistance from ChatGPT by OpenAI for log analysis, diagnostic reasoning, Python/Klipper code development, tests, documentation, review and release preparation. The maintainer performed the hardware observations and physical runtime validation on the reference printer. AI assistance was a development tool, not a substitute for physical validation.
+```text
+bf74084df26570d529a15efdbe3dfb6d93653f2f2dc53a6cb2d6e7a2eb27403a
+```
 
-This stable package carries forward the corrected hardware documentation, five retained photographs, Why GapGuard exists context and AI assistance credit. The previous v4.2.0-rc1 tag and Pre-release are preserved. No configuration behavior, production code, reference-printer file or watcher is changed by this promotion.
+This is exactly the module installed on the reference printer. Publishing it does not deploy anything to a printer.
+
+## Scope and release continuity
+
+Read [the status report](../docs/PD3-REARM-STATUS.md), [PD3 rearming](../docs/PD3-REARMING.md), [tests](../docs/TESTING.md) and [physical validation plan](../docs/VALIDATION-RUNTIME.md). The package contains the module, mergeable configuration, tests, English documentation and the unchanged five photographs, STL and 3MF. It excludes private configurations and raw machine logs.
+
+Code remains GPL-3.0-or-later. Mount models remain CC0 1.0, with credit to T.L. The historical v4.2.0-rc1 Pre-release and stable v4.2.0 remain unchanged. **v4.2.0 remains Latest; v4.2.1-rc1 is not a stable 4.2.1 release.**

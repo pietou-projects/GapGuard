@@ -2,7 +2,7 @@
 
 Updated 27 October 2026.
 
-**The 4.2.1-rc1 candidate is installed and starts correctly on the reference OrangeStorm Giga. Its behavior during a real print still needs to be checked.** This page records progress on the PD3 recovery problem; it does not announce a new public release.
+**The 4.2.1-rc1 candidate is installed and starts correctly on the reference OrangeStorm Giga. Its behavior during a real print still needs to be checked.** This page records progress on the PD3 recovery problem. The candidate is published as a [Pre-release for testing](https://github.com/pietou-projects/GapGuard/releases/tag/v4.2.1-rc1), not as a stable fix.
 
 ## What went wrong
 
@@ -75,6 +75,6 @@ The minimum acceptance check includes no unexplained recurrence for at least one
 
 Until those checks are complete, the issue remains open and **4.2.1-rc1 is a candidate under test**. Passing automated tests and reaching Ready do not prove that the recurring fault is fixed.
 
-The published [4.2.0 release](https://github.com/pietou-projects/GapGuard/releases/tag/v4.2.0), its tag and download assets are unchanged. The production source currently published on `main` is still 4.2.0; this documentation update does not replace it with the candidate.
+The published [4.2.0 release](https://github.com/pietou-projects/GapGuard/releases/tag/v4.2.0), its tag and download assets are unchanged. The source on `main` and the new `v4.2.1-rc1` tag now contain the exact candidate installed on the reference printer. Existing release tags and assets retain their original bytes.
 
 For the existing release's behavior and limitations, see [AutoRecovery](AUTORECOVERY.md), [troubleshooting](TROUBLESHOOTING.md) and [test scope](TESTING.md).

@@ -132,10 +132,12 @@ class WipeTests(unittest.TestCase):
 
 class ScopeTests(unittest.TestCase):
     def test_previous_proposal_function_changes_exact(self):
-        a=blocks(ROOT/'fixtures/previous_proposal/gapguard.py');b=blocks(ROOT.parent/'src/gapguard.py')
+        a=blocks(ROOT/'fixtures/previous_proposal/gapguard.py');b=blocks(ROOT/'reference/gapguard_420.py')
         self.assertEqual(set(a),set(b))
         self.assertEqual({k for k in a if a[k]!=b[k]},
                          {'human_status','human_debug','AutoRecovery.__init__','AutoRecovery.advance','GapGuard._ready'})
+        from scope421 import assert_scope
+        assert_scope(self)
 
 
 

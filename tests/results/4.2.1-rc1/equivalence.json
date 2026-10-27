@@ -1,0 +1,37 @@
+{
+  "manual_partial_full": {
+    "mode": "FULL",
+    "state": "ARMING",
+    "reference": 0.0,
+    "position": 0.0,
+    "verify_start": null,
+    "verify_end": null,
+    "count": 0,
+    "last_edge_position": null,
+    "pd3": 1,
+    "pd4": 1,
+    "initialized": true,
+    "generation": 2,
+    "pause_requested": false,
+    "pause_dispatched": false,
+    "reason": null
+  },
+  "autorecovery_confirm": {
+    "mode": "FULL",
+    "state": "ARMING",
+    "reference": 0.0,
+    "position": 0.0,
+    "verify_start": null,
+    "verify_end": null,
+    "count": 0,
+    "last_edge_position": null,
+    "pd3": 1,
+    "pd4": 1,
+    "initialized": true,
+    "generation": 2,
+    "pause_requested": false,
+    "pause_dispatched": false,
+    "reason": null
+  },
+  "equal": true
+}

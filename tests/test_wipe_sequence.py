@@ -74,7 +74,10 @@ class WipeSequenceTests(unittest.TestCase):
         self.assertEqual(x.calls.count('M24'),1)
 
     def test_previous_implementation_is_rejected_by_same_sequence_assertion(self):
-        raw=(ROOT/'fixtures/previous_rc1/gapguard.py').read_text(encoding='utf-8')
+        raw=(ROOT.parent/'src/gapguard.py').read_text(encoding='utf-8')
+        old=(ROOT/'fixtures/previous_rc1/gapguard.py').read_text(encoding='utf-8')
+        start="        elif state == 'WIPE':";end="        elif state == 'FINAL':"
+        raw=raw[:raw.index(start)]+old[old.index(start):old.index(end)]+raw[raw.index(end):]
         tree=ast.parse(raw)
         cls=next(n for n in tree.body if isinstance(n,ast.ClassDef) and n.name=='AutoRecovery')
         method=next(n for n in cls.body if isinstance(n,ast.FunctionDef) and n.name=='advance')
@@ -89,11 +92,14 @@ class WipeSequenceTests(unittest.TestCase):
 
     def test_only_exact_wipe_patch_in_production(self):
         before=(ROOT/'fixtures/previous_rc1/gapguard.py').read_bytes()
-        after=(ROOT.parent/'src/gapguard.py').read_bytes()
+        after=(ROOT/'reference/gapguard_420.py').read_bytes()
         old=b"            cmd = 'G1 X-20 F15000' if r['wipe'] == 0 else ('G1 X20' if r['wipe'] % 2 else 'G1 X-20')\r\n            self.move(r, cmd)\r\n            r['wipe'] += 1"
         new=b"            self.move(r, 'G1 X-20 F15000\\nG1 X20\\nG1 X-20\\n'\r\n                         'G1 X20\\nG1 X-20\\nG1 X20')\r\n            r['wipe'] = 6"
         self.assertEqual(before.count(old),1)
         self.assertEqual(before.replace(old,new),after)
+        current=(ROOT.parent/'src/gapguard.py').read_bytes()
+        start=b"        elif state == 'WIPE':";end=b"        elif state == 'FINAL':"
+        self.assertEqual(after[after.index(start):after.index(end)],current[current.index(start):current.index(end)])
 
 
 if __name__=='__main__':unittest.main(verbosity=2)

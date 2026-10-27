@@ -30,3 +30,9 @@ The English RC1 documentation update was published at commit `6577cc63049afb8312
 The maintainer approved promotion to the first stable public release, v4.2.0, after documentation and packaging validation. There is no functional code change: the production module, configuration and native macro dependencies are byte-identical to RC1. The internal runtime string remains 4.2.0-rc1 deliberately for reproducibility.
 
 The stable package carries forward the removal of the duplicate mount-detail view, the Why GapGuard exists context and the Development and AI assistance credit. It contains five hardware photographs and the original STL/3MF models. Existing reference-printer validation supports this promotion; no new physical test was performed. The cause of every historical PD3 signal gap remains unresolved. Neither the reference Giga nor the separate watcher is changed by this publication.
+
+## PD3 rearming candidate — 27 October 2026
+
+After repeated PD3 faults following AutoRecovery, the code review identified separate recovery motion counting and main-detector rearming without a shared generation contract. The 4.2.1-rc1 candidate brings these paths together and adds explicit generations. This is distinct from the unresolved physical origin of some initial signal gaps.
+
+The approved candidate passed 258 automated tests and was installed as a module-only change. After the maintainer's physical power cycle, Klipper reached Ready and reported 4.2.1-rc1 with acquired inputs and no active fault. Print validation remains pending. The candidate is published as a new Pre-release for testing; no previous tag or asset is moved or replaced, and stable 4.2.0 remains Latest.

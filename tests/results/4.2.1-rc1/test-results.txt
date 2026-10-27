@@ -1,0 +1,644 @@
+test_100_complete_natural_cycles_same_session (test_pd3_generation.GenerationTests.test_100_complete_natural_cycles_same_session) ... ok
+test_a_to_b_initial_long_gap_then_healthy_motion (test_pd3_generation.GenerationTests.test_a_to_b_initial_long_gap_then_healthy_motion) ... ok
+test_actual_confirm_matches_manual_partial_full (test_pd3_generation.GenerationTests.test_actual_confirm_matches_manual_partial_full) ... ok
+test_after_physical_block_finish_not_counted (test_pd3_generation.GenerationTests.test_after_physical_block_finish_not_counted) ... ok
+test_b_to_a_short_gap_no_pause (test_pd3_generation.GenerationTests.test_b_to_a_short_gap_no_pause) ... ok
+test_between_blocks_not_counted (test_pd3_generation.GenerationTests.test_between_blocks_not_counted) ... ok
+test_common_primitive_equivalence_manual_partial_full_and_recovery (test_pd3_generation.GenerationTests.test_common_primitive_equivalence_manual_partial_full_and_recovery) ... ok
+test_documentary_counter_cannot_validate_without_main_edges (test_pd3_generation.GenerationTests.test_documentary_counter_cannot_validate_without_main_edges) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 969, in advance
+    raise ValueError('insufficient real PD3 transitions over complete purge')
+ValueError: insufficient real PD3 transitions over complete purge
+ok
+test_exact_physical_finish_edge_accepted (test_pd3_generation.GenerationTests.test_exact_physical_finish_edge_accepted) ... ok
+test_exact_unchanged_native_thermal_fan_and_configuration_scope (test_pd3_generation.GenerationTests.test_exact_unchanged_native_thermal_fan_and_configuration_scope) ... ok
+test_failed_m24_retires_prepared_generation_before_manual_resume (test_pd3_generation.GenerationTests.test_failed_m24_retires_prepared_generation_before_manual_resume) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 996, in advance
+    self.finalize(r)
+    ~~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 1050, in finalize
+    self.o.script('M24')
+    ~~~~~~~~~~~~~^^^^^^^
+  File "<workspace>\tests\test_recovery.py", line 138, in script
+    if self.fail_command and self.fail_command in line:raise ValueError('injected send failure')
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: injected send failure
+ok
+test_first_post_resume_edge_enters_normal (test_pd3_generation.GenerationTests.test_first_post_resume_edge_enters_normal) ... ok
+test_four_bed_idle_targets_preserved_during_recovery (test_pd3_generation.GenerationTests.test_four_bed_idle_targets_preserved_during_recovery) ... ok
+test_generation_change_after_validation_prevents_m24 (test_pd3_generation.GenerationTests.test_generation_change_after_validation_prevents_m24) ... ok
+test_incoherent_detector_blocks_commit_even_with_documentary_counts (test_pd3_generation.GenerationTests.test_incoherent_detector_blocks_commit_even_with_documentary_counts) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 996, in advance
+    self.finalize(r)
+    ~~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 1037, in finalize
+    raise ValueError('main PD3 detector inconsistent before M24')
+ValueError: main PD3 detector inconsistent before M24
+ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 996, in advance
+    self.finalize(r)
+    ~~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 1037, in finalize
+    raise ValueError('main PD3 detector inconsistent before M24')
+ValueError: main PD3 detector inconsistent before M24
+ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 996, in advance
+    self.finalize(r)
+    ~~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 1037, in finalize
+    raise ValueError('main PD3 detector inconsistent before M24')
+ValueError: main PD3 detector inconsistent before M24
+ok
+test_invalidate_retires_only_owned_generation (test_pd3_generation.GenerationTests.test_invalidate_retires_only_owned_generation) ... ok
+test_lifecycle_does_not_rearm_prepared_generation (test_pd3_generation.GenerationTests.test_lifecycle_does_not_rearm_prepared_generation) ... ok
+test_main_motion_accepts_purge_edges (test_pd3_generation.GenerationTests.test_main_motion_accepts_purge_edges) ... ok
+test_manual_full_after_recovery_has_same_functional_reset (test_pd3_generation.GenerationTests.test_manual_full_after_recovery_has_same_functional_reset) ... ok
+test_manual_resume_still_rearms_without_prepared_generation (test_pd3_generation.GenerationTests.test_manual_resume_still_rearms_without_prepared_generation) ... ok
+test_no_automatic_retry_after_failure (test_pd3_generation.GenerationTests.test_no_automatic_retry_after_failure) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 969, in advance
+    raise ValueError('insufficient real PD3 transitions over complete purge')
+ValueError: insufficient real PD3 transitions over complete purge
+ok
+test_old_armed_record_cannot_rearm_a_new_file (test_pd3_generation.GenerationTests.test_old_armed_record_cannot_rearm_a_new_file) ... ok
+test_old_generation_cannot_change_electrical_baseline (test_pd3_generation.GenerationTests.test_old_generation_cannot_change_electrical_baseline) ... ok
+test_old_timestamp_rejected_even_with_current_tag (test_pd3_generation.GenerationTests.test_old_timestamp_rejected_even_with_current_tag) ... ok
+test_passive_confirmation_works_with_mutex_busy (test_pd3_generation.GenerationTests.test_passive_confirmation_works_with_mutex_busy) ... ok
+test_pd4_event_does_not_credit_motion (test_pd3_generation.GenerationTests.test_pd4_event_does_not_credit_motion) ... ok
+test_pending_fault_prevents_commit (test_pd3_generation.GenerationTests.test_pending_fault_prevents_commit) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 996, in advance
+    self.finalize(r)
+    ~~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 1037, in finalize
+    raise ValueError('main PD3 detector inconsistent before M24')
+ValueError: main PD3 detector inconsistent before M24
+ok
+test_pre_pause_queue_discarded_by_recovery_generation (test_pd3_generation.GenerationTests.test_pre_pause_queue_discarded_by_recovery_generation) ... ok
+test_purge_event_rejected_in_resume_generation (test_pd3_generation.GenerationTests.test_purge_event_rejected_in_resume_generation) ... ok
+test_required_logs_are_emitted (test_pd3_generation.GenerationTests.test_required_logs_are_emitted) ... ok
+test_resume_generation_exists_before_m24 (test_pd3_generation.GenerationTests.test_resume_generation_exists_before_m24) ... ok
+test_submitted_but_not_physically_started_is_not_purge_evidence (test_pd3_generation.GenerationTests.test_submitted_but_not_physically_started_is_not_purge_evidence) ... ok
+test_two_main_edges_only_complete_full_purge (test_pd3_generation.GenerationTests.test_two_main_edges_only_complete_full_purge) ... ok
+test_unknown_is_acquisition_not_movement (test_pd3_generation.GenerationTests.test_unknown_is_acquisition_not_movement) ... ok
+test_wrong_file_cannot_confirm_resume (test_pd3_generation.GenerationTests.test_wrong_file_cannot_confirm_resume) ... ok
+test_01_hook_after_entire_original_pause_path (test_post_pause_hook.HookTests.test_01_hook_after_entire_original_pause_path) ... ok
+test_02_single_notification (test_post_pause_hook.HookTests.test_02_single_notification) ... ok
+test_03_no_pd4_notification (test_post_pause_hook.HookTests.test_03_no_pd4_notification) ... ok
+test_04_failed_pause_never_arms (test_post_pause_hook.HookTests.test_04_failed_pause_never_arms) ... ERROR:root:GapGuard public Elegoo PAUSE failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 1261, in _execute_pause
+    self.native_pause()
+    ~~~~~~~~~~~~~~~~~^^
+  File "<workspace>\src\gapguard.py", line 1400, in native_pause
+    self.script('PAUSE')
+    ~~~~~~~~~~~^^^^^^^^^
+  File "<workspace>\src\gapguard.py", line 1599, in script
+    self.gcode.run_script_from_command(commands)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "<workspace>\tests\test_post_pause_hook.py", line 30, in execute
+    if x.raise_pause:raise ValueError('injected native PAUSE error')
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: injected native PAUSE error
+ok
+test_05_internal_hook_error_cannot_change_pause (test_post_pause_hook.HookTests.test_05_internal_hook_error_cannot_change_pause) ... ok
+test_06_disabled_matches_candidate10 (test_post_pause_hook.HookTests.test_06_disabled_matches_candidate10) ... ok
+test_07_hook_has_no_immediate_actions_or_machine_mutations (test_post_pause_hook.HookTests.test_07_hook_has_no_immediate_actions_or_machine_mutations) ... ok
+test_08_delay_starts_after_notification_and_completion (test_post_pause_hook.HookTests.test_08_delay_starts_after_notification_and_completion) ... ok
+test_09_original_reset_shutdown_identical (test_post_pause_hook.HookTests.test_09_original_reset_shutdown_identical) ... ok
+test_10_all_own_event_handlers_revoke_queued_callbacks (test_post_pause_hook.HookTests.test_10_all_own_event_handlers_revoke_queued_callbacks) ... ok
+test_11_cancel_during_wait_no_future_actions (test_post_pause_hook.HookTests.test_11_cancel_during_wait_no_future_actions) ... ok
+test_12_manual_resume_during_wait_no_future_actions (test_post_pause_hook.HookTests.test_12_manual_resume_during_wait_no_future_actions) ... ok
+test_13_epoch_file_not_authorization (test_post_pause_hook.HookTests.test_13_epoch_file_not_authorization) ... ok
+test_14_invalidated_old_callback_cannot_clear_new_pending (test_post_pause_hook.HookTests.test_14_invalidated_old_callback_cannot_clear_new_pending) ... ok
+test_15_all_original_worker_lines_in_order (test_post_pause_hook.HookTests.test_15_all_original_worker_lines_in_order) ... ok
+test_16_no_exception_escape_even_if_hook_replaced (test_post_pause_hook.HookTests.test_16_no_exception_escape_even_if_hook_replaced) ... ERROR:root:GapGuard AutoRecovery notification ignored after PAUSE
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 1247, in _worker
+    self.auto_recovery.pause_completed(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        fault=fault, token=stamp, file_path=self.machine.path)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<workspace>\tests\test_post_pause_hook.py", line 151, in <lambda>
+    x,a=worker_fixture();a.auto_recovery.pause_completed=lambda **kw:(_ for _ in ()).throw(RuntimeError('bad hook'))
+                                                                     ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<workspace>\tests\test_post_pause_hook.py", line 151, in <genexpr>
+    x,a=worker_fixture();a.auto_recovery.pause_completed=lambda **kw:(_ for _ in ()).throw(RuntimeError('bad hook'))
+RuntimeError: bad hook
+ok
+test_17_pause_error_not_extra_authorization (test_post_pause_hook.HookTests.test_17_pause_error_not_extra_authorization) ... ERROR:root:GapGuard SFS hotend target-off failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 1293, in _cool_sfs_pause
+    self.script('SET_HEATER_TEMPERATURE HEATER=%s TARGET=0' % self.extruder_name)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<workspace>\src\gapguard.py", line 1599, in script
+    self.gcode.run_script_from_command(commands)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "<workspace>\tests\test_post_pause_hook.py", line 35, in execute
+    else:x.script(s)
+         ~~~~~~~~^^^
+  File "<workspace>\tests\test_recovery.py", line 138, in script
+    if self.fail_command and self.fail_command in line:raise ValueError('injected send failure')
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: injected send failure
+ok
+test_18_epoch_change_does_not_suppress_hook (test_post_pause_hook.HookTests.test_18_epoch_change_does_not_suppress_hook) ... ok
+test_19_notification_has_no_persistent_lock (test_post_pause_hook.HookTests.test_19_notification_has_no_persistent_lock) ... ok
+test_20_enabled_matches_native_pause_actions (test_post_pause_hook.HookTests.test_20_enabled_matches_native_pause_actions) ... ok
+test_21_hook_timer_failure_no_deferred_recovery (test_post_pause_hook.HookTests.test_21_hook_timer_failure_no_deferred_recovery) ... ok
+test_22_passive_gpio_failure_does_not_block_detector (test_post_pause_hook.HookTests.test_22_passive_gpio_failure_does_not_block_detector) ... ok
+test_23_no_private_gapguard_reset_called_by_events (test_post_pause_hook.HookTests.test_23_no_private_gapguard_reset_called_by_events) ... ok
+test_24_invalidation_during_heating_emission_revokes_wait (test_post_pause_hook.HookTests.test_24_invalidation_during_heating_emission_revokes_wait) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 923, in advance
+    self.send(r, 'SET_HEATER_TEMPERATURE HEATER=%s TARGET=%s' % (self.o.extruder_name, target))
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<workspace>\src\gapguard.py", line 869, in send
+    raise ValueError('recovery revoked during action')
+ValueError: recovery revoked during action
+ok
+test_25_manual_pause_command_has_no_auto_hook (test_post_pause_hook.HookTests.test_25_manual_pause_command_has_no_auto_hook) ... ok
+test_delay_remains_30_seconds (test_r2.R2Tests.test_delay_remains_30_seconds) ... ok
+test_epoch_path_change_invalidates_waiting_recovery (test_r2.R2Tests.test_epoch_path_change_invalidates_waiting_recovery) ... ok
+test_failed_attempt_does_not_lock_next_fault (test_r2.R2Tests.test_failed_attempt_does_not_lock_next_fault) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 969, in advance
+    raise ValueError('insufficient real PD3 transitions over complete purge')
+ValueError: insufficient real PD3 transitions over complete purge
+ok
+test_fan_phase_not_authorization (test_r2.R2Tests.test_fan_phase_not_authorization) ... ok
+test_no_fan_or_session_quota_with_explicit_generation_contract (test_r2.R2Tests.test_no_fan_or_session_quota_with_explicit_generation_contract) ... ok
+test_not_paused_at_deadline_no_commands (test_r2.R2Tests.test_not_paused_at_deadline_no_commands) ... ok
+test_pd4_absent_at_deadline_no_commands (test_r2.R2Tests.test_pd4_absent_at_deadline_no_commands) ... ok
+test_three_recoveries_same_print (test_r2.R2Tests.test_three_recoveries_same_print) ... ok
+test_a_two_edges_first_block_only (test_rc1.CumulativeTests.test_a_two_edges_first_block_only) ... ok
+test_b_two_edges_before_last_120mm (test_rc1.CumulativeTests.test_b_two_edges_before_last_120mm) ... ok
+test_b_user_example_three_edges_block_three (test_rc1.CumulativeTests.test_b_user_example_three_edges_block_three) ... ok
+test_c_one_first_one_last (test_rc1.CumulativeTests.test_c_one_first_one_last) ... ok
+test_d_one_total_fails_only_at_300mm (test_rc1.CumulativeTests.test_d_one_total_fails_only_at_300mm) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 969, in advance
+    raise ValueError('insufficient real PD3 transitions over complete purge')
+ValueError: insufficient real PD3 transitions over complete purge
+ok
+test_e_zero_total_fails_only_at_300mm (test_rc1.CumulativeTests.test_e_zero_total_fails_only_at_300mm) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 969, in advance
+    raise ValueError('insufficient real PD3 transitions over complete purge')
+ValueError: insufficient real PD3 transitions over complete purge
+ok
+test_each_block_logs_all_required_measurements_and_total (test_rc1.CumulativeTests.test_each_block_logs_all_required_measurements_and_total) ... ok
+test_f_many_distributed_edges (test_rc1.CumulativeTests.test_f_many_distributed_edges) ... ok
+test_final_failure_logs_total_before_fail (test_rc1.CumulativeTests.test_final_failure_logs_total_before_fail) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 969, in advance
+    raise ValueError('insufficient real PD3 transitions over complete purge')
+ValueError: insufficient real PD3 transitions over complete purge
+ok
+test_no_early_pass_with_eight_first_edges (test_rc1.CumulativeTests.test_no_early_pass_with_eight_first_edges) ... ok
+test_pd4_loss_overrides_already_sufficient_total (test_rc1.CumulativeTests.test_pd4_loss_overrides_already_sufficient_total) ... ok
+test_previous_proposal_function_changes_exact (test_rc1.ScopeTests.test_previous_proposal_function_changes_exact) ... ok
+test_feedrate_inheritance_after_purge_and_overrides (test_rc1.WipeTests.test_feedrate_inheritance_after_purge_and_overrides) ... ok
+test_settle_and_final_unchanged_around_wipe (test_rc1.WipeTests.test_settle_and_final_unchanged_around_wipe) ... ok
+test_six_relative_x_moves_at_250_mm_s_in_native_parser (test_rc1.WipeTests.test_six_relative_x_moves_at_250_mm_s_in_native_parser) ... ok
+test_01_no_pd4_recovery (test_recovery.RecoveryTests.test_01_no_pd4_recovery) ... ok
+test_02_first_pd3_eligible (test_recovery.RecoveryTests.test_02_first_pd3_eligible) ... ok
+test_03_no_session_limit_setting (test_recovery.RecoveryTests.test_03_no_session_limit_setting) ... ok
+test_04_original_pause_executor_unchanged (test_recovery.RecoveryTests.test_04_original_pause_executor_unchanged) ... ok
+test_05_pause_bytes (test_recovery.RecoveryTests.test_05_pause_bytes) ... ok
+test_06_resume_bytes (test_recovery.RecoveryTests.test_06_resume_bytes) ... ok
+test_07_no_resume_call (test_recovery.RecoveryTests.test_07_no_resume_call) ... ok
+test_08_no_base_resume_call (test_recovery.RecoveryTests.test_08_no_base_resume_call) ... ok
+test_09_no_early_m24 (test_recovery.RecoveryTests.test_09_no_early_m24) ... ok
+test_100_cancel_handler_invalidates_without_native_state_write (test_recovery.RecoveryTests.test_100_cancel_handler_invalidates_without_native_state_write) ... ok
+test_101_external_state_replacement_not_deleted (test_recovery.RecoveryTests.test_101_external_state_replacement_not_deleted) ... ok
+test_10_delay_after_physical_pause (test_recovery.RecoveryTests.test_10_delay_after_physical_pause) ... ok
+test_11_wait_nonblocking_no_commands (test_recovery.RecoveryTests.test_11_wait_nonblocking_no_commands) ... ok
+test_12_pd4_loss_wait_latched (test_recovery.RecoveryTests.test_12_pd4_loss_wait_latched) ... ok
+test_13_bad_target (test_recovery.RecoveryTests.test_13_bad_target) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 920, in advance
+    raise ValueError('invalid saved hotend target/E')
+ValueError: invalid saved hotend target/E
+ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 920, in advance
+    raise ValueError('invalid saved hotend target/E')
+ValueError: invalid saved hotend target/E
+ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 920, in advance
+    raise ValueError('invalid saved hotend target/E')
+ValueError: invalid saved hotend target/E
+ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 920, in advance
+    raise ValueError('invalid saved hotend target/E')
+ValueError: invalid saved hotend target/E
+ok
+test_14_only_extruder_heated (test_recovery.RecoveryTests.test_14_only_extruder_heated) ... ok
+test_15_beds_untouched (test_recovery.RecoveryTests.test_15_beds_untouched) ... ok
+test_16_no_fan_restore_during_recovery (test_recovery.RecoveryTests.test_16_no_fan_restore_during_recovery) ... ok
+test_17_exactly_15_blocks (test_recovery.RecoveryTests.test_17_exactly_15_blocks) ... ok
+test_18_chunk_physical_20 (test_recovery.RecoveryTests.test_18_chunk_physical_20) ... ok
+test_19_total_300 (test_recovery.RecoveryTests.test_19_total_300) ... ok
+test_20_no_e300 (test_recovery.RecoveryTests.test_20_no_e300) ... ok
+test_21_no_extra_native_purge (test_recovery.RecoveryTests.test_21_no_extra_native_purge) ... ok
+test_22_f200 (test_recovery.RecoveryTests.test_22_f200) ... ok
+test_23_only_real_edges_unknown_excluded (test_recovery.RecoveryTests.test_23_only_real_edges_unknown_excluded) ... ok
+test_24_pd4_only_not_counted (test_recovery.RecoveryTests.test_24_pd4_only_not_counted) ... ok
+test_25_zero_edges_fail (test_recovery.RecoveryTests.test_25_zero_edges_fail) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 969, in advance
+    raise ValueError('insufficient real PD3 transitions over complete purge')
+ValueError: insufficient real PD3 transitions over complete purge
+ok
+test_26_one_edge_fails (test_recovery.RecoveryTests.test_26_one_edge_fails) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 969, in advance
+    raise ValueError('insufficient real PD3 transitions over complete purge')
+ValueError: insufficient real PD3 transitions over complete purge
+ok
+test_27_two_edges_next (test_recovery.RecoveryTests.test_27_two_edges_next) ... ok
+test_28_pd4_midblock (test_recovery.RecoveryTests.test_28_pd4_midblock) ... ok
+test_29_no_more_blocks_failed (test_recovery.RecoveryTests.test_29_no_more_blocks_failed) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 969, in advance
+    raise ValueError('insufficient real PD3 transitions over complete purge')
+ValueError: insufficient real PD3 transitions over complete purge
+ok
+test_30_no_wipe_failed (test_recovery.RecoveryTests.test_30_no_wipe_failed) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 969, in advance
+    raise ValueError('insufficient real PD3 transitions over complete purge')
+ValueError: insufficient real PD3 transitions over complete purge
+ok
+test_31_no_m24_failed (test_recovery.RecoveryTests.test_31_no_m24_failed) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 969, in advance
+    raise ValueError('insufficient real PD3 transitions over complete purge')
+ValueError: insufficient real PD3 transitions over complete purge
+ok
+test_32_native_pause_kept (test_recovery.RecoveryTests.test_32_native_pause_kept) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 969, in advance
+    raise ValueError('insufficient real PD3 transitions over complete purge')
+ValueError: insufficient real PD3 transitions over complete purge
+ok
+test_33_hotend_zero_failed (test_recovery.RecoveryTests.test_33_hotend_zero_failed) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 969, in advance
+    raise ValueError('insufficient real PD3 transitions over complete purge')
+ValueError: insufficient real PD3 transitions over complete purge
+ok
+test_34_parser_restored_no_move (test_recovery.RecoveryTests.test_34_parser_restored_no_move) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 969, in advance
+    raise ValueError('insufficient real PD3 transitions over complete purge')
+ValueError: insufficient real PD3 transitions over complete purge
+ok
+test_35_saved_e_failure (test_recovery.RecoveryTests.test_35_saved_e_failure) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 969, in advance
+    raise ValueError('insufficient real PD3 transitions over complete purge')
+ValueError: insufficient real PD3 transitions over complete purge
+ok
+test_36_validated_only_15 (test_recovery.RecoveryTests.test_36_validated_only_15) ... ok
+test_37_settle_two_seconds (test_recovery.RecoveryTests.test_37_settle_two_seconds) ... ok
+test_38_exact_wipe_sequence (test_recovery.RecoveryTests.test_38_exact_wipe_sequence) ... ok
+test_39_final_restore_order (test_recovery.RecoveryTests.test_39_final_restore_order) ... ok
+test_40_g92_saved_e (test_recovery.RecoveryTests.test_40_g92_saved_e) ... ok
+test_41_flags_and_order (test_recovery.RecoveryTests.test_41_flags_and_order) ... ok
+test_42_fan_observer_unchanged (test_recovery.RecoveryTests.test_42_fan_observer_unchanged) ... ok
+test_43_unique_m24 (test_recovery.RecoveryTests.test_43_unique_m24) ... ok
+test_44_same_session_confirmation (test_recovery.RecoveryTests.test_44_same_session_confirmation) ... ok
+test_45_cancel_wait (test_recovery.RecoveryTests.test_45_cancel_wait) ... ok
+test_46_cancel_heat (test_recovery.RecoveryTests.test_46_cancel_heat) ... ok
+test_47_cancel_block (test_recovery.RecoveryTests.test_47_cancel_block) ... ok
+test_48_cancel_wipe (test_recovery.RecoveryTests.test_48_cancel_wipe) ... ok
+test_49_cancel_before_m24 (test_recovery.RecoveryTests.test_49_cancel_before_m24) ... ok
+test_50_manual_resume_invalidates (test_recovery.RecoveryTests.test_50_manual_resume_invalidates) ... ok
+test_51_different_file (test_recovery.RecoveryTests.test_51_different_file) ... ok
+test_52_epoch_changed (test_recovery.RecoveryTests.test_52_epoch_changed) ... ok
+test_53_shutdown (test_recovery.RecoveryTests.test_53_shutdown) ... ok
+test_54_gcode_send_error (test_recovery.RecoveryTests.test_54_gcode_send_error) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 947, in advance
+    self.move(r, 'G1 E20 F200')
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "<workspace>\src\gapguard.py", line 873, in move
+    self.send(r, command)
+    ~~~~~~~~~^^^^^^^^^^^^
+  File "<workspace>\src\gapguard.py", line 867, in send
+    self.o.script(command)
+    ~~~~~~~~~~~~~^^^^^^^^^
+  File "<workspace>\tests\test_recovery.py", line 138, in script
+    if self.fail_command and self.fail_command in line:raise ValueError('injected send failure')
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: injected send failure
+ok
+test_55_thermal_loss (test_recovery.RecoveryTests.test_55_thermal_loss) ... ok
+test_56_no_used_status_after_success (test_recovery.RecoveryTests.test_56_no_used_status_after_success) ... ok
+test_57_second_fault_same_print_recovers (test_recovery.RecoveryTests.test_57_second_fault_same_print_recovers) ... ok
+test_58_sfs_lifecycle_unchanged (test_recovery.RecoveryTests.test_58_sfs_lifecycle_unchanged) ... ok
+test_59_compile (test_recovery.RecoveryTests.test_59_compile) ... ok
+test_60_python37 (test_recovery.RecoveryTests.test_60_python37) ... ok
+test_61_stale_callback_cannot_act (test_recovery.RecoveryTests.test_61_stale_callback_cannot_act) ... ok
+test_62_busy_manual_resume_invalidates_before_m24 (test_recovery.RecoveryTests.test_62_busy_manual_resume_invalidates_before_m24) ... ok
+test_63_existing_motion_guard_during_purge_retained (test_recovery.RecoveryTests.test_63_existing_motion_guard_during_purge_retained) ... ok
+test_64_missing_native_saved_state (test_recovery.RecoveryTests.test_64_missing_native_saved_state) ... ok
+test_65_temp_state_not_start_authorization (test_recovery.RecoveryTests.test_65_temp_state_not_start_authorization) ... ok
+test_66_completion_timeout (test_recovery.RecoveryTests.test_66_completion_timeout) ... ok
+test_67_heat_timeout (test_recovery.RecoveryTests.test_67_heat_timeout) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 927, in advance
+    raise ValueError('heat timeout')
+ValueError: heat timeout
+ok
+test_68_native_can_extrude_required (test_recovery.RecoveryTests.test_68_native_can_extrude_required) ... ok
+test_69_heater_low_boundary_accepted (test_recovery.RecoveryTests.test_69_heater_low_boundary_accepted) ... ok
+test_70_heater_high_boundary (test_recovery.RecoveryTests.test_70_heater_high_boundary) ... ok
+test_71_cancel_during_emission_revalidates (test_recovery.RecoveryTests.test_71_cancel_during_emission_revalidates) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 947, in advance
+    self.move(r, 'G1 E20 F200')
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "<workspace>\src\gapguard.py", line 873, in move
+    self.send(r, command)
+    ~~~~~~~~~^^^^^^^^^^^^
+  File "<workspace>\src\gapguard.py", line 869, in send
+    raise ValueError('recovery revoked during action')
+ValueError: recovery revoked during action
+ok
+test_72_late_callback_not_counted (test_recovery.RecoveryTests.test_72_late_callback_not_counted) ... ok
+test_73_no_cross_block_edge_credit (test_recovery.RecoveryTests.test_73_no_cross_block_edge_credit) ... ok
+test_74_m24_error_cleans_flags_no_retry (test_recovery.RecoveryTests.test_74_m24_error_cleans_flags_no_retry) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 996, in advance
+    self.finalize(r)
+    ~~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 1050, in finalize
+    self.o.script('M24')
+    ~~~~~~~~~~~~~^^^^^^^
+  File "<workspace>\tests\test_recovery.py", line 138, in script
+    if self.fail_command and self.fail_command in line:raise ValueError('injected send failure')
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: injected send failure
+ok
+test_75_no_resumed_trace_before_observation (test_recovery.RecoveryTests.test_75_no_resumed_trace_before_observation) ... ok
+test_76_config_delta_only (test_recovery.RecoveryTests.test_76_config_delta_only) ... ok
+test_77_no_stats_collision (test_recovery.RecoveryTests.test_77_no_stats_collision) ... ok
+test_78_no_new_pin_api (test_recovery.RecoveryTests.test_78_no_new_pin_api) ... ok
+test_79_disabled_config (test_recovery.RecoveryTests.test_79_disabled_config) ... ok
+test_80_diagnostic_parameters_not_silently_changed (test_recovery.RecoveryTests.test_80_diagnostic_parameters_not_silently_changed) ... ok
+test_81_fan_not_authorization (test_recovery.RecoveryTests.test_81_fan_not_authorization) ... ok
+test_82_native_pause_flags_are_false (test_recovery.RecoveryTests.test_82_native_pause_flags_are_false) ... ok
+test_83_native_flags_not_start_authorization (test_recovery.RecoveryTests.test_83_native_flags_not_start_authorization) ... ok
+test_84_exact_source_native_purge_is_100 (test_recovery.RecoveryTests.test_84_exact_source_native_purge_is_100) ... ok
+test_85_parser_factors_restore_on_success (test_recovery.RecoveryTests.test_85_parser_factors_restore_on_success) ... ok
+test_86_no_trace_off_dependency (test_recovery.RecoveryTests.test_86_no_trace_off_dependency) ... ok
+test_87_native_worker_pause_once_and_arm_hook (test_recovery.RecoveryTests.test_87_native_worker_pause_once_and_arm_hook) ... ok
+test_88_fan_restored_only_on_real_lifecycle (test_recovery.RecoveryTests.test_88_fan_restored_only_on_real_lifecycle) ... ok
+test_89_old_epoch_cannot_supply_recovery_evidence (test_recovery.RecoveryTests.test_89_old_epoch_cannot_supply_recovery_evidence) ... ok
+test_90_new_session_eligible_after_terminal (test_recovery.RecoveryTests.test_90_new_session_eligible_after_terminal) ... ok
+test_91_no_parser_authorization_before_wait (test_recovery.RecoveryTests.test_91_no_parser_authorization_before_wait) ... ok
+test_92_new_fault_can_rearm_after_pd4_failure (test_recovery.RecoveryTests.test_92_new_fault_can_rearm_after_pd4_failure) ... ok
+test_93_partial_distance_not_undone (test_recovery.RecoveryTests.test_93_partial_distance_not_undone) ... ok
+test_94_flags_recoverable_on_restore_failure (test_recovery.RecoveryTests.test_94_flags_recoverable_on_restore_failure) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 996, in advance
+    self.finalize(r)
+    ~~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 1027, in finalize
+    self.move(r, 'RESTORE_GCODE_STATE NAME=timelapse_state_b MOVE=1 MOVE_SPEED=250')
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<workspace>\src\gapguard.py", line 873, in move
+    self.send(r, command)
+    ~~~~~~~~~^^^^^^^^^^^^
+  File "<workspace>\src\gapguard.py", line 867, in send
+    self.o.script(command)
+    ~~~~~~~~~~~~~^^^^^^^^^
+  File "<workspace>\tests\test_recovery.py", line 138, in script
+    if self.fail_command and self.fail_command in line:raise ValueError('injected send failure')
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: injected send failure
+ok
+test_95_gpio_pd4_loss_during_pause_macro (test_recovery.RecoveryTests.test_95_gpio_pd4_loss_during_pause_macro) ... ok
+test_97_quantized_extruder_position_accepted (test_recovery.RecoveryTests.test_97_quantized_extruder_position_accepted) ... ok
+test_98_executed_distance_mismatch_rejected (test_recovery.RecoveryTests.test_98_executed_distance_mismatch_rejected) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 953, in advance
+    raise ValueError('executed E distance inconsistent: %s' % actual)
+ValueError: executed E distance inconsistent: 19.98
+ok
+test_99_nonfinite_executed_distance_rejected (test_recovery.RecoveryTests.test_99_nonfinite_executed_distance_rejected) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 953, in advance
+    raise ValueError('executed E distance inconsistent: %s' % actual)
+ValueError: executed E distance inconsistent: nan
+ok
+test_full_recovery_busy_mutex_then_resumed_no_commands (test_requested_changes.M24RequestedTests.test_full_recovery_busy_mutex_then_resumed_no_commands) ... ok
+test_inactive_printing_not_success (test_requested_changes.M24RequestedTests.test_inactive_printing_not_success) ... ok
+test_insufficient_pd3_stays_paused_no_m24 (test_requested_changes.M24RequestedTests.test_insufficient_pd3_stays_paused_no_m24) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 969, in advance
+    raise ValueError('insufficient real PD3 transitions over complete purge')
+ValueError: insufficient real PD3 transitions over complete purge
+ok
+test_late_stale_step_after_resumed_cannot_send_commands (test_requested_changes.M24RequestedTests.test_late_stale_step_after_resumed_cannot_send_commands) ... ok
+test_mutex_before_m24_still_failure (test_requested_changes.M24RequestedTests.test_mutex_before_m24_still_failure) ... ok
+test_original_deadline_failure_with_busy_mutex (test_requested_changes.M24RequestedTests.test_original_deadline_failure_with_busy_mutex) ... ok
+test_terminal_after_m24_unchanged (test_requested_changes.M24RequestedTests.test_terminal_after_m24_unchanged) ... ok
+test_wait_for_real_printing_while_mutex_busy (test_requested_changes.M24RequestedTests.test_wait_for_real_printing_while_mutex_busy) ... ok
+test_bypass_unchanged (test_requested_changes.PD3RequestedTests.test_bypass_unchanged) ... ok
+test_committed_action_does_not_deny_evidence_or_send_second_pause (test_requested_changes.PD3RequestedTests.test_committed_action_does_not_deny_evidence_or_send_second_pause) ... ok
+test_current_edge_before_artificial_barrier (test_requested_changes.PD3RequestedTests.test_current_edge_before_artificial_barrier) ... ok
+test_find_past_position_conversion_preserved (test_requested_changes.PD3RequestedTests.test_find_past_position_conversion_preserved) ... ok
+test_full_both_polarities (test_requested_changes.PD3RequestedTests.test_full_both_polarities) ... ok
+test_gpio_callback_first_after_resume (test_requested_changes.PD3RequestedTests.test_gpio_callback_first_after_resume) ... ok
+test_live_twenty_boundary_priority (test_requested_changes.PD3RequestedTests.test_live_twenty_boundary_priority) ... ok
+test_no_edges_still_fault_at_forty (test_requested_changes.PD3RequestedTests.test_no_edges_still_fault_at_forty) ... ok
+test_old_epoch_changes_neither_levels_nor_reference (test_requested_changes.PD3RequestedTests.test_old_epoch_changes_neither_levels_nor_reference) ... ok
+test_old_generation_queue_cannot_seed_observed_resume (test_requested_changes.PD3RequestedTests.test_old_generation_queue_cannot_seed_observed_resume) ... ok
+test_partial_acquires_without_motion (test_requested_changes.PD3RequestedTests.test_partial_acquires_without_motion) ... ok
+test_paused_does_not_arm_on_extrusion (test_requested_changes.PD3RequestedTests.test_paused_does_not_arm_on_extrusion) ... ok
+test_pending_pause_does_not_deny_edge (test_requested_changes.PD3RequestedTests.test_pending_pause_does_not_deny_edge) ... ok
+test_pre_session_timestamp_still_rejected (test_requested_changes.PD3RequestedTests.test_pre_session_timestamp_still_rejected) ... ok
+test_same_level_is_not_movement (test_requested_changes.PD3RequestedTests.test_same_level_is_not_movement) ... ok
+test_suspect_real_front (test_requested_changes.PD3RequestedTests.test_suspect_real_front) ... ok
+test_unknown_acquisition_not_edge (test_requested_changes.PD3RequestedTests.test_unknown_acquisition_not_edge) ... ok
+test_verify_two_fronts_counted (test_requested_changes.PD3RequestedTests.test_verify_two_fronts_counted) ... ok
+test_actual_config_values_preserved (test_requested_changes.PreservationTests.test_actual_config_values_preserved) ... ok
+test_config_only_idle_timeout_changed (test_requested_changes.PreservationTests.test_config_only_idle_timeout_changed) ... ok
+test_new_version_and_normal_defaults_unchanged (test_requested_changes.PreservationTests.test_new_version_and_normal_defaults_unchanged) ... ok
+test_python37_syntax (test_requested_changes.PreservationTests.test_python37_syntax) ... ok
+test_python_scope_method_allowlist (test_requested_changes.PreservationTests.test_python_scope_method_allowlist) ... ok
+test_cancel_complete_new_file_clear_origin (test_requested_changes.ThermalRequestedTests.test_cancel_complete_new_file_clear_origin) ... ok
+test_cold_and_zero_target_saved_without_changing_manual_macro (test_requested_changes.ThermalRequestedTests.test_cold_and_zero_target_saved_without_changing_manual_macro) ... ok
+test_live_timeout_reproduces_bed_loss (test_requested_changes.ThermalRequestedTests.test_live_timeout_reproduces_bed_loss) ... ok
+test_manual_elegoo_pause_unchanged_hot_and_cold (test_requested_changes.ThermalRequestedTests.test_manual_elegoo_pause_unchanged_hot_and_cold) ... ok
+test_origin_cleared_on_real_resume (test_requested_changes.ThermalRequestedTests.test_origin_cleared_on_real_resume) ... ok
+test_origin_never_authorizes_nonpaused_state (test_requested_changes.ThermalRequestedTests.test_origin_never_authorizes_nonpaused_state) ... ok
+test_pd3_pause_origin (test_requested_changes.ThermalRequestedTests.test_pd3_pause_origin) ... ok
+test_pd4_pause_captures_five_targets_and_cools_only_hotend (test_requested_changes.ThermalRequestedTests.test_pd4_pause_captures_five_targets_and_cools_only_hotend) ... ok
+test_timeout_after_gapguard_pause_preserves_all_four_exact_targets (test_requested_changes.ThermalRequestedTests.test_timeout_after_gapguard_pause_preserves_all_four_exact_targets) ... ok
+test_timeout_hot_gapguard_no_140_target (test_requested_changes.ThermalRequestedTests.test_timeout_hot_gapguard_no_140_target) ... ok
+test_voluntary_gapguard_no_false_fault (test_requested_changes.ThermalRequestedTests.test_voluntary_gapguard_no_false_fault) ... ok
+test_all_initial_couples_are_acquisition (test_retained_signals.RetainedSignalTests.test_all_initial_couples_are_acquisition) ... ok
+test_duplicate_level_not_a_transition (test_retained_signals.RetainedSignalTests.test_duplicate_level_not_a_transition) ... ok
+test_five_edges_fail_without_sliding (test_retained_signals.RetainedSignalTests.test_five_edges_fail_without_sliding) ... ok
+test_front_at_fifty_wins_both_delivery_orders (test_retained_signals.RetainedSignalTests.test_front_at_fifty_wins_both_delivery_orders) ... ok
+test_known_absent_print_pauses_without_new_edge (test_retained_signals.RetainedSignalTests.test_known_absent_print_pauses_without_new_edge) ... ok
+test_late_queued_boundary_edge_cancels_unissued_sensor_pause (test_retained_signals.RetainedSignalTests.test_late_queued_boundary_edge_cancels_unissued_sensor_pause) ... ok
+test_nine_only_warns_and_retraction_does_not_add_e (test_retained_signals.RetainedSignalTests.test_nine_only_warns_and_retraction_does_not_add_e) ... ok
+test_no_baseline_at_half_second (test_retained_signals.RetainedSignalTests.test_no_baseline_at_half_second) ... ok
+test_sixth_edge_at_sixty_two_is_inclusive (test_retained_signals.RetainedSignalTests.test_sixth_edge_at_sixty_two_is_inclusive) ... ok
+test_unknown_during_initialization_does_not_pause (test_retained_signals.RetainedSignalTests.test_unknown_during_initialization_does_not_pause) ... ok
+test_unknown_no_signal_only_after_init (test_retained_signals.RetainedSignalTests.test_unknown_no_signal_only_after_init) ... ok
+test_window_fixed_when_tick_is_late (test_retained_signals.RetainedSignalTests.test_window_fixed_when_tick_is_late) ... ok
+test_all_fifteen_counts_retained_and_one_final_total (test_window6.WindowTests.test_all_fifteen_counts_retained_and_one_final_total) ... ok
+test_configurable_minimum_is_applied (test_window6.WindowTests.test_configurable_minimum_is_applied) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 969, in advance
+    raise ValueError('insufficient real PD3 transitions over complete purge')
+ValueError: insufficient real PD3 transitions over complete purge
+ok
+test_first_five_zero_blocks_allowed (test_window6.WindowTests.test_first_five_zero_blocks_allowed) ... ok
+test_full_purge_no_extra_last_60mm_rule (test_window6.WindowTests.test_full_purge_no_extra_last_60mm_rule) ... ok
+test_invalid_thresholds_rejected (test_window6.WindowTests.test_invalid_thresholds_rejected) ... ok
+test_last_six_zero_blocks_preserve_prior_evidence (test_window6.WindowTests.test_last_six_zero_blocks_preserve_prior_evidence) ... ok
+test_old_edges_retained_at_seventh (test_window6.WindowTests.test_old_edges_retained_at_seventh) ... ok
+test_one_cumulative_edge_fails (test_window6.WindowTests.test_one_cumulative_edge_fails) ... ERROR:root:GapGuard auto recovery action failed
+Traceback (most recent call last):
+  File "<workspace>\src\gapguard.py", line 855, in step
+    self.advance(r)
+    ~~~~~~~~~~~~^^^
+  File "<workspace>\src\gapguard.py", line 969, in advance
+    raise ValueError('insufficient real PD3 transitions over complete purge')
+ValueError: insufficient real PD3 transitions over complete purge
+ok
+test_pd4_immediate_before_window_is_full (test_window6.WindowTests.test_pd4_immediate_before_window_is_full) ... ok
+test_purge_emission_settle_wipe_finalize_byte_identical (test_window6.WindowTests.test_purge_emission_settle_wipe_finalize_byte_identical) ... ok
+test_runtime_45_edges_accepts_zero_block (test_window6.WindowTests.test_runtime_45_edges_accepts_zero_block) ... ok
+test_six_zero_blocks_continue_without_early_failure (test_window6.WindowTests.test_six_zero_blocks_continue_without_early_failure) ... ok
+test_two_edges_spread_across_blocks_pass (test_window6.WindowTests.test_two_edges_spread_across_blocks_pass) ... ok
+test_valid_configurable_threshold (test_window6.WindowTests.test_valid_configurable_threshold) ... ok
+test_no_software_gap_between_queued_moves (test_wipe_sequence.WipeSequenceTests.test_no_software_gap_between_queued_moves) ... ok
+test_only_exact_wipe_patch_in_production (test_wipe_sequence.WipeSequenceTests.test_only_exact_wipe_patch_in_production) ... ok
+test_previous_implementation_is_rejected_by_same_sequence_assertion (test_wipe_sequence.WipeSequenceTests.test_previous_implementation_is_rejected_by_same_sequence_assertion) ... ok
+test_relative_geometry_and_inherited_feedrate (test_wipe_sequence.WipeSequenceTests.test_relative_geometry_and_inherited_feedrate) ... ok
+test_single_flush_after_all_six_submissions (test_wipe_sequence.WipeSequenceTests.test_single_flush_after_all_six_submissions) ... ok
+test_six_moves_one_script_one_worker_one_mutex (test_wipe_sequence.WipeSequenceTests.test_six_moves_one_script_one_worker_one_mutex) ... ok
+test_wait_whole_sequence_before_finalization (test_wipe_sequence.WipeSequenceTests.test_wait_whole_sequence_before_finalization) ... ok
+
+----------------------------------------------------------------------
+Ran 258 tests in 2.264s
+
+OK
