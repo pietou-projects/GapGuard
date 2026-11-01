@@ -1,3 +1,5 @@
+> **Diagnostic branch update:** run the same offline command below to execute **311 tests** (the 287 reviewed observer cases plus 24 r2 integrity cases). The exact reviewed tests and baseline fixtures are included. [Observer scope and limitations](PD3-OBSERVER-1-R2.md) take precedence for this experimental branch. The 258-test count and printer startup evidence below describe the earlier base candidate, not installation or runtime validation of the observer.
+
 # Tests and validation scope
 
 The 4.2.1-rc1 public package contains **258 tests**: the 223 retained public tests plus 35 new tests for shared PD3 rearming, event generations and the recovery-to-printing transition. The [test changes](TEST-CHANGES-4.2.1.md) explain the adapted assertions individually.

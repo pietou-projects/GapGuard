@@ -478,6 +478,8 @@ class RecoveryTests(unittest.TestCase):
             cls=next(n for n in tree.body if isinstance(n,ast.ClassDef) and n.name=='GapGuard')
             f=next(n for n in cls.body if isinstance(n,ast.FunctionDef) and n.name==name)
             return b''.join(lines[f.lineno-1:f.end_lineno])
-        self.assertEqual(get(P.parent/'src/gapguard.py'),get(P/'reference/candidate10.gapguard.py'))
+        from observer_scope import remove_observation_lines, assert_observer_scope
+        self.assertEqual(remove_observation_lines(get(P.parent/'src/gapguard.py')),get(P/'reference/candidate10.gapguard.py'))
+        assert_observer_scope(self)
 
 if __name__=='__main__':unittest.main(verbosity=2)
