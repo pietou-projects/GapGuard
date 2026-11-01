@@ -1,3 +1,7 @@
+> **Experimental diagnostic branch: pd3-observer-1-r2.** This branch contains the exact reviewed PD3 observer in `src/gapguard.py`. It has **not been installed or validated on the reference Giga**. Its 311 tests are offline simulations; its real cost on the printer is unmeasured. It does not claim to fix intermittent PD3 gaps. See [the diagnostic guide](docs/PD3-OBSERVER-1-R2.md) and [open issue #1](https://github.com/pietou-projects/GapGuard/issues/1).
+>
+> The installed/startup statements in the base project overview below refer to the earlier **4.2.1-rc1 base module**, not this observer. Stable v4.2.0 and the existing releases are unchanged. Publishing this branch does not deploy anything to a printer.
+
 # GapGuard 4.2.1-rc1 for the Elegoo OrangeStorm Giga
 
 GapGuard monitors a BTT Smart Filament Sensor **V2.1** on the OrangeStorm Giga. It checks whether filament is present and whether it is moving during a real file print. When a fault is confirmed, it uses the existing Elegoo pause macro.

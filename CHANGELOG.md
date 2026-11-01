@@ -1,5 +1,13 @@
 # Changelog
 
+## Experimental pd3-observer-1-r2 (dedicated diagnostic branch)
+
+- Add the exact reviewed bounded PD3 observer and offline reader; no functional PD3 fix is claimed.
+- Identify captures across observer instances and report orphan/corrupted dumps, with 311 offline tests.
+- Preserve the audit finding that nine complete recoveries rearmed monitoring and transitions preceded manual FULL; the cause of the missing intervals remains unknown.
+- Not installed or validated on the reference Giga; real instrumentation overhead is unmeasured. Stable releases remain unchanged. See [diagnostic scope](docs/PD3-OBSERVER-1-R2.md).
+
+
 ## 4.2.1-rc1 — PD3 rearming candidate — 27 October 2026
 
 This Pre-release is available for testing. Automated tests and loading on the reference Giga have passed; validation during real printing is still pending. The stable 4.2.0 release and all previous tags/assets are preserved.

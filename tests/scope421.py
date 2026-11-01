@@ -14,7 +14,11 @@ def blocks(p):
             for c in tree.body if isinstance(c,ast.ClassDef)
             for f in c.body if isinstance(f,ast.FunctionDef)}
 def assert_scope(test):
-    p=Path(__file__).parent;a=blocks(p/'reference/gapguard_420.py');b=blocks(p.parent/'src/gapguard.py')
+    # Retain the original rc1 guard, then independently prove that observation
+    # is the only delta between the exact live rc1 and the review variant.
+    from observer_scope import assert_observer_scope
+    p=Path(__file__).parent;a=blocks(p/'reference/gapguard_420.py');b=blocks(p.parent/'baseline/gapguard.py')
     test.assertEqual(set(a)-set(b),set())
     test.assertEqual(set(b)-set(a),ADDED)
     test.assertEqual({k for k in a if a[k]!=b[k]},CHANGED)
+    assert_observer_scope(test)

@@ -1,0 +1,11 @@
+SOURCE: C:\Users\pierr\.codex\.chatgpt-projects\g-p-68f9285cb03c8191abb3a6dfc34c8eb8\GapGuard_421_PD3_Observer_20261101_r2\results\example-no-callback-SIMULATED.log
+Times below are Reactor monotonic seconds, not wall-clock timestamps.
+INTEGRITY: OK
+
+CAPTURE f83ad3860da947f3b462c04c2a038dd1:1 dump=1 lines [1, 2] COMPLETE=True
+Captured: 100.85
+Last callback [id,event,processed]: [1, 100.1, 100.1]
+Counters: {"callback_entries": 1, "dequeued": 1, "electrical_transitions": 1, "enqueued": 1, "machine_accepted": 1, "processing": 1, "verify_counted": 0}
+Observer errors: 0
+Fault detector: {"E": 42.0, "count": 0, "end": 42.0, "last_edge_E": 2.0, "motion_edges": 1, "pd3": 1, "pd4": 1, "reference": 2.0, "start": 22.0, "state": "VERIFY_50"}
+id=1 | event=100.1 | received=100.1 | return={} | E=2.0 | ref=0.0 | state=ARMING->NORMAL | VERIFY=None..None | count=0->0 | electrical=True | machine_accepted=True | verify_counted=False

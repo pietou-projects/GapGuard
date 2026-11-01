@@ -1,0 +1,42 @@
+[
+  {
+    "module": "test_r2.py",
+    "test": "test_core_byte_identity",
+    "reason": "Requires complete private machine configuration or its exact historical hash; retained in internal 231-test suite."
+  },
+  {
+    "module": "test_rc1.py",
+    "test": "test_config_previous_proposal_only_six_comment_changes",
+    "reason": "Requires complete private machine configuration or its exact historical hash; retained in internal 231-test suite."
+  },
+  {
+    "module": "test_rc1.py",
+    "test": "test_live_references_match_authorized_hashes",
+    "reason": "Requires complete private machine configuration or its exact historical hash; retained in internal 231-test suite."
+  },
+  {
+    "module": "test_rc1.py",
+    "test": "test_version_in_human_outputs_and_startup",
+    "reason": "Requires complete private machine configuration or its exact historical hash; retained in internal 231-test suite."
+  },
+  {
+    "module": "test_recovery.py",
+    "test": "test_96_cfg_calibration_bytes_and_no_native_sensor_return",
+    "reason": "Requires complete private machine configuration or its exact historical hash; retained in internal 231-test suite."
+  },
+  {
+    "module": "test_requested_changes.py",
+    "test": "test_full_macro_bytes_preserved",
+    "reason": "Requires complete private machine configuration or its exact historical hash; retained in internal 231-test suite."
+  },
+  {
+    "module": "test_requested_changes.py",
+    "test": "test_save_config_byte_exact",
+    "reason": "Requires complete private machine configuration or its exact historical hash; retained in internal 231-test suite."
+  },
+  {
+    "module": "test_wipe_sequence.py",
+    "test": "test_config_and_version_unchanged",
+    "reason": "Requires complete private machine configuration or its exact historical hash; retained in internal 231-test suite."
+  }
+]

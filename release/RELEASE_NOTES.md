@@ -1,40 +1,27 @@
-# GapGuard 4.2.1-rc1
+# GapGuard pd3-observer-1-r2 — Experimental diagnostics
 
-**Pre-release for testing the PD3 monitoring handoff after AutoRecovery.** Automated tests and startup checks have passed. Validation during real printing is still pending.
+**Experimental Pre-release. Not installed or runtime-validated on the reference Giga. Not a functional fix for intermittent PD3 gaps.** This publication does not replace stable v4.2.0 or the existing v4.2.1-rc1 release, and is not Latest.
 
-## Why this candidate exists
+The observer follows incoming `_gpio` events, early rejections, the edge queue and detector effects through VERIFY counting, using E positions already calculated by the normal code. Existing rearm/resume traces are preserved. Revision r2 gives each capture an instance-specific identity and reports orphan or damaged diagnostic data instead of joining unrelated captures by a reused dump number.
 
-The reference Giga sometimes reported repeated PD3 motion faults after an S1+ spool change and AutoRecovery. Returning manually from PARTIAL to FULL had restored monitoring. The code review found that recovery counted purge transitions separately from the main detector, so successful purge evidence was not tied to a consistently rearmed detector when printing resumed.
+The audited print showed that all nine completed AutoRecovery runs rearmed monitoring and that PD3 transitions were already present before the manual return to FULL. The cause of the missing intervals remains unknown. Absence of delivery to the callback alone does not prove a fault in the sensor, wiring or MCU.
 
-This candidate uses one shared rearming operation and explicit motion generations. The main detector must accept the purge evidence, and a fresh generation is prepared before the single M24 and retained when the file resumes. This addresses the software inconsistency; it does not establish the physical cause of every original PD3 signal gap.
+## Validation and limits
 
-## Validation so far
+- The reviewed package passed **311 offline simulation tests**, including the cross-instance reader regression and unchanged-decision comparisons.
+- The protected detector/recovery classes remain unchanged. No additional E/native read, G-code, rearming operation or timer is introduced.
+- This observer has not been installed or validated on the Giga. Its real overhead remains unmeasured; instrumentation itself may affect timing.
+- Configuration, firmware, stock Klipper, the Giga and the separate watcher were not changed by publication.
+- [Issue #1](https://github.com/pietou-projects/GapGuard/issues/1) stays open; no resolution is claimed.
 
-- 258 automated tests passed, including 100 simulated recovery cycles in one session.
-- The exact module was installed on the reference OrangeStorm Giga and loaded after a physical power cycle on 27 October 2026.
-- Klipper reached Ready and logged `GapGuard 4.2.1-rc1 ready`; sensor acquisition completed with no active fault.
-- Recovery behavior and the absence of repeated faults during real printing remain to be verified. [Issue #1](https://github.com/pietou-projects/GapGuard/issues/1) stays open.
+## Exact reviewed asset
 
-## What stays the same
-
-The configured 9/20/20/2 thresholds, 30-second delay, 300 mm of commanded extruder travel in 15 × 20 mm blocks at F200, minimum two cumulative PD3 transitions, continuous F15000 wipe and one M24 are unchanged. Commanded travel is not proof of filament length delivered through the nozzle; accepted PD3 transitions provide separate motion evidence.
-
-The six public GapGuard commands and native Elegoo PAUSE / RESUME / CANCEL_PRINT are preserved. A GapGuard pause sets the nozzle target to zero and keeps the four bed targets. Fan1 and PD4 behavior are retained. The FlowQ watcher remains a separate information-only project and is not included or changed by this release.
-
-## Installation and rollback
-
-For the matching 4.2.0 installation, this is a **module-only upgrade**. Keep your printer.cfg, mesh/SAVE_CONFIG, native macros, stock Klipper, Moonraker, watcher and firmware unchanged. Back up the current module, verify the new file, and use a physical OFF / approximately 30-second wait / ON cycle. Follow [Upgrading and rollback](../docs/UPGRADING-4.2.1.md). New users should read [INSTALLATION](../docs/INSTALLATION.md) and the native dependency requirements first.
-
-The production module's SHA-256 is:
+The attached `GapGuard-4.2.1-rc1-pd3-observer-1-r2-OFFLINE-REVIEW.zip` is uploaded without rebuilding. It contains the reviewed module, offline reader, tests, simulated evidence and review documentation. Its 74-file manifest remains intact. Baseline/configuration fixtures are test inputs, never installation instructions.
 
 ```text
-bf74084df26570d529a15efdbe3dfb6d93653f2f2dc53a6cb2d6e7a2eb27403a
+d7a6a388ee6bfc9863fff6bf365c4e451723f874bb75cfe2b5b0a5a5a8be6b5b  GapGuard-4.2.1-rc1-pd3-observer-1-r2-OFFLINE-REVIEW.zip
+84b54310cc52a348131453ac8ad95db3bfe20dcd03d6cb639b65884e35e1eb61  src/gapguard.py
+57df336bdf9fc9793cb787d03d6df4871760404f4ef9b79d70e2a4410b06a99c  tools/read_diagnostic.py
 ```
 
-This is exactly the module installed on the reference printer. Publishing it does not deploy anything to a printer.
-
-## Scope and release continuity
-
-Read [the status report](../docs/PD3-REARM-STATUS.md), [PD3 rearming](../docs/PD3-REARMING.md), [tests](../docs/TESTING.md) and [physical validation plan](../docs/VALIDATION-RUNTIME.md). The package contains the module, mergeable configuration, tests, English documentation and the unchanged five photographs, STL and 3MF. It excludes private configurations and raw machine logs.
-
-Code remains GPL-3.0-or-later. Mount models remain CC0 1.0, with credit to T.L. The historical v4.2.0-rc1 Pre-release and stable v4.2.0 remain unchanged. **v4.2.0 remains Latest; v4.2.1-rc1 is not a stable 4.2.1 release.**
+Read the [diagnostic guide](../docs/PD3-OBSERVER-1-R2.md), [integrity review](../docs/diagnostics/pd3-observer-1-r2/review/READER-INTEGRITY.md) and [review test output](../docs/diagnostics/pd3-observer-1-r2/review/results/suite.txt). Code remains GPL-3.0-or-later; the existing hardware license and credits are unchanged.

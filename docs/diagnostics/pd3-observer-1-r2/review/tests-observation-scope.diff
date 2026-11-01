@@ -1,0 +1,40 @@
+--- retained/scope421.py
++++ review/scope421.py
+@@ -14,7 +14,11 @@
+             for c in tree.body if isinstance(c,ast.ClassDef)
+             for f in c.body if isinstance(f,ast.FunctionDef)}
+ def assert_scope(test):
+-    p=Path(__file__).parent;a=blocks(p/'reference/gapguard_420.py');b=blocks(p.parent/'src/gapguard.py')
++    # Retain the original rc1 guard, then independently prove that observation
++    # is the only delta between the exact live rc1 and the review variant.
++    from observer_scope import assert_observer_scope
++    p=Path(__file__).parent;a=blocks(p/'reference/gapguard_420.py');b=blocks(p.parent/'baseline/gapguard.py')
+     test.assertEqual(set(a)-set(b),set())
+     test.assertEqual(set(b)-set(a),ADDED)
+     test.assertEqual({k for k in a if a[k]!=b[k]},CHANGED)
++    assert_observer_scope(test)
+--- retained/test_post_pause_hook.py
++++ review/test_post_pause_hook.py
+@@ -114,7 +114,9 @@
+             m=next(n for n in cls.body if isinstance(n,ast.FunctionDef) and n.name==name)
+             return b''.join(lines[m.lineno-1:m.end_lineno])
+         for name in ('_reset_file','_shutdown'):
+-            self.assertEqual(method(P.parent/'src/gapguard.py',name),method(P/'reference/candidate10.gapguard.py',name))
++            from observer_scope import remove_observation_lines, assert_observer_scope
++            self.assertEqual(remove_observation_lines(method(P.parent/'src/gapguard.py',name)),method(P/'reference/candidate10.gapguard.py',name))
++            assert_observer_scope(self)
+     def test_10_all_own_event_handlers_revoke_queued_callbacks(self):
+         for event in ('klippy:shutdown','klippy:disconnect','gcode:request_restart','virtual_sdcard:reset_file'):
+             x=Rig();x.pause();x.r.tick(x.t);self.assertTrue(x.callbacks)
+--- retained/test_recovery.py
++++ review/test_recovery.py
+@@ -478,6 +478,8 @@
+             cls=next(n for n in tree.body if isinstance(n,ast.ClassDef) and n.name=='GapGuard')
+             f=next(n for n in cls.body if isinstance(n,ast.FunctionDef) and n.name==name)
+             return b''.join(lines[f.lineno-1:f.end_lineno])
+-        self.assertEqual(get(P.parent/'src/gapguard.py'),get(P/'reference/candidate10.gapguard.py'))
++        from observer_scope import remove_observation_lines, assert_observer_scope
++        self.assertEqual(remove_observation_lines(get(P.parent/'src/gapguard.py')),get(P/'reference/candidate10.gapguard.py'))
++        assert_observer_scope(self)
+ 
+ if __name__=='__main__':unittest.main(verbosity=2)

@@ -1,0 +1,31 @@
+{
+  "build": "4.2.1-rc1+pd3-observer-1-r2",
+  "simulated_only": true,
+  "host": "Windows-11-10.0.26340-SP0",
+  "python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "measurements": {
+    "baseline_microseconds_per_callback": [
+      9.23549,
+      6.74131,
+      6.1838,
+      7.25196,
+      6.70242
+    ],
+    "observer_microseconds_per_callback": [
+      19.05986,
+      17.41391,
+      18.584259999999997,
+      19.03303,
+      21.356810000000003
+    ]
+  },
+  "median_baseline_us": 6.74131,
+  "median_observer_us": 19.03303,
+  "fault_snapshot_us": 90.7,
+  "stored_graph_bytes_at_two_pending_dumps": 682735,
+  "dump_total_bytes_for_two_faults": 612220,
+  "max_line_bytes": 20758,
+  "max_flush_serialization_us": 507.0,
+  "logger_disk_IO_measured": false,
+  "warning": "PC measurements only; not a timing or memory guarantee on the Giga."
+}

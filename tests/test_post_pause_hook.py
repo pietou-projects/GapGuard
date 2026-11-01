@@ -114,7 +114,9 @@ class HookTests(unittest.TestCase):
             m=next(n for n in cls.body if isinstance(n,ast.FunctionDef) and n.name==name)
             return b''.join(lines[m.lineno-1:m.end_lineno])
         for name in ('_reset_file','_shutdown'):
-            self.assertEqual(method(P.parent/'src/gapguard.py',name),method(P/'reference/candidate10.gapguard.py',name))
+            from observer_scope import remove_observation_lines, assert_observer_scope
+            self.assertEqual(remove_observation_lines(method(P.parent/'src/gapguard.py',name)),method(P/'reference/candidate10.gapguard.py',name))
+            assert_observer_scope(self)
     def test_10_all_own_event_handlers_revoke_queued_callbacks(self):
         for event in ('klippy:shutdown','klippy:disconnect','gcode:request_restart','virtual_sdcard:reset_file'):
             x=Rig();x.pause();x.r.tick(x.t);self.assertTrue(x.callbacks)

@@ -1,0 +1,18 @@
+SOURCE: C:\Users\pierr\.codex\.chatgpt-projects\g-p-68f9285cb03c8191abb3a6dfc34c8eb8\GapGuard_421_PD3_Observer_20261101_r2\results\integrity-examples\batch-missing-SIMULATED.log
+Times below are Reactor monotonic seconds, not wall-clock timestamps.
+INTEGRITY: WARNINGS — see line numbers below
+WARNING line 3 [OFFSET_MISMATCH] expected offset 4, got 8 (missing, duplicated or reordered batch) capture=5fc91dbb83ed415a8c1dc249b2f06b1e:1
+WARNING line 3 [FINAL_COUNT_MISMATCH] final batch does not supply the header record count capture=5fc91dbb83ed415a8c1dc249b2f06b1e:1
+WARNING line 1 [INCOMPLETE_CAPTURE] capture starting here is not complete at end of input; received=5 expected=9 final_seen=True capture=5fc91dbb83ed415a8c1dc249b2f06b1e:1
+
+CAPTURE 5fc91dbb83ed415a8c1dc249b2f06b1e:1 dump=1 lines [1, 2, 3] COMPLETE=False
+Captured: 100.89999999999995
+Last callback [id,event,processed]: [9, 100.89999999999995, 100.89999999999995]
+Counters: {"callback_entries": 9, "dequeued": 9, "electrical_transitions": 8, "enqueued": 9, "machine_accepted": 8, "processing": 9, "verify_counted": 0}
+Observer errors: 0
+Fault detector: {"E": 0.0, "count": 0, "end": null, "last_edge_E": 8.0, "motion_edges": 8, "pd3": 0, "pd4": 1, "reference": 8.0, "start": null, "state": "NORMAL"}
+id=1 | event=100.1 | received=100.1 | return={} | E=0.0 | ref=0.0 | state=ARMING->ARMING | VERIFY=None..None | count=0->0 | electrical=False | machine_accepted=False | verify_counted=False
+id=2 | event=100.19999999999999 | received=100.19999999999999 | return={} | E=1.0 | ref=0.0 | state=ARMING->NORMAL | VERIFY=None..None | count=0->0 | electrical=True | machine_accepted=True | verify_counted=False
+id=3 | event=100.29999999999998 | received=100.29999999999998 | return={} | E=2.0 | ref=1.0 | state=NORMAL->NORMAL | VERIFY=None..None | count=0->0 | electrical=True | machine_accepted=True | verify_counted=False
+id=4 | event=100.39999999999998 | received=100.39999999999998 | return={} | E=3.0 | ref=2.0 | state=NORMAL->NORMAL | VERIFY=None..None | count=0->0 | electrical=True | machine_accepted=True | verify_counted=False
+id=9 | event=100.89999999999995 | received=100.89999999999995 | return={} | E=8.0 | ref=7.0 | state=NORMAL->NORMAL | VERIFY=None..None | count=0->0 | electrical=True | machine_accepted=True | verify_counted=False

@@ -1,0 +1,12 @@
+SOURCE: C:\Users\pierr\.codex\.chatgpt-projects\g-p-68f9285cb03c8191abb3a6dfc34c8eb8\GapGuard_421_PD3_Observer_20261101_r2\results\example-VERIFY-counted-SIMULATED.log
+Times below are Reactor monotonic seconds, not wall-clock timestamps.
+INTEGRITY: OK
+
+CAPTURE c5400ad28b34457da59cffd9963bdd76:1 dump=1 lines [1, 2] COMPLETE=True
+Captured: 100.94999999999999
+Last callback [id,event,processed]: [2, 100.44999999999999, 100.44999999999999]
+Counters: {"callback_entries": 2, "dequeued": 2, "electrical_transitions": 2, "enqueued": 2, "machine_accepted": 2, "processing": 2, "verify_counted": 2}
+Observer errors: 0
+Fault detector: {"E": 80.0, "count": 0, "end": 80.0, "last_edge_E": 40.0, "motion_edges": 2, "pd3": 0, "pd4": 1, "reference": 40.0, "start": 60.0, "state": "VERIFY_50"}
+id=1 | event=100.35 | received=100.35 | return={} | E=25.0 | ref=0.0 | state=VERIFY_50->VERIFY_50 | VERIFY=20.0..40.0 | count=0->1 | electrical=True | machine_accepted=True | verify_counted=True
+id=2 | event=100.44999999999999 | received=100.44999999999999 | return={} | E=40.0 | ref=0.0 | state=VERIFY_50->NORMAL | VERIFY=20.0..40.0 | count=1->2 | electrical=True | machine_accepted=True | verify_counted=True
