@@ -1,0 +1,1002 @@
+[
+  {
+    "cycle": 1,
+    "epoch": 0,
+    "purge_generation": 2,
+    "resume_generation": 3,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 2,
+    "epoch": 0,
+    "purge_generation": 4,
+    "resume_generation": 5,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 3,
+    "epoch": 0,
+    "purge_generation": 6,
+    "resume_generation": 7,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 4,
+    "epoch": 0,
+    "purge_generation": 8,
+    "resume_generation": 9,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 5,
+    "epoch": 0,
+    "purge_generation": 10,
+    "resume_generation": 11,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 6,
+    "epoch": 0,
+    "purge_generation": 12,
+    "resume_generation": 13,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 7,
+    "epoch": 0,
+    "purge_generation": 14,
+    "resume_generation": 15,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 8,
+    "epoch": 0,
+    "purge_generation": 16,
+    "resume_generation": 17,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 9,
+    "epoch": 0,
+    "purge_generation": 18,
+    "resume_generation": 19,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 10,
+    "epoch": 0,
+    "purge_generation": 20,
+    "resume_generation": 21,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 11,
+    "epoch": 0,
+    "purge_generation": 22,
+    "resume_generation": 23,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 12,
+    "epoch": 0,
+    "purge_generation": 24,
+    "resume_generation": 25,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 13,
+    "epoch": 0,
+    "purge_generation": 26,
+    "resume_generation": 27,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 14,
+    "epoch": 0,
+    "purge_generation": 28,
+    "resume_generation": 29,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 15,
+    "epoch": 0,
+    "purge_generation": 30,
+    "resume_generation": 31,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 16,
+    "epoch": 0,
+    "purge_generation": 32,
+    "resume_generation": 33,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 17,
+    "epoch": 0,
+    "purge_generation": 34,
+    "resume_generation": 35,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 18,
+    "epoch": 0,
+    "purge_generation": 36,
+    "resume_generation": 37,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 19,
+    "epoch": 0,
+    "purge_generation": 38,
+    "resume_generation": 39,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 20,
+    "epoch": 0,
+    "purge_generation": 40,
+    "resume_generation": 41,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 21,
+    "epoch": 0,
+    "purge_generation": 42,
+    "resume_generation": 43,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 22,
+    "epoch": 0,
+    "purge_generation": 44,
+    "resume_generation": 45,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 23,
+    "epoch": 0,
+    "purge_generation": 46,
+    "resume_generation": 47,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 24,
+    "epoch": 0,
+    "purge_generation": 48,
+    "resume_generation": 49,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 25,
+    "epoch": 0,
+    "purge_generation": 50,
+    "resume_generation": 51,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 26,
+    "epoch": 0,
+    "purge_generation": 52,
+    "resume_generation": 53,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 27,
+    "epoch": 0,
+    "purge_generation": 54,
+    "resume_generation": 55,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 28,
+    "epoch": 0,
+    "purge_generation": 56,
+    "resume_generation": 57,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 29,
+    "epoch": 0,
+    "purge_generation": 58,
+    "resume_generation": 59,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 30,
+    "epoch": 0,
+    "purge_generation": 60,
+    "resume_generation": 61,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 31,
+    "epoch": 0,
+    "purge_generation": 62,
+    "resume_generation": 63,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 32,
+    "epoch": 0,
+    "purge_generation": 64,
+    "resume_generation": 65,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 33,
+    "epoch": 0,
+    "purge_generation": 66,
+    "resume_generation": 67,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 34,
+    "epoch": 0,
+    "purge_generation": 68,
+    "resume_generation": 69,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 35,
+    "epoch": 0,
+    "purge_generation": 70,
+    "resume_generation": 71,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 36,
+    "epoch": 0,
+    "purge_generation": 72,
+    "resume_generation": 73,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 37,
+    "epoch": 0,
+    "purge_generation": 74,
+    "resume_generation": 75,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 38,
+    "epoch": 0,
+    "purge_generation": 76,
+    "resume_generation": 77,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 39,
+    "epoch": 0,
+    "purge_generation": 78,
+    "resume_generation": 79,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 40,
+    "epoch": 0,
+    "purge_generation": 80,
+    "resume_generation": 81,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 41,
+    "epoch": 0,
+    "purge_generation": 82,
+    "resume_generation": 83,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 42,
+    "epoch": 0,
+    "purge_generation": 84,
+    "resume_generation": 85,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 43,
+    "epoch": 0,
+    "purge_generation": 86,
+    "resume_generation": 87,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 44,
+    "epoch": 0,
+    "purge_generation": 88,
+    "resume_generation": 89,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 45,
+    "epoch": 0,
+    "purge_generation": 90,
+    "resume_generation": 91,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 46,
+    "epoch": 0,
+    "purge_generation": 92,
+    "resume_generation": 93,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 47,
+    "epoch": 0,
+    "purge_generation": 94,
+    "resume_generation": 95,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 48,
+    "epoch": 0,
+    "purge_generation": 96,
+    "resume_generation": 97,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 49,
+    "epoch": 0,
+    "purge_generation": 98,
+    "resume_generation": 99,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 50,
+    "epoch": 0,
+    "purge_generation": 100,
+    "resume_generation": 101,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 51,
+    "epoch": 0,
+    "purge_generation": 102,
+    "resume_generation": 103,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 52,
+    "epoch": 0,
+    "purge_generation": 104,
+    "resume_generation": 105,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 53,
+    "epoch": 0,
+    "purge_generation": 106,
+    "resume_generation": 107,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 54,
+    "epoch": 0,
+    "purge_generation": 108,
+    "resume_generation": 109,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 55,
+    "epoch": 0,
+    "purge_generation": 110,
+    "resume_generation": 111,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 56,
+    "epoch": 0,
+    "purge_generation": 112,
+    "resume_generation": 113,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 57,
+    "epoch": 0,
+    "purge_generation": 114,
+    "resume_generation": 115,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 58,
+    "epoch": 0,
+    "purge_generation": 116,
+    "resume_generation": 117,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 59,
+    "epoch": 0,
+    "purge_generation": 118,
+    "resume_generation": 119,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 60,
+    "epoch": 0,
+    "purge_generation": 120,
+    "resume_generation": 121,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 61,
+    "epoch": 0,
+    "purge_generation": 122,
+    "resume_generation": 123,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 62,
+    "epoch": 0,
+    "purge_generation": 124,
+    "resume_generation": 125,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 63,
+    "epoch": 0,
+    "purge_generation": 126,
+    "resume_generation": 127,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 64,
+    "epoch": 0,
+    "purge_generation": 128,
+    "resume_generation": 129,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 65,
+    "epoch": 0,
+    "purge_generation": 130,
+    "resume_generation": 131,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 66,
+    "epoch": 0,
+    "purge_generation": 132,
+    "resume_generation": 133,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 67,
+    "epoch": 0,
+    "purge_generation": 134,
+    "resume_generation": 135,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 68,
+    "epoch": 0,
+    "purge_generation": 136,
+    "resume_generation": 137,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 69,
+    "epoch": 0,
+    "purge_generation": 138,
+    "resume_generation": 139,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 70,
+    "epoch": 0,
+    "purge_generation": 140,
+    "resume_generation": 141,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 71,
+    "epoch": 0,
+    "purge_generation": 142,
+    "resume_generation": 143,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 72,
+    "epoch": 0,
+    "purge_generation": 144,
+    "resume_generation": 145,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 73,
+    "epoch": 0,
+    "purge_generation": 146,
+    "resume_generation": 147,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 74,
+    "epoch": 0,
+    "purge_generation": 148,
+    "resume_generation": 149,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 75,
+    "epoch": 0,
+    "purge_generation": 150,
+    "resume_generation": 151,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 76,
+    "epoch": 0,
+    "purge_generation": 152,
+    "resume_generation": 153,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 77,
+    "epoch": 0,
+    "purge_generation": 154,
+    "resume_generation": 155,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 78,
+    "epoch": 0,
+    "purge_generation": 156,
+    "resume_generation": 157,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 79,
+    "epoch": 0,
+    "purge_generation": 158,
+    "resume_generation": 159,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 80,
+    "epoch": 0,
+    "purge_generation": 160,
+    "resume_generation": 161,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 81,
+    "epoch": 0,
+    "purge_generation": 162,
+    "resume_generation": 163,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 82,
+    "epoch": 0,
+    "purge_generation": 164,
+    "resume_generation": 165,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 83,
+    "epoch": 0,
+    "purge_generation": 166,
+    "resume_generation": 167,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 84,
+    "epoch": 0,
+    "purge_generation": 168,
+    "resume_generation": 169,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 85,
+    "epoch": 0,
+    "purge_generation": 170,
+    "resume_generation": 171,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 86,
+    "epoch": 0,
+    "purge_generation": 172,
+    "resume_generation": 173,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 87,
+    "epoch": 0,
+    "purge_generation": 174,
+    "resume_generation": 175,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 88,
+    "epoch": 0,
+    "purge_generation": 176,
+    "resume_generation": 177,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 89,
+    "epoch": 0,
+    "purge_generation": 178,
+    "resume_generation": 179,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 90,
+    "epoch": 0,
+    "purge_generation": 180,
+    "resume_generation": 181,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 91,
+    "epoch": 0,
+    "purge_generation": 182,
+    "resume_generation": 183,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 92,
+    "epoch": 0,
+    "purge_generation": 184,
+    "resume_generation": 185,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 93,
+    "epoch": 0,
+    "purge_generation": 186,
+    "resume_generation": 187,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 94,
+    "epoch": 0,
+    "purge_generation": 188,
+    "resume_generation": 189,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 95,
+    "epoch": 0,
+    "purge_generation": 190,
+    "resume_generation": 191,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 96,
+    "epoch": 0,
+    "purge_generation": 192,
+    "resume_generation": 193,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 97,
+    "epoch": 0,
+    "purge_generation": 194,
+    "resume_generation": 195,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 98,
+    "epoch": 0,
+    "purge_generation": 196,
+    "resume_generation": 197,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 99,
+    "epoch": 0,
+    "purge_generation": 198,
+    "resume_generation": 199,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  },
+  {
+    "cycle": 100,
+    "epoch": 0,
+    "purge_generation": 200,
+    "resume_generation": 201,
+    "purged": 300.0,
+    "transitions": 30,
+    "first_edge_state": "NORMAL",
+    "m24": 1
+  }
+]

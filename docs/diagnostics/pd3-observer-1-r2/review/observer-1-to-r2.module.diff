@@ -1,0 +1,53 @@
+--- observer-1/src/gapguard.py
++++ observer-1-r2/src/gapguard.py
+@@ -10,6 +10,7 @@
+ import json
+ import logging
+ import math
++import uuid
+ 
+ VERSION = '4.2.1-rc1'
+ MODES = ('FULL', 'PARTIAL', 'BYPASS')
+@@ -1090,12 +1091,12 @@
+                     purged=r.get('purged', 0.), transitions=r.get('count', 0),
+                     error=r.get('error'), hook_error=self.hook_error)
+ class PD3Observer:
+-    """OFFLINE REVIEW BUILD pd3-observer-1. Passive, bounded flight recorder.
++    """OFFLINE REVIEW BUILD pd3-observer-1-r2. Passive, bounded flight recorder.
+ 
+     Never calls position(), native(), Machine methods, G-code or the MCU.
+     Only GapGuard._pd3_diag() calls this class; all its exceptions are contained.
+     """
+-    BUILD = '4.2.1-rc1+pd3-observer-1'
++    BUILD = '4.2.1-rc1+pd3-observer-1-r2'
+     CAPACITY = 128
+     CHECKPOINTS = 32
+     PENDING = 2
+@@ -1103,6 +1104,9 @@
+ 
+     def __init__(self, owner):
+         self.o = owner
++        # Diagnostic identity only: fresh for each observer, including restart.
++        # No clock, PID, file, E position or persistent machine state is used.
++        self.instance_id = uuid.uuid4().hex
+         self.records = collections.deque()
+         self.links = {}
+         self.checkpoints = collections.deque(maxlen=self.CHECKPOINTS)
+@@ -1303,6 +1307,8 @@
+         # after assignment; _tuple is private correlation data and is excluded.
+         records = [{k: v for k, v in r.items() if k != '_tuple'} for r in self.records]
+         header = dict(build=self.BUILD, dump=self.dump_sequence, kind='FAULT_CONTEXT',
++                      schema=2, instance_id=self.instance_id,
++                      capture_id='%s:%d' % (self.instance_id, self.dump_sequence),
+                       captured_at=self.o.now(), context=self.context(), detector=self.detector(),
+                       native=self.last_native, last_callback=self.last_entry,
+                       counters=dict(self.counters),
+@@ -1323,6 +1329,8 @@
+             start = p['offset']
+             end = min(start + self.BATCH, len(p['records']))
+             payload = dict(build=self.BUILD, dump=p['header']['dump'], kind='EVENTS',
++                           schema=p['header']['schema'], instance_id=p['header']['instance_id'],
++                           capture_id=p['header']['capture_id'],
+                            offset=start, records=p['records'][start:end],
+                            complete=end == len(p['records']))
+         # Advance even if the logging backend fails: no retry loop or backlog.

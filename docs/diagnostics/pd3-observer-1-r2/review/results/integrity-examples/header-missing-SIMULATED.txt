@@ -1,0 +1,6 @@
+SOURCE: C:\Users\pierr\.codex\.chatgpt-projects\g-p-68f9285cb03c8191abb3a6dfc34c8eb8\GapGuard_421_PD3_Observer_20261101_r2\results\integrity-examples\header-missing-SIMULATED.log
+Times below are Reactor monotonic seconds, not wall-clock timestamps.
+INTEGRITY: WARNINGS — see line numbers below
+WARNING line 1 [ORPHAN_EVENTS] no readable preceding FAULT_CONTEXT for this capture; dump=1 offset=0 records=4 capture=5fc91dbb83ed415a8c1dc249b2f06b1e:1
+WARNING line 2 [ORPHAN_EVENTS] no readable preceding FAULT_CONTEXT for this capture; dump=1 offset=4 records=4 capture=5fc91dbb83ed415a8c1dc249b2f06b1e:1
+WARNING line 3 [ORPHAN_EVENTS] no readable preceding FAULT_CONTEXT for this capture; dump=1 offset=8 records=1 capture=5fc91dbb83ed415a8c1dc249b2f06b1e:1

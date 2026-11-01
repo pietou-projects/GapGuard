@@ -1,0 +1,122 @@
+{
+  "intact": {
+    "captures": {
+      "5fc91dbb83ed415a8c1dc249b2f06b1e:1": true
+    },
+    "issues": []
+  },
+  "header-missing": {
+    "captures": {},
+    "issues": [
+      {
+        "line": 1,
+        "code": "ORPHAN_EVENTS",
+        "message": "no readable preceding FAULT_CONTEXT for this capture; dump=1 offset=0 records=4",
+        "capture_id": "5fc91dbb83ed415a8c1dc249b2f06b1e:1"
+      },
+      {
+        "line": 2,
+        "code": "ORPHAN_EVENTS",
+        "message": "no readable preceding FAULT_CONTEXT for this capture; dump=1 offset=4 records=4",
+        "capture_id": "5fc91dbb83ed415a8c1dc249b2f06b1e:1"
+      },
+      {
+        "line": 3,
+        "code": "ORPHAN_EVENTS",
+        "message": "no readable preceding FAULT_CONTEXT for this capture; dump=1 offset=8 records=1",
+        "capture_id": "5fc91dbb83ed415a8c1dc249b2f06b1e:1"
+      }
+    ]
+  },
+  "header-corrupt": {
+    "captures": {},
+    "issues": [
+      {
+        "line": 1,
+        "code": "UNREADABLE_DIAGNOSTIC",
+        "message": "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
+      },
+      {
+        "line": 2,
+        "code": "ORPHAN_EVENTS",
+        "message": "no readable preceding FAULT_CONTEXT for this capture; dump=1 offset=0 records=4",
+        "capture_id": "5fc91dbb83ed415a8c1dc249b2f06b1e:1"
+      },
+      {
+        "line": 3,
+        "code": "ORPHAN_EVENTS",
+        "message": "no readable preceding FAULT_CONTEXT for this capture; dump=1 offset=4 records=4",
+        "capture_id": "5fc91dbb83ed415a8c1dc249b2f06b1e:1"
+      },
+      {
+        "line": 4,
+        "code": "ORPHAN_EVENTS",
+        "message": "no readable preceding FAULT_CONTEXT for this capture; dump=1 offset=8 records=1",
+        "capture_id": "5fc91dbb83ed415a8c1dc249b2f06b1e:1"
+      }
+    ]
+  },
+  "batch-missing": {
+    "captures": {
+      "5fc91dbb83ed415a8c1dc249b2f06b1e:1": false
+    },
+    "issues": [
+      {
+        "line": 3,
+        "code": "OFFSET_MISMATCH",
+        "message": "expected offset 4, got 8 (missing, duplicated or reordered batch)",
+        "capture_id": "5fc91dbb83ed415a8c1dc249b2f06b1e:1"
+      },
+      {
+        "line": 3,
+        "code": "FINAL_COUNT_MISMATCH",
+        "message": "final batch does not supply the header record count",
+        "capture_id": "5fc91dbb83ed415a8c1dc249b2f06b1e:1"
+      },
+      {
+        "line": 1,
+        "code": "INCOMPLETE_CAPTURE",
+        "message": "capture starting here is not complete at end of input; received=5 expected=9 final_seen=True",
+        "capture_id": "5fc91dbb83ed415a8c1dc249b2f06b1e:1"
+      }
+    ]
+  },
+  "cross-instance-collision": {
+    "captures": {
+      "5fc91dbb83ed415a8c1dc249b2f06b1e:1": false
+    },
+    "issues": [
+      {
+        "line": 2,
+        "code": "ORPHAN_EVENTS",
+        "message": "no readable preceding FAULT_CONTEXT for this capture; dump=1 offset=0 records=4",
+        "capture_id": "e4b9aa9425554f8e86505114d28b687f:1"
+      },
+      {
+        "line": 3,
+        "code": "ORPHAN_EVENTS",
+        "message": "no readable preceding FAULT_CONTEXT for this capture; dump=1 offset=4 records=4",
+        "capture_id": "e4b9aa9425554f8e86505114d28b687f:1"
+      },
+      {
+        "line": 4,
+        "code": "ORPHAN_EVENTS",
+        "message": "no readable preceding FAULT_CONTEXT for this capture; dump=1 offset=8 records=1",
+        "capture_id": "e4b9aa9425554f8e86505114d28b687f:1"
+      },
+      {
+        "line": 1,
+        "code": "INCOMPLETE_CAPTURE",
+        "message": "capture starting here is not complete at end of input; received=0 expected=9 final_seen=False",
+        "capture_id": "5fc91dbb83ed415a8c1dc249b2f06b1e:1"
+      }
+    ]
+  },
+  "two-instances-intact": {
+    "captures": {
+      "5fc91dbb83ed415a8c1dc249b2f06b1e:1": true,
+      "e4b9aa9425554f8e86505114d28b687f:1": true
+    },
+    "issues": []
+  }
+}
